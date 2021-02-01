@@ -33,7 +33,7 @@ def index():
 
 @app.route('/update_server', methods=['POST'])
 def webhook():
-    repo = git.Repo('/home/wjm/application')
+    repo = git.Repo('application')
     origin = repo.remotes.origin
     origin.pull()
     return 'updated PythonAnywhere successfully', 200
