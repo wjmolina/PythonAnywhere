@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import arrow
+import git
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/wjm/application/sqlite3.db'
@@ -28,3 +29,11 @@ def index():
     for comment in comments:
         comment.created_on = arrow.get(comment.created_on).humanize()
     return render_template('index.html', comments=comments[::-1])
+
+
+@app.route('/update_server', methods=['POST'])
+def webhook():
+    repo = git.Repo('https://github.com/wjmolina/PythonAnywhere')
+    origin = repo.remotes.origin
+    origin.pull()
+    return 'updated PythonAnywhere successfully', 200
