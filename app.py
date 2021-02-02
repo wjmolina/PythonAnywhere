@@ -8,6 +8,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite3.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+db.create_all()
 
 
 class Comment(db.Model):
@@ -34,6 +35,11 @@ def index():
             anonymous_name = db.session.query(AnonymousName).filter_by(user_agent=None).first()
             anonymous_name.user_agent = request.headers['User-Agent']
         db.session.commit()
+    return render_template('index.html', comments=comments())
+
+
+@app.route('/comments')
+def comments():
     comments = Comment.query.join(
         AnonymousName,
         Comment.user_agent == AnonymousName.user_agent
@@ -42,7 +48,7 @@ def index():
         Comment.created_on,
         Comment.text
     ).all()
-    return render_template('index.html', comments=comments[::-1], arrow=arrow)
+    return render_template('comments.html', comments=comments[::-1], arrow=arrow)
 
 
 @app.route('/update_server', methods=['POST'])

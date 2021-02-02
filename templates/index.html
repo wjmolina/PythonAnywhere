@@ -2,7 +2,7 @@
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script"></script>
 <br>
 <div class="container">
     <div class="row">
@@ -13,18 +13,27 @@
                 <br>
                 <button type="submit" class="btn btn-primary">Post Anonymously</button>
             </form>
-        	<hr data-brackets-id="12673">
-        	<ul data-brackets-id="12674" id="sortable" class="list-unstyled ui-sortable">
-                {% for comment in comments: %}
-            		<strong class="pull-left primary-font">{{ comment.anonymous_name }}</strong>
-            		<small class="pull-right text-muted">
-            			<span class="glyphicon glyphicon-time"></span> {{ arrow.get(comment.created_on).humanize() }}
-            		</small>
-            	    </br>
-            	    <li class="ui-state-default">{{ comment.text }}</li>
-                {% endfor %}
-            </ul>
+            <hr data-brackets-id="12673">
+            <ul data-brackets-id="12674" id="sortable" class="list-unstyled ui-sortable">{{ comments }}</ul>
         </div>
         <div class="col-md-2"></div>
     </div>
 </div>
+<script>
+    var set_delay = 1000,
+    callout = function() {
+        $.ajax({
+            url: "/comments",
+            success: function(response) {
+                $("#sortable").html(response);
+            }
+        })
+        .done(function(response) {
+            MathJax.typeset();
+        })
+        .always(function() {
+            setTimeout(callout, set_delay);
+        });
+    };
+    callout();
+</script>

@@ -1,0 +1,8 @@
+{% for comment in comments: %}
+    <strong class="pull-left primary-font">{{ comment.anonymous_name }}</strong>
+    <small class="pull-right text-muted">
+        <span class="glyphicon glyphicon-time"></span> {{ arrow.get(comment.created_on).humanize() }}
+    </small>
+    </br>
+    <li class="ui-state-default">{{ comment.text }}</li>
+{% endfor %}
