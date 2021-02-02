@@ -16,9 +16,9 @@
         	<hr data-brackets-id="12673">
         	<ul data-brackets-id="12674" id="sortable" class="list-unstyled ui-sortable">
                 {% for comment in comments: %}
-            		<strong class="pull-left primary-font">Anonymous</strong>
+            		<strong class="pull-left primary-font">{{ comment.anonymous_name }}</strong>
             		<small class="pull-right text-muted">
-            			<span class="glyphicon glyphicon-time"></span> {{ comment.created_on }}
+            			<span class="glyphicon glyphicon-time"></span> {{ arrow.get(comment.created_on).humanize() }}
             		</small>
             	    </br>
             	    <li class="ui-state-default">{{ comment.text }}</li>
