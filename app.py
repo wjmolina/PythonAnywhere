@@ -36,4 +36,4 @@ def webhook():
     repo = git.Repo('application')
     origin = repo.remotes.origin
     origin.pull()
-    return 'updated PythonAnywhere successfully', 200
+    return 'updated PythonAnywhere successfully'
