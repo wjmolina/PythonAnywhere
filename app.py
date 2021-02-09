@@ -8,7 +8,6 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite3.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-db.create_all()
 
 
 class Comment(db.Model):
@@ -21,6 +20,12 @@ class Comment(db.Model):
 class AnonymousName(db.Model):
     anonymous_name = db.Column(db.String(120), primary_key=True)
     user_agent = db.Column(db.String(120), db.ForeignKey('comment.user_agent'), unique=True)
+
+
+class ListenedMessage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    message = db.Column(db.String(120))
+    created_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 
 @app.route('/', methods = ['GET', 'POST'])
@@ -57,3 +62,12 @@ def webhook():
     origin = repo.remotes.origin
     origin.pull()
     return 'updated PythonAnywhere successfully'
+
+
+@app.route('/listen', methods=['POST'])
+def listen():
+    db.session.add(ListenedMessage(
+        message=request.json['message']
+    ))
+    db.session.commit()
+    return 'listened successfully'
