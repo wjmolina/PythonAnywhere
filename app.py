@@ -71,3 +71,14 @@ def listen():
     ))
     db.session.commit()
     return 'listened successfully'
+
+
+@app.route('/listener')
+def listener():
+    return render_template('listener.html', messages=get_listener())
+
+
+@app.route('/get_listener')
+def get_listener():
+    messages = ListenedMessage.query.all()
+    return render_template('get_listener.html', messages=messages[::-1], arrow=arrow)
