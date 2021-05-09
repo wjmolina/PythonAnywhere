@@ -13,13 +13,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite3.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# GLOBALS
-
-wallpapers = {
-    'apod': 'PLojoJXOIKgHolGTRXuYufZiMuqTZSQOgeYWpxKY',
-    'ppow': 'HVyRnfHJTrZrfJHTzLcIwaulLMojMTyVPyMEEWQZ',
-}
-
 # MODELS
 
 class Comment(db.Model):
@@ -84,7 +77,7 @@ def webhook():
 
 
 
-@app.route('/OftOfnhSdfIfHdvzrHfVwhqDiOZluDuLkNbqCiKh/<wallpaper>/<ip>', methods=['POST'])
+@app.route('/wallpaper/<wallpaper>/<ip>', methods=['POST'])
 def wallpaper_create(wallpaper, ip):
     response = Response()
     response.headers['Access-Control-Allow-Origin'] = '*'
@@ -95,7 +88,7 @@ def wallpaper_create(wallpaper, ip):
             raise BaseException('Chill out.')
         db.session.add(WallpaperData(
             ip=ip,
-            wallpaper=wallpapers.get(wallpaper),
+            wallpaper=wallpaper,
         ))
         db.session.commit()
         response.data = "Success!"
@@ -159,8 +152,8 @@ def wallpaper_read(key=''):
 
     return render_template(
         'wallpaper_read.html',
-        apod=list(filter(lambda x: x['wallpaper'] == 'APOD', data)),
-        ppow=list(filter(lambda x: x['wallpaper'] == 'PPOW', data)),
+        apod=list(filter(lambda x: x['wallpaper'] == 'apod', data)),
+        ppow=list(filter(lambda x: x['wallpaper'] == 'ppow', data)),
         arrow=arrow,
     )
 
@@ -175,5 +168,5 @@ def wallpaper(wallpaper):
     return render_template(
         'wallpapers/base.html',
         image=image,
-        wallpaper=wallpapers[wallpaper],
+        wallpaper=wallpaper,
     )

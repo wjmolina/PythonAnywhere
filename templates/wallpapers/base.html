@@ -27,9 +27,9 @@
   <script>
     function createLog() {
       $.get("https://api.ipify.org/?format=json", (response) => {
-        $.post(`http://wjm.pythonanywhere.com/OftOfnhSdfIfHdvzrHfVwhqDiOZluDuLkNbqCiKh/PLojoJXOIKgHolGTRXuYufZiMuqTZSQOgeYWpxKY/${response.ip}`)
+        $.post(`http://wjm.pythonanywhere.com/wallpaper/apod/${response.ip}`)
       }).fail(() => {
-        $.post(`http://wjm.pythonanywhere.com/OftOfnhSdfIfHdvzrHfVwhqDiOZluDuLkNbqCiKh/PLojoJXOIKgHolGTRXuYufZiMuqTZSQOgeYWpxKY/ERROR_READ_IP`)
+        $.post(`http://wjm.pythonanywhere.com/wallpaper/apod/ERROR_READ_IP`)
       })
     }
     $(document).ready(() => {
