@@ -114,10 +114,10 @@ def wallpaper_create(wallpaper, ip):
 def wallpaper_read(key=''):
     if key != '':
         response = make_response(redirect('/wallpaper_read/'))
-        response.set_cookie('key', 'VBVXFRqXrdEkOJCGkxXhCQNDrHRbaSLVuiuBaLyr')
+        response.set_cookie('key', 'esx')
         return response
 
-    if request.cookies.get('key') != 'VBVXFRqXrdEkOJCGkxXhCQNDrHRbaSLVuiuBaLyr':
+    if request.cookies.get('key') != 'esx':
         return 'Fuck off.'
 
     results = db.session.query(
@@ -163,3 +163,8 @@ def wallpaper_read(key=''):
         ppow=list(filter(lambda x: x['wallpaper'] == 'PPOW', data)),
         arrow=arrow,
     )
+
+
+@app.route('/wallpaper/apod')
+def wallpaper_apod():
+    return render_template('wallpapers/apod.html')
