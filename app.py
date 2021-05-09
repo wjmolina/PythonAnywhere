@@ -174,5 +174,6 @@ def wallpaper(wallpaper):
     
     return render_template(
         'wallpapers/base.html',
-        image=image
+        image=image,
+        wallpaper=wallpaper,
     )
