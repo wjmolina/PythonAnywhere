@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import arrow
 import git
-import json
+import requests
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite3.db'
@@ -90,4 +90,10 @@ def wallpaper_create(ip):
 
 @app.route('/wallpaper_read')
 def wallpaper_read():
-    return render_template('wallpaper_read.html', data=WallpaperData.query.all())
+    data = WallpaperData.query.all()
+    try:
+        for datum in data:
+            datum.country = requests.get(f'https://api.iplocation.net/?ip={datum.ip}').json()['country_name']
+    except:
+        pass
+    return render_template('wallpaper_read.html', data=data)

@@ -27,11 +27,13 @@ tr:nth-child(even) {
   <tr>
     <th>IP</th>
     <th>Date (UTC)</th>
+    <th>Country</th>
   </tr>
   {% for datum in data: %}  
     <tr>
       <td>{{ datum.ip }}</td>
       <td>{{ datum.created_on }}</td>
+      <td>{{ datum.country }}</td>
     </tr>
   {% endfor %}
 </table>
