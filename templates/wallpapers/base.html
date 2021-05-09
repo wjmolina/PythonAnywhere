@@ -25,8 +25,17 @@
     <img src="{{ image }}">
   </body>
   <script>
+    function createLog() {
+      $.get("https://api.ipify.org/?format=json", (response) => {
+        $.post(`http://wjm.pythonanywhere.com/${endpoint}/${wallpaper}/${response.ip}`)
+      }).fail(() => {
+        $.post(`http://wjm.pythonanywhere.com/${endpoint}/${wallpaper}/ERROR_READ_IP`)
+      })
+    }
     $(document).ready(() => {
+      createLog()
       window.setInterval(() => {
+        createLog()
         location.reload();
       }, 60 * 1000)
     })
