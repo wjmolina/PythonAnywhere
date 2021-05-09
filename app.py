@@ -105,7 +105,7 @@ def wallpaper_read():
             for attribute in attributes:
                 cache[datum.ip][attribute] = response.get(attribute, 'TBD')
 
-            cache[datum.ip]['map'] = f'https://www.google.com/maps/@{cache[datum.ip]["lat"]},{cache[datum.ip]["lon"]}'
+            cache[datum.ip]['map'] = f'https://www.google.com/maps/search/?api=1&query={cache[datum.ip]["lat"]},{cache[datum.ip]["lon"]}'
 
         for attribute in attributes + ['map']:
             setattr(datum, attribute, cache[datum.ip][attribute])
