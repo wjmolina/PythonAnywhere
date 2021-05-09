@@ -76,17 +76,9 @@ def wallpaper_create(ip):
             ip=ip
         ))
         db.session.commit()
-        return app.response_class(
-            response=json.dumps({'success': True}),
-            status=200,
-            mimetype='application/json'
-        )
+        return json.dumps({'success': True}, 200, {'Access-Control-Allow-Origin': '*'})
     except:
-        return app.response_class(
-            response=json.dumps({'success': False}),
-            status=500,
-            mimetype='application/json'
-        )
+        return json.dumps({'success': False}, 500, {'Access-Control-Allow-Origin': '*'})
 
 
 
