@@ -139,7 +139,7 @@ def wallpaper_read():
                 print('something went wrong')
 
             for attribute in attributes:
-                cache[result.ip][attribute] = response.get(attribute, 'TBD')
+                cache[result.ip][attribute] = response.get(attribute, '')
             cache[result.ip]['map'] = f'https://www.google.com/maps/search/?api=1&query={cache[result.ip]["lat"]},{cache[result.ip]["lon"]}'
 
     for datum in data:
