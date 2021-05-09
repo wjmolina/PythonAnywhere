@@ -10,9 +10,11 @@
         text-align: center;
         font-family: 'Inconsolata';
       }
+
       h2, h3 {
         color: white;
       }
+
       p {
         color: #333;
       }
@@ -22,7 +24,7 @@
     <h2>Wallpaper Hits</h2>
     <p><i>"You can have data without information, but you cannot have information without data."</i></p>
     <h3>APOD: {{ apod|length }}</h3>
-    <table class="table table-striped table-dark table-hover">
+    <table class="table table-striped table-dark table-hover table-sm">
       <tr>
         <th>IP</th>
         <th>Hit Count</th>
@@ -45,7 +47,7 @@
       {% endfor %}
     </table>
     <h3>PPOW: {{ ppow|length }}</h3>
-    <table class="table table-striped table-dark table-hover">
+    <table class="table table-striped table-dark table-hover table-sm">
       <tr>
         <th>IP</th>
         <th>Hit Count</th>
