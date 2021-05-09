@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, Response
+from flask.helpers import make_response
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 import arrow
 import git
 import requests
 from sqlalchemy import func
+from flask import redirect
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite3.db'
@@ -107,8 +109,17 @@ def wallpaper_create(wallpaper, ip):
 
 
 
-@app.route('/wallpaper_read')
-def wallpaper_read():
+@app.route('/wallpaper_read/')
+@app.route('/wallpaper_read/<key>')
+def wallpaper_read(key=''):
+    if key != '':
+        response = make_response(redirect('/wallpaper_read/'))
+        response.set_cookie('key', 'VBVXFRqXrdEkOJCGkxXhCQNDrHRbaSLVuiuBaLyr')
+        return response
+
+    if request.cookies.get('key') != 'VBVXFRqXrdEkOJCGkxXhCQNDrHRbaSLVuiuBaLyr':
+        return 'Fuck off.'
+
     results = db.session.query(
         WallpaperData.ip,
         WallpaperData.wallpaper,
