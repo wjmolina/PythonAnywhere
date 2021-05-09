@@ -99,7 +99,11 @@ def wallpaper_read():
     data = []
 
     for result in results:
-        data.append({'created_on' : result.created_on.strftime('%A, %B %d, %Y @ %I:%M:%S %p'), 'ip': result.ip, 'count': result.count})
+        data.append({
+            'created_on': result.created_on.strftime('%A, %B %d, %Y @ %I:%M:%S %p'),
+            'ip': result.ip,
+            'count': result.count
+        })
 
     attributes = ['country', 'region', 'city', 'isp', 'lat', 'lon']
     for result in results:
@@ -115,8 +119,8 @@ def wallpaper_read():
                 cache[result.ip][attribute] = response.get(attribute, 'TBD')
             cache[result.ip]['map'] = f'https://www.google.com/maps/search/?api=1&query={cache[result.ip]["lat"]},{cache[result.ip]["lon"]}'
 
-        for attribute in attributes + ['map']:
-            for datum in data:
+        for datum in data:
+            for attribute in attributes + ['map']:
                 datum[attribute] = cache[result.ip][attribute]
 
     return render_template(
