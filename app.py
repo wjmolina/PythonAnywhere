@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, Response
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import arrow
@@ -76,9 +76,15 @@ def wallpaper_create(ip):
             ip=ip
         ))
         db.session.commit()
-        return json.dumps({'success': True}, 200, {'Access-Control-Allow-Origin': '*'})
+        resp = Response("success")
+        resp.status_code = 200
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+        return resp
     except:
-        return json.dumps({'success': False}, 500, {'Access-Control-Allow-Origin': '*'})
+        resp = Response("failure")
+        resp.status_code = 500
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+        return resp
 
 
 
