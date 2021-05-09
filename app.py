@@ -74,7 +74,7 @@ def webhook():
 
 
 
-@app.route('/wallpaper_create/<ip>', methods=['POST'])
+@app.route('/OftOfnhSdfIfHdvzrHfVwhqDiOZluDuLkNbqCiKh/<ip>', methods=['POST'])
 def wallpaper_create(ip):
     try:
         db.session.add(WallpaperData(
