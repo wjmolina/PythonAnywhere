@@ -107,8 +107,9 @@ def wallpaper_read():
 
             cache[datum.ip]['map'] = f'https://www.google.com/maps/@{cache[datum.ip]["lat"]},{cache[datum.ip]["lon"]}'
 
-        for attribute in attributes:
+        for attribute in attributes + ['map']:
             setattr(datum, attribute, cache[datum.ip][attribute])
+
     return render_template(
         'wallpaper_read.html',
         data=sorted(data, key=lambda attribute: attribute.created_on, reverse=True)
