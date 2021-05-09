@@ -8,6 +8,7 @@ import requests
 from sqlalchemy import func
 from flask import redirect
 import json
+import re
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite3.db'
@@ -173,4 +174,4 @@ def wallpaper_get_image_url(wallpaper):
     if wallpaper == 'apod':
         return {'image_url': requests.get('https://api.nasa.gov/planetary/apod?api_key=RkB6zuLJeCTiehSpZswRNqyoYwUYJRnO274U7wrB').json()['hdurl']}
     if wallpaper == 'ppow':
-        return {'image_url': ''}
+        return {'image_url': print(re.findall(r'og:image" content="(.*?)"', requests.get('https://mars.nasa.gov/mars2020/multimedia/raw-images/image-of-the-week/').text)[0])}
