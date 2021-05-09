@@ -119,9 +119,9 @@ def wallpaper_read():
                 cache[result.ip][attribute] = response.get(attribute, 'TBD')
             cache[result.ip]['map'] = f'https://www.google.com/maps/search/?api=1&query={cache[result.ip]["lat"]},{cache[result.ip]["lon"]}'
 
-        for datum in data:
-            for attribute in attributes + ['map']:
-                datum[attribute] = cache[result.ip][attribute]
+    for datum in data:
+        for attribute in attributes + ['map']:
+            datum[attribute] = cache[datum['ip']][attribute]
 
     return render_template(
         'wallpaper_read.html',
