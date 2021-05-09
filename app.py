@@ -98,5 +98,5 @@ def wallpaper_read():
                 cache[datum.ip] = requests.get(f'https://api.iplocation.net/?ip={datum.ip}').json()['country_name']
             datum.country = cache[datum.ip]
     except BaseException as e:
-        return str(e)
+        return "Raptor is currently messing with this endpoint."
     return render_template('wallpaper_read.html', data=data)
