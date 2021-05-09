@@ -1,5 +1,0 @@
-{% for message in messages: %}
-    <div style="border-radius: 10px; border-style: dotted; padding:4px 4px; margin-top: 4px; margin-left: 75px; margin-right: 75px;">
-        <b>{{ arrow.get(message.created_on).humanize() }}</b>: {{ message.message }}
-    </div>
-{% endfor %}

@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import arrow
 import git
+import json
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite3.db'
@@ -22,10 +23,13 @@ class AnonymousName(db.Model):
     user_agent = db.Column(db.String(120), db.ForeignKey('comment.user_agent'), unique=True)
 
 
-class ListenedMessage(db.Model):
+class WallpaperData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    message = db.Column(db.String(120))
+    ip = db.Column(db.String, nullable=False)
     created_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+
+db.create_all()
 
 
 @app.route('/', methods = ['GET', 'POST'])
@@ -64,21 +68,28 @@ def webhook():
     return 'updated PythonAnywhere successfully'
 
 
-# @app.route('/listen', methods=['POST'])
-# def listen():
-#     db.session.add(ListenedMessage(
-#         message=request.json['message']
-#     ))
-#     db.session.commit()
-#     return 'listened successfully'
+
+@app.route('/wallpaper_create/<ip>', methods=['POST'])
+def wallpaper_create(ip):
+    try:
+        db.session.add(WallpaperData(
+            ip=ip
+        ))
+        db.session.commit()
+        return app.response_class(
+            response=json.dumps({'success': True}),
+            status=200,
+            mimetype='application/json'
+        )
+    except:
+        return app.response_class(
+            response=json.dumps({'success': False}),
+            status=500,
+            mimetype='application/json'
+        )
 
 
-# @app.route('/listener')
-# def listener():
-#     return render_template('listener.html', messages=get_listener())
 
-
-# @app.route('/get_listener')
-# def get_listener():
-#     messages = ListenedMessage.query.all()
-#     return render_template('get_listener.html', messages=messages[::-1], arrow=arrow)
+@app.route('/wallpaper_read')
+def wallpaper_read():
+    return render_template('wallpaper_read.html', data=WallpaperData.query.all())
