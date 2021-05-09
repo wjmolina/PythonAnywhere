@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    body {
+      background-color: black;
+    }
+    
+    img {
+      max-height: 100%;
+      max-width: 100%;
+      width: auto;
+      height: auto;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+  </style>
+  <body>
+    <img src="{{ image }}">
+  </body>
+  <script>
+    $(document).ready(() => {
+      window.setInterval(() => {
+        location.reload();
+      }, 60 * 1000)
+    })
+  </script>
+</html>

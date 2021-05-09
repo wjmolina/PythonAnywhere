@@ -165,6 +165,14 @@ def wallpaper_read(key=''):
     )
 
 
-@app.route('/wallpaper/apod')
-def wallpaper_apod():
-    return render_template('wallpapers/apod.html')
+@app.route('/wallpaper/<wallpaper>')
+def wallpaper(wallpaper):
+    image = 'https://us.123rf.com/450wm/ihorsvetiukha/ihorsvetiukha1710/ihorsvetiukha171000035/87328765-matrix-falling-numbers-warning-error-404-page-not-found-vector-illustration.jpg?ver=6'
+    
+    if wallpaper == 'apod':
+        image = requests.get('https://api.nasa.gov/planetary/apod?api_key=RkB6zuLJeCTiehSpZswRNqyoYwUYJRnO274U7wrB').json()['hdurl']
+    
+    return render_template(
+        'wallpapers/base.html',
+        image=image
+    )
