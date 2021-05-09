@@ -10,7 +10,7 @@
         text-align: center;
         font-family: 'Inconsolata';
       }
-      h2 {
+      h2, h3 {
         color: white;
       }
       p {
@@ -21,11 +21,11 @@
   <body>
     <h2>Wallpaper Hits</h2>
     <p><i>"You can have data without information, but you cannot have information without data."</i></p>
+    <h3>APOD</h3>
     <table class="table table-striped table-dark table-hover">
       <tr>
         <th>IP</th>
         <th>Hit Count</th>
-        <th>Wallpaper</th>
         <th>Date (UTC)</th>
         <th>Country</th>
         <th>Region</th>
@@ -33,11 +33,35 @@
         <th>ISP</th>
         <th>Google Map</th>
       </tr>
-      {% for datum in data: %}  
+      {% for datum in apod: %}  
         <tr>
           <td>{{ datum.ip }}</td>
           <td>{{ datum.count }}</td>
-          <td>{{ datum.wallpaper }}</td>
+          <td>{{ datum.created_on }}</td>
+          <td>{{ datum.country }}</td>
+          <td>{{ datum.region }}</td>
+          <td>{{ datum.city }}</td>
+          <td>{{ datum.isp }}</td>
+          <td><a href="{{ datum.map }}">Click</a></td>
+        </tr>
+      {% endfor %}
+    </table>
+    <h3>PPOW</h3>
+    <table class="table table-striped table-dark table-hover">
+      <tr>
+        <th>IP</th>
+        <th>Hit Count</th>
+        <th>Date (UTC)</th>
+        <th>Country</th>
+        <th>Region</th>
+        <th>City</th>
+        <th>ISP</th>
+        <th>Google Map</th>
+      </tr>
+      {% for datum in ppow: %}  
+        <tr>
+          <td>{{ datum.ip }}</td>
+          <td>{{ datum.count }}</td>
           <td>{{ datum.created_on }}</td>
           <td>{{ datum.country }}</td>
           <td>{{ datum.region }}</td>
