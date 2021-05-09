@@ -16,8 +16,8 @@ db = SQLAlchemy(app)
 # GLOBALS
 
 wallpapers = {
-    'PLojoJXOIKgHolGTRXuYufZiMuqTZSQOgeYWpxKY': 'APOD',
-    'HVyRnfHJTrZrfJHTzLcIwaulLMojMTyVPyMEEWQZ': 'PPOW',
+    'apod': 'PLojoJXOIKgHolGTRXuYufZiMuqTZSQOgeYWpxKY',
+    'ppow': 'HVyRnfHJTrZrfJHTzLcIwaulLMojMTyVPyMEEWQZ',
 }
 
 # MODELS
@@ -175,5 +175,5 @@ def wallpaper(wallpaper):
     return render_template(
         'wallpapers/base.html',
         image=image,
-        wallpaper=wallpaper,
+        wallpaper=wallpapers[wallpaper],
     )
