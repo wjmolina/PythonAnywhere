@@ -10,6 +10,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite3.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+# MODELS
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -31,6 +32,9 @@ class WallpaperData(db.Model):
 
 db.create_all()
 
+# ENDPOINTS
+
+cache = {}
 
 @app.route('/', methods = ['GET', 'POST'])
 def index():
@@ -92,7 +96,6 @@ def wallpaper_create(ip):
 def wallpaper_read():
     data = WallpaperData.query.limit(100).all()
     attributes = ['country', 'region', 'city', 'isp', 'lat', 'lon']
-    cache = {}
     for datum in data:
         if datum.ip not in cache:
             cache[datum.ip], response = {}, {}
@@ -104,7 +107,6 @@ def wallpaper_read():
 
             for attribute in attributes:
                 cache[datum.ip][attribute] = response.get(attribute, 'TBD')
-
             cache[datum.ip]['map'] = f'https://www.google.com/maps/search/?api=1&query={cache[datum.ip]["lat"]},{cache[datum.ip]["lon"]}'
 
         for attribute in attributes + ['map']:
