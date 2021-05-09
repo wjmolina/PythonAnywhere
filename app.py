@@ -94,7 +94,11 @@ def wallpaper_create(ip):
 
 @app.route('/wallpaper_read')
 def wallpaper_read():
-    data = WallpaperData.query.limit(100).all()
+    data = WallpaperData.query.order_by(WallpaperData.created_on.desc()).limit(100).all()
+
+    for datum in data:
+        datum.created_on = datum.created_on.strftime('%A, %B %d, %Y @ %I:%M:%S %p')
+
     attributes = ['country', 'region', 'city', 'isp', 'lat', 'lon']
     for datum in data:
         if datum.ip not in cache:
@@ -114,5 +118,5 @@ def wallpaper_read():
 
     return render_template(
         'wallpaper_read.html',
-        data=sorted(data, key=lambda attribute: attribute.created_on, reverse=True)
+        data=data
     )
