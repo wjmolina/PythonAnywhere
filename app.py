@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, Response
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, timedelta
 import arrow
 import git
 import requests
@@ -76,20 +76,25 @@ def webhook():
 
 @app.route('/OftOfnhSdfIfHdvzrHfVwhqDiOZluDuLkNbqCiKh/<ip>', methods=['POST'])
 def wallpaper_create(ip):
+    response = Response()
+    response.headers['Access-Control-Allow-Origin'] = '*'
+
     try:
+        latest_entry = WallpaperData.query.filter_by(ip=ip).order_by(WallpaperData.created_on.desc()).first()
+        if latest_entry and datetime.utcnow() - latest_entry.created_on < timedelta(minutes=1):
+            raise BaseException('Chill out.')
         db.session.add(WallpaperData(
             ip=ip
         ))
         db.session.commit()
-        resp = Response("success")
-        resp.status_code = 200
-        resp.headers['Access-Control-Allow-Origin'] = '*'
-        return resp
-    except:
-        resp = Response("failure")
-        resp.status_code = 500
-        resp.headers['Access-Control-Allow-Origin'] = '*'
-        return resp
+        response.data = "Success!"
+        response.status_code = 200
+    except BaseException as e:
+        response.data = str(e)
+        response.status_code = 500
+        response.headers['Access-Control-Allow-Origin'] = '*'
+
+    return response
 
 
 
