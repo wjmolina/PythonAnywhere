@@ -21,22 +21,22 @@
   <body>
     <h2>Wallpaper Hits</h2>
     <p><i>"You can have data without information, but you cannot have information without data."</i></p>
-    <h3>APOD</h3>
+    <h3>APOD: {{ apod|length }}</h3>
     <table class="table table-striped table-dark table-hover">
       <tr>
         <th>IP</th>
         <th>Hit Count</th>
-        <th>Date (UTC)</th>
+        <th>When?</th>
         <th>Country</th>
         <th>Region</th>
         <th>City</th>
         <th>ISP</th>
       </tr>
-      {% for datum in apod: %}  
+      {% for datum in apod %}  
         <tr>
           <td>{{ datum.ip }}</td>
           <td>{{ datum.count }}</td>
-          <td>{{ datum.created_on }}</td>
+          <td>{{ arrow.get(datum.created_on).humanize() }}</td>
           <td>{{ datum.country }}</td>
           <td>{{ datum.region }}</td>
           <td>{{ datum.city }}</td>
@@ -44,22 +44,22 @@
         </tr>
       {% endfor %}
     </table>
-    <h3>PPOW</h3>
+    <h3>PPOW: {{ ppow|length }}</h3>
     <table class="table table-striped table-dark table-hover">
       <tr>
         <th>IP</th>
         <th>Hit Count</th>
-        <th>Date (UTC)</th>
+        <th>When?</th>
         <th>Country</th>
         <th>Region</th>
         <th>City</th>
         <th>ISP</th>
       </tr>
-      {% for datum in ppow: %}  
+      {% for datum in ppow %}  
         <tr>
           <td>{{ datum.ip }}</td>
           <td>{{ datum.count }}</td>
-          <td>{{ datum.created_on }}</td>
+          <td>{{ arrow.get(datum.created_on).humanize() }}</td>
           <td>{{ datum.country }}</td>
           <td>{{ datum.region }}</td>
           <td>{{ datum.city }}</td>

@@ -122,7 +122,7 @@ def wallpaper_read():
 
     for result in results:
         data.append({
-            'created_on': result.created_on.strftime('%A, %B %d, %Y @ %I:%M:%S %p'),
+            'created_on': result.created_on,
             'ip': result.ip,
             'wallpaper': result.wallpaper,
             'count': result.count
@@ -148,6 +148,7 @@ def wallpaper_read():
 
     return render_template(
         'wallpaper_read.html',
-        apod=filter(lambda x: x['wallpaper'] == 'APOD', data),
-        ppow=filter(lambda x: x['wallpaper'] == 'PPOW', data)
+        apod=list(filter(lambda x: x['wallpaper'] == 'APOD', data)),
+        ppow=list(filter(lambda x: x['wallpaper'] == 'PPOW', data)),
+        arrow=arrow,
     )
