@@ -94,6 +94,6 @@ def wallpaper_read():
     try:
         for datum in data:
             datum.country = requests.get(f'https://api.iplocation.net/?ip={datum.ip}').json()['country_name']
-    except:
-        pass
+    except BaseException as e:
+        return e
     return render_template('wallpaper_read.html', data=data)
