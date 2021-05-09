@@ -28,12 +28,20 @@ tr:nth-child(even) {
     <th>IP</th>
     <th>Date (UTC)</th>
     <th>Country</th>
+    <th>Region</th>
+    <th>City</th>
+    <th>ISP</th>
+    <th>Google Map</th>
   </tr>
   {% for datum in data: %}  
     <tr>
       <td>{{ datum.ip }}</td>
       <td>{{ datum.created_on }}</td>
       <td>{{ datum.country }}</td>
+      <td>{{ datum.region }}</td>
+      <td>{{ datum.city }}</td>
+      <td>{{ datum.isp }}</td>
+      <td><a href="{{ datum.map }}">Click</a></td>
     </tr>
   {% endfor %}
 </table>

@@ -91,15 +91,25 @@ def wallpaper_create(ip):
 @app.route('/wallpaper_read')
 def wallpaper_read():
     data = WallpaperData.query.limit(100).all()
+    attributes = ['country', 'region', 'city', 'isp', 'lat', 'lon']
     cache = {}
     for datum in data:
         if datum.ip not in cache:
+            cache[datum.ip], response = {}, {}
+            
             try:
-                cache[datum.ip] = requests.get(f'http://ip-api.com/json/{datum.ip}').json()['country']
-            except BaseException as e:
-                cache[datum.ip] = 'TBD'
-        datum.country = cache[datum.ip]
+                response = requests.get(f'http://ip-api.com/json/{datum.ip}').json()
+            except:
+                print('something went wrong')
+
+            for attribute in attributes:
+                cache[datum.ip][attribute] = response.get(attribute, 'TBD')
+
+            cache[datum.ip]['map'] = f'https://www.google.com/maps/@{cache[datum.ip]["lat"]},{cache[datum.ip]["lon"]}'
+
+        for attribute in attributes:
+            setattr(datum, attribute, cache[datum.ip][attribute])
     return render_template(
         'wallpaper_read.html',
-        data=sorted(data, key=lambda x: x.created_on, reverse=True)
+        data=sorted(data, key=lambda attribute: attribute.created_on, reverse=True)
     )
