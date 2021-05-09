@@ -114,7 +114,10 @@ def wallpaper_read():
         WallpaperData.wallpaper,
         WallpaperData.created_on,
         func.count(WallpaperData.ip).label('count')
-    ).group_by(WallpaperData.ip).order_by(WallpaperData.created_on.desc()).limit(100).all()
+    ).group_by(
+        WallpaperData.ip,
+        WallpaperData.wallpaper
+    ).order_by(WallpaperData.created_on.desc()).limit(100).all()
     data = []
 
     for result in results:
