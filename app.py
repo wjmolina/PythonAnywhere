@@ -91,9 +91,12 @@ def wallpaper_create(ip):
 @app.route('/wallpaper_read')
 def wallpaper_read():
     data = WallpaperData.query.all()
+    cache = {}
     try:
         for datum in data:
-            datum.country = requests.get(f'https://api.iplocation.net/?ip={datum.ip}').json()['country_name']
+            if datum.ip not in cache:
+                cache[datum.ip] = requests.get(f'https://api.iplocation.net/?ip={datum.ip}').json()['country_name']
+            datum.country = cache[datum.ip]
     except BaseException as e:
         return str(e)
     return render_template('wallpaper_read.html', data=data)
