@@ -29,8 +29,10 @@ tr:nth-child(even) {
     <th>Date</th>
   </tr>
   {% for datum in data: %}  
-    <td>{{ datum.ip }}</td>
-    <td>{{ datum.created_on }}</td>
+    <tr>
+      <td>{{ datum.ip }}</td>
+      <td>{{ datum.created_on }}</td>
+    </tr>
   {% endfor %}
 </table>
 
