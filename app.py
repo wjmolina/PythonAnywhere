@@ -4,6 +4,7 @@ from datetime import datetime
 import arrow
 import git
 import requests
+from sqlalchemy import func
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite3.db'
@@ -94,27 +95,29 @@ def wallpaper_create(ip):
 
 @app.route('/wallpaper_read')
 def wallpaper_read():
-    data = WallpaperData.query.order_by(WallpaperData.created_on.desc()).limit(100).all()
+    results = db.session.query(WallpaperData.ip, WallpaperData.created_on, func.count(WallpaperData.ip).label('count')).group_by(WallpaperData.ip).order_by(WallpaperData.created_on.desc()).limit(100).all()
+    data = []
 
-    for datum in data:
-        datum.created_on = datum.created_on.strftime('%A, %B %d, %Y @ %I:%M:%S %p')
+    for result in results:
+        data.append({'created_on' : result.created_on.strftime('%A, %B %d, %Y @ %I:%M:%S %p'), 'ip': result.ip, 'count': result.count})
 
     attributes = ['country', 'region', 'city', 'isp', 'lat', 'lon']
-    for datum in data:
-        if datum.ip not in cache:
-            cache[datum.ip], response = {}, {}
+    for result in results:
+        if result.ip not in cache:
+            cache[result.ip], response = {}, {}
             
             try:
-                response = requests.get(f'http://ip-api.com/json/{datum.ip}').json()
+                response = requests.get(f'http://ip-api.com/json/{result.ip}').json()
             except:
                 print('something went wrong')
 
             for attribute in attributes:
-                cache[datum.ip][attribute] = response.get(attribute, 'TBD')
-            cache[datum.ip]['map'] = f'https://www.google.com/maps/search/?api=1&query={cache[datum.ip]["lat"]},{cache[datum.ip]["lon"]}'
+                cache[result.ip][attribute] = response.get(attribute, 'TBD')
+            cache[result.ip]['map'] = f'https://www.google.com/maps/search/?api=1&query={cache[result.ip]["lat"]},{cache[result.ip]["lon"]}'
 
         for attribute in attributes + ['map']:
-            setattr(datum, attribute, cache[datum.ip][attribute])
+            for datum in data:
+                datum[attribute] = cache[result.ip][attribute]
 
     return render_template(
         'wallpaper_read.html',

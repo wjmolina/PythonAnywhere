@@ -26,6 +26,7 @@ tr:nth-child(even) {
 <table>
   <tr>
     <th>IP</th>
+    <th>Hit Count</th>
     <th>Date (UTC)</th>
     <th>Country</th>
     <th>Region</th>
@@ -36,6 +37,7 @@ tr:nth-child(even) {
   {% for datum in data: %}  
     <tr>
       <td>{{ datum.ip }}</td>
+      <td>{{ datum.count }}</td>
       <td>{{ datum.created_on }}</td>
       <td>{{ datum.country }}</td>
       <td>{{ datum.region }}</td>
