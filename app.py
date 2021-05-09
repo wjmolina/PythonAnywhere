@@ -151,8 +151,8 @@ def wallpaper_read(key=''):
 
     return render_template(
         'wallpaper_read.html',
-        apod=list(filter(lambda x: x['wallpaper'] == 'apod', data)),
-        ppow=list(filter(lambda x: x['wallpaper'] == 'ppow', data)),
+        apod=[x for x in data if x['wallpaper'] == 'apod'],
+        ppow=[x for x in data if x['wallpaper'] == 'ppow'],
         arrow=arrow,
     )
 
