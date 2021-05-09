@@ -80,7 +80,6 @@ def webhook():
 @app.route('/wallpaper/<wallpaper>/<ip>', methods=['POST'])
 def wallpaper_create(wallpaper, ip):
     response = Response()
-    response.headers['Access-Control-Allow-Origin'] = '*'
 
     try:
         latest_entry = WallpaperData.query.filter_by(ip=ip).order_by(WallpaperData.created_on.desc()).first()
