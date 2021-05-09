@@ -84,7 +84,7 @@ def wallpaper_create(wallpaper, ip):
 
     try:
         latest_entry = WallpaperData.query.filter_by(ip=ip).order_by(WallpaperData.created_on.desc()).first()
-        if latest_entry and datetime.utcnow() - latest_entry.created_on < timedelta(minutes=1):
+        if latest_entry and datetime.utcnow() - latest_entry.created_on < timedelta(seconds=5):
             raise BaseException('Chill out.')
         db.session.add(WallpaperData(
             ip=ip,
@@ -172,3 +172,5 @@ def wallpaper(wallpaper):
 def wallpaper_get_image_url(wallpaper):
     if wallpaper == 'apod':
         return {'image_url': requests.get('https://api.nasa.gov/planetary/apod?api_key=RkB6zuLJeCTiehSpZswRNqyoYwUYJRnO274U7wrB').json()['hdurl']}
+    if wallpaper == 'ppow':
+        return {'image_url': ''}
