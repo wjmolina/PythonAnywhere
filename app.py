@@ -11,6 +11,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite3.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+# GLOBALS
+
+wallpapers = {
+    'PLojoJXOIKgHolGTRXuYufZiMuqTZSQOgeYWpxKY': 'APOD',
+    'HVyRnfHJTrZrfJHTzLcIwaulLMojMTyVPyMEEWQZ': 'PPOW',
+}
+
 # MODELS
 
 class Comment(db.Model):
@@ -28,6 +35,7 @@ class AnonymousName(db.Model):
 class WallpaperData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ip = db.Column(db.String, nullable=False)
+    wallpaper = db.Column(db.String, nullable=True)
     created_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 
@@ -74,8 +82,8 @@ def webhook():
 
 
 
-@app.route('/OftOfnhSdfIfHdvzrHfVwhqDiOZluDuLkNbqCiKh/<ip>', methods=['POST'])
-def wallpaper_create(ip):
+@app.route('/OftOfnhSdfIfHdvzrHfVwhqDiOZluDuLkNbqCiKh/<wallpaper>/<ip>', methods=['POST'])
+def wallpaper_create(wallpaper, ip):
     response = Response()
     response.headers['Access-Control-Allow-Origin'] = '*'
 
@@ -84,7 +92,8 @@ def wallpaper_create(ip):
         if latest_entry and datetime.utcnow() - latest_entry.created_on < timedelta(minutes=1):
             raise BaseException('Chill out.')
         db.session.add(WallpaperData(
-            ip=ip
+            ip=ip,
+            wallpaper=wallpapers.get(wallpaper),
         ))
         db.session.commit()
         response.data = "Success!"
@@ -100,13 +109,19 @@ def wallpaper_create(ip):
 
 @app.route('/wallpaper_read')
 def wallpaper_read():
-    results = db.session.query(WallpaperData.ip, WallpaperData.created_on, func.count(WallpaperData.ip).label('count')).group_by(WallpaperData.ip).order_by(WallpaperData.created_on.desc()).limit(100).all()
+    results = db.session.query(
+        WallpaperData.ip,
+        WallpaperData.wallpaper,
+        WallpaperData.created_on,
+        func.count(WallpaperData.ip).label('count')
+    ).group_by(WallpaperData.ip).order_by(WallpaperData.created_on.desc()).limit(100).all()
     data = []
 
     for result in results:
         data.append({
             'created_on': result.created_on.strftime('%A, %B %d, %Y @ %I:%M:%S %p'),
             'ip': result.ip,
+            'wallpaper': result.wallpaper,
             'count': result.count
         })
 
