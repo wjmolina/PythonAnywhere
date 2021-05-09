@@ -31,7 +31,6 @@
         <th>Region</th>
         <th>City</th>
         <th>ISP</th>
-        <th>Google Map</th>
       </tr>
       {% for datum in apod: %}  
         <tr>
@@ -42,7 +41,6 @@
           <td>{{ datum.region }}</td>
           <td>{{ datum.city }}</td>
           <td>{{ datum.isp }}</td>
-          <td><a href="{{ datum.map }}">Click</a></td>
         </tr>
       {% endfor %}
     </table>
@@ -56,7 +54,6 @@
         <th>Region</th>
         <th>City</th>
         <th>ISP</th>
-        <th>Google Map</th>
       </tr>
       {% for datum in ppow: %}  
         <tr>
@@ -67,7 +64,6 @@
           <td>{{ datum.region }}</td>
           <td>{{ datum.city }}</td>
           <td>{{ datum.isp }}</td>
-          <td><a href="{{ datum.map }}">Click</a></td>
         </tr>
       {% endfor %}
     </table>
