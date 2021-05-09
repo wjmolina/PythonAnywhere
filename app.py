@@ -7,6 +7,7 @@ import git
 import requests
 from sqlalchemy import func
 from flask import redirect
+import json
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite3.db'
@@ -159,13 +160,15 @@ def wallpaper_read(key=''):
 
 @app.route('/wallpaper/<wallpaper>')
 def wallpaper(wallpaper):
-    image = 'https://us.123rf.com/450wm/ihorsvetiukha/ihorsvetiukha1710/ihorsvetiukha171000035/87328765-matrix-falling-numbers-warning-error-404-page-not-found-vector-illustration.jpg?ver=6'
-    
-    if wallpaper == 'apod':
-        image = requests.get('https://api.nasa.gov/planetary/apod?api_key=RkB6zuLJeCTiehSpZswRNqyoYwUYJRnO274U7wrB').json()['hdurl']
+    image_url = 'https://us.123rf.com/450wm/ihorsvetiukha/ihorsvetiukha1710/ihorsvetiukha171000035/87328765-matrix-falling-numbers-warning-error-404-page-not-found-vector-illustration.jpg?ver=6'
     
     return render_template(
         'wallpapers/base.html',
-        image=image,
+        get_image_url=f'http://wjm.pythonanywhere.com/wallpaper/{wallpaper}/get_image_url',
         wallpaper=wallpaper,
     )
+
+@app.route('/wallpaper/<wallpaper>/get_image_url')
+def wallpaper_get_image_url(wallpaper):
+    if wallpaper == 'apod':
+        return {'image_url': requests.get('https://api.nasa.gov/planetary/apod?api_key=RkB6zuLJeCTiehSpZswRNqyoYwUYJRnO274U7wrB').json()['hdurl']}

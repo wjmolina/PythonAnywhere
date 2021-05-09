@@ -22,9 +22,25 @@
     }
   </style>
   <body>
-    <img src="{{ image }}">
+    <img src="">
   </body>
   <script>
+    function readImage() {
+      createLog()
+      
+      $.get("{{ get_image_url }}", (response) => {
+        console.log(response.image_url)
+        $("img").prop({
+          "src": response.image_url,
+        })
+      }).fail(() => {
+        $.post(`http://wjm.pythonanywhere.com/${endpoint}/${wallpaper}/ERROR_READ_IMAGE`)
+        $("img").prop({
+          "alt": "Oops! Something went wrong while we were trying to fetch the image.",
+        })
+      })
+    }
+
     function createLog() {
       $.get("https://api.ipify.org/?format=json", (response) => {
         $.post(`http://wjm.pythonanywhere.com/wallpaper/{{ wallpaper }}/${response.ip}`)
@@ -32,12 +48,12 @@
         $.post(`http://wjm.pythonanywhere.com/wallpaper/{{ wallpaper }}/ERROR_READ_IP`)
       })
     }
+
     $(document).ready(() => {
-      createLog()
+      readImage()
       window.setInterval(() => {
-        createLog()
-        location.reload();
-      }, 60 * 1000)
+        readImage()
+      }, 1 * 1000)
     })
   </script>
 </html>
