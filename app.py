@@ -110,6 +110,7 @@ def wallpaper_create(wallpaper, ip):
             db.session.add(user)
         else:
             user.count += 1
+        user.created_on = datetime.utcnow()
         db.session.commit()
         response.data = "Success!"
         response.status_code = 200
