@@ -135,7 +135,9 @@ def wallpaper_read(key=""):
             WallpaperData.wallpaper,
             WallpaperData.count,
             WallpaperData.created_on,
-        ).all()
+        )
+        .order_by(WallpaperData.created_on.desc())
+        .all()
     )
     data = []
 
