@@ -44,7 +44,7 @@
       <th>ISP</th>
     </tr>
     {% for datum in wallpaper[0] %}
-    <tr style="{{ 'background-color: darkred;' if datum.ip[0] == 'E' }}">
+    <tr>
       <td>{{ datum.ip }}</td>
       <td>{{ datum.count }}</td>
       <td title="{{ datum.created_on }}">
