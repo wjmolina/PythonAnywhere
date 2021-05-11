@@ -25,10 +25,6 @@
       border-bottom: 2px dotted #666;
       text-decoration: none;
     }
-
-    .error-row {
-      background-color: darkred;
-    }
   </style>
 </head>
 
@@ -48,7 +44,7 @@
       <th>ISP</th>
     </tr>
     {% for datum in wallpaper[0] %}
-    <tr class="{{ 'error-row' if datum.ip[0] == 'E'  }}">
+    <tr style="{{ 'background-color: darkred' if datum.ip[0] == 'E'  }}">
       <td>{{ datum.ip }}</td>
       <td>{{ datum.count }}</td>
       <td title="{{ datum.created_on }}">
