@@ -101,11 +101,20 @@ def wallpaper_create(wallpaper, ip):
 
     try:
         user = WallpaperData.query.filter_by(ip=ip).first()
-        user.count += 1
+        if not user:
+            user = WallpaperData(
+                ip=ip,
+                wallpaper=wallpaper,
+                count=1,
+            )
+            db.session.add(user)
+        else:
+            user.count += 1
         db.session.commit()
         response.data = "Success!"
         response.status_code = 200
     except BaseException as e:
+        print(str(e))
         response.data = str(e)
         response.status_code = 500
 
