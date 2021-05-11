@@ -176,17 +176,10 @@ def wallpaper_read(key=""):
         for attribute in attributes:
             datum[attribute] = cache[datum["ip"]][attribute]
 
-    try:
-        qod_resp = requests.get("https://quotes.rest/qod?language=en").json()['contents']['quotes'][0]
-        qod = '"' + qod_resp['quote'] + '" - ' + qod_resp['author']
-    except:
-        qod = "You can have data without information, but you cannot have information without data."
-
     return render_template(
         "wallpapers/analytics.html",
         apod=[x for x in data if x["wallpaper"] == "apod"],
         ppow=[x for x in data if x["wallpaper"] == "ppow"],
-        qod=qod,
         arrow=arrow,
     )
 
