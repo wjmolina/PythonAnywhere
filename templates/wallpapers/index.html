@@ -25,8 +25,8 @@
     <img src="">
   </body>
   <script>
-    const host = 'http://wjm.pythonanywhere.com'
-    //const host = 'http://127.0.0.1:5000'
+    const log_url = 'http://wjm.pythonanywhere.com/wallpaper/{{ wallpaper }}'
+    //const log_url = 'http://127.0.0.1:5000/wallpaper/{{ wallpaper }}'
     let ip
 
     function readImage() {
@@ -38,7 +38,7 @@
           "src": response.image_url,
         })
       }).fail(() => {
-        $.post(`${host}/wallpaper/{{ wallpaper }}/ERROR_READ_IMAGE`)
+        $.post(`${log_url}/ERROR_READ_IMAGE`)
         $("img").prop({
           "alt": "Oops! Something went wrong while we were trying to fetch the image.",
         })
@@ -46,14 +46,15 @@
     }
 
     function createLog() {
-      if (!ip) {
+      if (ip) {
+        $.post(`${log_url}/${ip}`)
+      } else {
         $.get("https://api.ipify.org/?format=json", (response) => {
           ip = response.ip
         }).fail(() => {
-          return $.post(`${host}/wallpaper/{{ wallpaper }}/ERROR_READ_IP`)
+          $.post(`${log_url}/ERROR_READ_IP`)
         })
       }
-      $.post(`${host}/wallpaper/{{ wallpaper }}/${ip}`)
     }
 
     $(document).ready(() => {
