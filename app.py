@@ -177,7 +177,8 @@ def wallpaper_read(key=""):
             datum[attribute] = cache[datum["ip"]][attribute]
 
     try:
-        qod = requests.get("https://quotes.rest/qod?language=en").json()['contents']['quotes'][0]['quote']
+        qod_resp = requests.get("https://quotes.rest/qod?language=en").json()['contents']['quotes'][0]
+        qod = '"' + qod_resp['quote'] + '" - ' + qod_resp['author']
     except:
         qod = "You can have data without information, but you cannot have information without data."
 
