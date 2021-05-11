@@ -1,67 +1,82 @@
 <!DOCTYPE html>
+
 <head>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 <html>
-  <style>
-    body {
-      background-color: black;
-    }
+<style>
+  body {
+    background-color: black;
+  }
 
-    img {
-      max-height: 100%;
-      max-width: 100%;
-      width: auto;
-      height: auto;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      margin: auto;
-    }
-  </style>
-  <body>
-    <img src="">
-  </body>
-  <script>
-    const log_url = 'http://wjm.pythonanywhere.com/wallpaper/{{ wallpaper }}'
-    //const log_url = 'http://127.0.0.1:5000/wallpaper/{{ wallpaper }}'
-    let ip
+  img {
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+</style>
 
-    function readImage() {
-      createLog()
-      
-      $.get("{{ image_url }}", (response) => {
-        console.log(response.image_url)
-        $("img").prop({
-          "src": response.image_url,
-        })
+<body>
+  <img src="">
+</body>
+<script>
+  const log_url = 'http://wjm.pythonanywhere.com/wallpaper/{{ wallpaper }}'
+  //const log_url = 'http://127.0.0.1:5000/wallpaper/{{ wallpaper }}'
+  let ip
+
+  function readImage() {
+    $.get("{{ image_url }}", (response) => {
+      console.log(response.image_url)
+      $("img").prop({
+        "src": response.image_url,
+      })
+    }).fail(() => {
+      $.post(`${log_url}/ERROR_READ_IMAGE`)
+      $("img").prop({
+        "alt": "Oops! Something went wrong while we were trying to fetch the image.",
+      })
+    })
+  }
+
+  function createLog() {
+    if (ip) {
+      $.post(`${log_url}/${ip}`)
+    } else {
+      $.get("https://api.ipify.org/?format=json", (response) => {
+        ip = response.ip
       }).fail(() => {
-        $.post(`${log_url}/ERROR_READ_IMAGE`)
-        $("img").prop({
-          "alt": "Oops! Something went wrong while we were trying to fetch the image.",
-        })
+        $.post(`${log_url}/ERROR_READ_IP`)
       })
     }
+  }
 
-    function createLog() {
-      if (ip) {
-        $.post(`${log_url}/${ip}`)
-      } else {
-        $.get("https://api.ipify.org/?format=json", (response) => {
-          ip = response.ip
-        }).fail(() => {
-          $.post(`${log_url}/ERROR_READ_IP`)
-        })
-      }
-    }
+  $(document).ready(() => {
+    readImage()
+    createLog()
 
-    $(document).ready(() => {
+    window.setInterval(() => {
       readImage()
-      window.setInterval(() => {
-        readImage()
-      }, +'{{ interval }}')
-    })
-  </script>
+      console.log('readImage()')
+    }, +'{{ read_image_interval }}')
+
+    window.setInterval(() => {
+      createLog()
+      console.log('createLog()')
+    }, +'{{ create_log_interval }}')
+
+    window.setInterval(() => {
+      location.reload()
+      console.log('location.reload()')
+    }, +'{{ refresh_interval }}')
+  })
+</script>
+
 </html>

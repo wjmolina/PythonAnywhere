@@ -1,5 +1,5 @@
 import re
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import arrow
 import git
@@ -18,8 +18,10 @@ db = SQLAlchemy(app)
 
 HOST = "http://wjm.pythonanywhere.com"
 # HOST = 'http://127.0.0.1:5000'
-INTERVAL = 5 * 1000
 
+READ_IMAGE_INTERVAL = 60 * 1000
+CREATE_LOG_INTERVAL = 1 * 1000
+REFRESH_INTERVAL = 24 * 60 * 60 * 1000
 
 # MODELS
 
@@ -97,15 +99,6 @@ def wallpaper_create(wallpaper, ip):
     response = Response()
 
     try:
-        latest_entry = (
-            WallpaperData.query.filter_by(ip=ip)
-            .order_by(WallpaperData.created_on.desc())
-            .first()
-        )
-        if latest_entry and datetime.utcnow() - latest_entry.created_on < timedelta(
-            milliseconds=INTERVAL // 2
-        ):
-            raise BaseException("Chill out.")
         db.session.add(
             WallpaperData(
                 ip=ip,
@@ -190,7 +183,9 @@ def wallpaper(wallpaper):
         "wallpapers/index.html",
         image_url=f"{HOST}/wallpaper/{wallpaper}/image_url",
         wallpaper=wallpaper,
-        interval=INTERVAL,
+        read_image_interval=READ_IMAGE_INTERVAL,
+        create_log_interval=CREATE_LOG_INTERVAL,
+        refresh_interval=REFRESH_INTERVAL,
     )
 
 
