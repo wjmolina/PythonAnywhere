@@ -41,7 +41,7 @@
           <th>ISP</th>
         </tr>
         {% for datum in wallpaper[0] %}  
-          <tr>
+          <tr class="{{ 'table-danger' if datum.ip[0] == 'E' }}">
             <td>{{ datum.ip }}</td>
             <td>{{ datum.count }}</td>
             <td title="{{ datum.created_on }}">
