@@ -43,7 +43,8 @@ class AnonymousName(db.Model):
 class WallpaperData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ip = db.Column(db.String, nullable=False)
-    wallpaper = db.Column(db.String, nullable=True)
+    wallpaper = db.Column(db.String, nullable=False)
+    count = db.Column(db.Integer, nullable=False, default=0)
     created_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 
@@ -132,13 +133,9 @@ def wallpaper_read(key=""):
         db.session.query(
             WallpaperData.ip,
             WallpaperData.wallpaper,
+            WallpaperData.count,
             WallpaperData.created_on,
-            func.count(WallpaperData.ip).label("count"),
-        )
-        .group_by(WallpaperData.ip, WallpaperData.wallpaper)
-        .order_by(WallpaperData.created_on.desc())
-        .limit(100)
-        .all()
+        ).all()
     )
     data = []
 
