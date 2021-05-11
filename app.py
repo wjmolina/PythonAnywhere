@@ -40,11 +40,10 @@ class AnonymousName(db.Model):
     )
 
 
-class WallpaperDataTmp(db.Model):
+class WallpaperData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ip = db.Column(db.String, nullable=False)
-    wallpaper = db.Column(db.String, nullable=False)
-    count = db.Column(db.Integer, nullable=False, default=0)
+    wallpaper = db.Column(db.String, nullable=True)
     created_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 
