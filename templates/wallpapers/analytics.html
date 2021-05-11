@@ -43,7 +43,7 @@
       <th>City</th>
       <th>ISP</th>
     </tr>
-    {% for datum in wallpaper[0] if datum.ip[0] != 'E' %}
+    {% for datum in wallpaper[0] %}
     <tr style="{{ 'background-color: darkred;' if datum.ip[0] == 'E' }}">
       <td>{{ datum.ip }}</td>
       <td>{{ datum.count }}</td>
