@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8 well">
-            <form action = "/" method = "POST" class="text-center">
+            <form action="/" method="POST" class="text-center">
                 <input type="text" name="text" class="form-control" placeholder="Write here." />
                 <br>
                 <button type="submit" class="btn btn-primary">Post Anonymously</button>
@@ -21,19 +21,19 @@
 </div>
 <script>
     var set_delay = 1000,
-    callout = function() {
-        $.ajax({
-            url: "/comments",
-            success: function(response) {
-                $("#sortable").html(response);
-            }
-        })
-        .done(function(response) {
-            MathJax.typeset();
-        })
-        .always(function() {
-            setTimeout(callout, set_delay);
-        });
-    };
+        callout = function () {
+            $.ajax({
+                url: "/comments",
+                success: function (response) {
+                    $("#sortable").html(response);
+                }
+            })
+                .done(function (response) {
+                    MathJax.typeset();
+                })
+                .always(function () {
+                    setTimeout(callout, set_delay);
+                });
+        };
     callout();
 </script>
