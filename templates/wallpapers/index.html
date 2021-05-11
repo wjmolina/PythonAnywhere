@@ -25,16 +25,19 @@
     <img src="">
   </body>
   <script>
+    const host = 'http://wjm.pythonanywhere.com'
+    //const host = 'http://127.0.0.1:5000'
+
     function readImage() {
       createLog()
       
-      $.get("{{ get_image_url }}", (response) => {
+      $.get("{{ image_url }}", (response) => {
         console.log(response.image_url)
         $("img").prop({
           "src": response.image_url,
         })
       }).fail(() => {
-        $.post(`http://wjm.pythonanywhere.com/${endpoint}/${wallpaper}/ERROR_READ_IMAGE`)
+        $.post(`${host}/${endpoint}/${wallpaper}/ERROR_READ_IMAGE`)
         $("img").prop({
           "alt": "Oops! Something went wrong while we were trying to fetch the image.",
         })
@@ -43,9 +46,9 @@
 
     function createLog() {
       $.get("https://api.ipify.org/?format=json", (response) => {
-        $.post(`http://wjm.pythonanywhere.com/wallpaper/{{ wallpaper }}/${response.ip}`)
+        $.post(`${host}/wallpaper/{{ wallpaper }}/${response.ip}`)
       }).fail(() => {
-        $.post(`http://wjm.pythonanywhere.com/wallpaper/{{ wallpaper }}/ERROR_READ_IP`)
+        $.post(`${host}/wallpaper/{{ wallpaper }}/ERROR_READ_IP`)
       })
     }
 
@@ -53,7 +56,7 @@
       readImage()
       window.setInterval(() => {
         readImage()
-      }, 5 * 1000)
+      }, +'{{ interval }}')
     })
   </script>
 </html>
