@@ -27,6 +27,7 @@
   <script>
     const host = 'http://wjm.pythonanywhere.com'
     //const host = 'http://127.0.0.1:5000'
+    let ip
 
     function readImage() {
       createLog()
@@ -45,11 +46,14 @@
     }
 
     function createLog() {
-      $.get("https://api.ipify.org/?format=json", (response) => {
-        $.post(`${host}/wallpaper/{{ wallpaper }}/${response.ip}`)
-      }).fail(() => {
-        $.post(`${host}/wallpaper/{{ wallpaper }}/ERROR_READ_IP`)
-      })
+      if (!ip) {
+        $.get("https://api.ipify.org/?format=json", (response) => {
+          ip = response.ip
+        }).fail(() => {
+          return $.post(`${host}/wallpaper/{{ wallpaper }}/ERROR_READ_IP`)
+        })
+      }
+      $.post(`${host}/wallpaper/{{ wallpaper }}/${ip}`)
     }
 
     $(document).ready(() => {
