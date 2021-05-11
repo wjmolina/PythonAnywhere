@@ -37,7 +37,7 @@
           "src": response.image_url,
         })
       }).fail(() => {
-        $.post(`${host}/${endpoint}/${wallpaper}/ERROR_READ_IMAGE`)
+        $.post(`${host}/wallpaper/{{ wallpaper }}/ERROR_READ_IMAGE`)
         $("img").prop({
           "alt": "Oops! Something went wrong while we were trying to fetch the image.",
         })

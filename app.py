@@ -186,8 +186,6 @@ def wallpaper_read(key=""):
 
 @app.route("/wallpaper/<wallpaper>")
 def wallpaper(wallpaper):
-    image_url = "https://us.123rf.com/450wm/ihorsvetiukha/ihorsvetiukha1710/ihorsvetiukha171000035/87328765-matrix-falling-numbers-warning-error-404-page-not-found-vector-illustration.jpg?ver=6"
-
     return render_template(
         "wallpapers/index.html",
         image_url=f"{HOST}/wallpaper/{wallpaper}/image_url",
