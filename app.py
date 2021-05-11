@@ -101,7 +101,7 @@ def wallpaper_create(wallpaper, ip):
 
     try:
         user = WallpaperData.query.filter(
-            (WallpaperData.ip == ip) | (WallpaperData.wallpaper == wallpaper)
+            (WallpaperData.ip == ip) & (WallpaperData.wallpaper == wallpaper)
         ).first()
         if not user:
             user = WallpaperData(
