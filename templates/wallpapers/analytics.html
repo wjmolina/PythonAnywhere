@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata">
+    <style>
+      body {
+        background-color: black;
+        margin: 30px;
+        text-align: center;
+        font-family: 'Inconsolata';
+      }
+
+      h2, h3 {
+        color: white;
+      }
+
+      p {
+        color: #555;
+      }
+
+      u {    
+        border-bottom: 2px dotted #666;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Wallpaper Hits</h2>
+    <p><i>"You can have data without information, but you cannot have information without data."</i></p>
+    {% for wallpaper in [[apod, 'APOD'], [ppow, 'PPOW']] %}
+      <h3>{{ wallpaper[1] }}: {{ wallpaper[0]|length }}</h3>
+      <table class="table table-striped table-dark table-hover table-sm">
+        <tr>
+          <th>IP</th>
+          <th>Hit Count</th>
+          <th>When?</th>
+          <th>Country</th>
+          <th>Region</th>
+          <th>City</th>
+          <th>ISP</th>
+        </tr>
+        {% for datum in wallpaper[0] %}  
+          <tr>
+            <td>{{ datum.ip }}</td>
+            <td>{{ datum.count }}</td>
+            <td title="{{ datum.created_on }}">
+              <u style="cursor:pointer">{{ arrow.get(datum.created_on).humanize() }}</u>
+            </td>
+            <td>{{ datum.country }}</td>
+            <td>{{ datum.region }}</td>
+            <td>{{ datum.city }}</td>
+            <td>{{ datum.isp }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% endfor %}
+  </body>
+</html>

@@ -127,7 +127,7 @@ def wallpaper_create(wallpaper, ip):
 def wallpaper_read(key=""):
     password = "esx"
 
-    if key not in {"", password}:
+    if key != "":
         response = make_response(redirect("/wallpaper_read/"))
         response.set_cookie("key", password)
         return response
@@ -177,7 +177,7 @@ def wallpaper_read(key=""):
             datum[attribute] = cache[datum["ip"]][attribute]
 
     return render_template(
-        "wallpaper_read.html",
+        "wallpapers/analytics.html",
         apod=[x for x in data if x["wallpaper"] == "apod"],
         ppow=[x for x in data if x["wallpaper"] == "ppow"],
         arrow=arrow,
