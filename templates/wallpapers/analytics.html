@@ -29,7 +29,7 @@
 </head>
 
 <body>
-  <h2>Wallpaper Hits</h2>
+  <h2>Wallpaper Hits: {{ apod|length + ppow|length }}</h2>
   <p><i>Wake up, Neo...</i></p>
   {% for wallpaper in [[apod, 'APOD'], [ppow, 'PPOW']] %}
   <h3>{{ wallpaper[1] }}: {{ wallpaper[0]|length }}</h3>
