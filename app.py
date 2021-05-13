@@ -27,11 +27,8 @@ CREATE_LOG_INTERVAL = 1 * 1000
 REFRESH_INTERVAL = 24 * 60 * 60 * 1000
 
 SEND_EMAIL_SENDER = os.getenv("SEND_EMAIL_SENDER")
-print(SEND_EMAIL_SENDER)
 SEND_EMAIL_RECEIVERS = os.getenv("SEND_EMAIL_RECEIVERS").split(" ")
-print(SEND_EMAIL_RECEIVERS)
 SEND_EMAIL_PASSWORD = os.getenv("SEND_EMAIL_PASSWORD")
-print(SEND_EMAIL_PASSWORD)
 
 # MODELS
 
@@ -209,7 +206,10 @@ def wallpaper_read(key=""):
         total_hits = len(apod) + len(ppow)
         data = file.read()
         if not total_hits % 100 and total_hits > int(data):
-            send_email(total_hits)
+            try:
+                send_email(total_hits)
+            except:
+                print('COULD NOT SEND EMAIL')
         file.seek(0)
         file.write(str(total_hits))
         file.truncate()
