@@ -25,14 +25,18 @@
       border-bottom: 2px dotted #666;
       text-decoration: none;
     }
+
+    img {
+      margin: 30px 0 30px 0;
+      height: 20%;
+      width: 20%;
+    }
   </style>
 </head>
 
 <body>
   <h2>Wallpaper Hits: {{ apod|length + ppow|length }}</h2>
-  <hr>
-  <img src="../../static/lenn.jpg" width="20%" height="20%">
-  <hr>
+  <img src="../../static/lenn.jpg">
   <p><i>Deja que la libertad reine. El sol nunca se pone sobre un glorioso logro humano. La libertad es una utopía que
       nunca debemos dejar de perseguir. #lifestyle #beach #sunset #karateforever</i></p>
   {% for wallpaper in [[apod, 'APOD'], [ppow, 'PPOW']] %}
