@@ -30,7 +30,11 @@
 
 <body>
   <h2>Wallpaper Hits: {{ apod|length + ppow|length }}</h2>
-  <p><i>Wake up, Neo...</i></p>
+  <hr>
+  <img src="../../static/lenn.jpg" width="20%" height="20%">
+  <hr>
+  <p><i>Deja que la libertad reine. El sol nunca se pone sobre un glorioso logro humano. La libertad es una utopía que
+      nunca debemos dejar de perseguir. #lifestyle #beach #sunset #karateforever</i></p>
   {% for wallpaper in [[apod, 'APOD'], [ppow, 'PPOW']] %}
   <h3>{{ wallpaper[1] }}: {{ wallpaper[0]|length }}</h3>
   <table class="table table-striped table-dark table-hover table-sm">
