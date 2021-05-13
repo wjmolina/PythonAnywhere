@@ -202,7 +202,7 @@ def wallpaper_read(key=""):
     apod = [x for x in data if x["wallpaper"] == "apod"]
     ppow = [x for x in data if x["wallpaper"] == "ppow"]
 
-    with open(".milestones", "r+") as file:
+    with open("/home/wjm/application/.milestones", "r+") as file:
         total_hits = len(apod) + len(ppow)
         data = file.read()
         if not total_hits % 100 and total_hits > int(data):
