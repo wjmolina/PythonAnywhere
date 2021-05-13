@@ -140,7 +140,7 @@ def wallpaper_create(wallpaper, ip):
         response.data = "Success!"
         response.status_code = 200
     except BaseException as e:
-        print(str(e))
+        print(f"BACK-END: COULD NOT LOG IP, {e}")
         response.data = str(e)
         response.status_code = 500
 
@@ -190,7 +190,7 @@ def wallpaper_read(key=""):
             try:
                 response = requests.get(f"http://ip-api.com/json/{result.ip}").json()
             except BaseException as e:
-                print(e)
+                print(f"BACK-END: COULD NOT GET IP INFO, {e}")
 
             for attribute in attributes:
                 cache[result.ip][attribute] = response.get(attribute, "")
@@ -208,8 +208,8 @@ def wallpaper_read(key=""):
         if not total_hits % 100 and total_hits > int(data):
             try:
                 send_email(total_hits)
-            except:
-                print('COULD NOT SEND EMAIL')
+            except BaseException as e:
+                print(f"BACK-END: COULD NOT SEND EMAIL, {e}")
         file.seek(0)
         file.write(str(total_hits))
         file.truncate()
