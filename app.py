@@ -1,4 +1,7 @@
+import os
 import re
+import smtplib
+import ssl
 from datetime import datetime
 
 import arrow
@@ -22,6 +25,10 @@ HOST = "http://wjm.pythonanywhere.com"
 READ_IMAGE_INTERVAL = 60 * 1000
 CREATE_LOG_INTERVAL = 1 * 1000
 REFRESH_INTERVAL = 24 * 60 * 60 * 1000
+
+SEND_EMAIL_SENDER = os.getenv("SEND_EMAIL_SENDER")
+SEND_EMAIL_RECEIVERS = os.getenv("SEND_EMAIL_RECEIVERS").split(" ")
+SEND_EMAIL_PASSWORD = os.getenv("SEND_EMAIL_PASSWORD")
 
 # MODELS
 
@@ -49,6 +56,22 @@ class WallpaperData(db.Model):
 
 
 db.create_all()
+
+# FUNCTIONS
+
+
+def send_email(hits):
+    with smtplib.SMTP_SSL(
+        "smtp.gmail.com", 465, context=ssl.create_default_context()
+    ) as server:
+        server.login(SEND_EMAIL_SENDER, SEND_EMAIL_PASSWORD)
+        for email_receiver in SEND_EMAIL_RECEIVERS:
+            server.sendmail(
+                SEND_EMAIL_SENDER,
+                email_receiver,
+                f"Subject: From the EsX Back-End\n\nThe wallpapers have been served to {hits} unique IPs.",
+            )
+
 
 # ENDPOINTS
 
@@ -176,10 +199,22 @@ def wallpaper_read(key=""):
         for attribute in attributes:
             datum[attribute] = cache[datum["ip"]][attribute]
 
+    apod = [x for x in data if x["wallpaper"] == "apod"]
+    ppow = [x for x in data if x["wallpaper"] == "ppow"]
+
+    with open(".milestones", "r+") as file:
+        total_hits = len(apod) + len(ppow)
+        data = file.read()
+        if not total_hits % 100 and total_hits > int(data):
+            send_email(total_hits)
+        file.seek(0)
+        file.write(str(total_hits))
+        file.truncate()
+
     return render_template(
         "wallpapers/analytics.html",
-        apod=[x for x in data if x["wallpaper"] == "apod"],
-        ppow=[x for x in data if x["wallpaper"] == "ppow"],
+        apod=apod,
+        ppow=ppow,
         arrow=arrow,
     )
 
