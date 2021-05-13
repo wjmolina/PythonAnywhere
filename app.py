@@ -189,8 +189,8 @@ def wallpaper_read(key=""):
 
             try:
                 response = requests.get(f"http://ip-api.com/json/{result.ip}").json()
-            except:
-                print("something went wrong")
+            except BaseException as e:
+                print(e)
 
             for attribute in attributes:
                 cache[result.ip][attribute] = response.get(attribute, "")
