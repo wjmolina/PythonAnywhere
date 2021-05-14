@@ -35,7 +35,7 @@
 </head>
 
 <body>
-  <h2>Wallpaper Hits: {{ items | map('length') | sum }}</h2>
+  <h2>Wallpaper Hits: {{ items | map('wallpaper') | map('length') | sum }}</h2>
   <p><i>hi</i></p>
   {% for item in items %}
   <h3>{{ item['name'] }}: {{ item['wallpaper']|length }}</h3>
