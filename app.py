@@ -55,6 +55,13 @@ class WallpaperData(db.Model):
     created_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 
+class IpNotes(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    ip = db.Column(db.String, nullable=False)
+    note = db.Column(db.String, nullable=False)
+    created_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+
 db.create_all()
 
 # FUNCTIONS
@@ -116,6 +123,12 @@ def webhook():
     origin = repo.remotes.origin
     origin.pull()
     return "updated PythonAnywhere successfully"
+
+
+@app.route("/wallpaper/notes/<ip>/<note>", methods=["POST"])
+def wallpaper_create_notes(ip, note):
+    db.session.add(IpNotes(ip=ip, note=note))
+    db.session.commit()
 
 
 @app.route("/wallpaper/<wallpaper>/<ip>", methods=["POST"])
