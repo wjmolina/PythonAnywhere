@@ -2,7 +2,7 @@ import os
 import re
 import smtplib
 import ssl
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import arrow
 import git
@@ -167,6 +167,7 @@ def wallpaper_read(key=""):
             WallpaperData.count,
             WallpaperData.created_on,
         )
+        .filter(WallpaperData.created_on > datetime.utcnow() - timedelta(days=4))
         .order_by(WallpaperData.created_on.desc())
         .all()
     )
