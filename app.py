@@ -130,8 +130,10 @@ def webhook():
 def wallpaper_read_notes(ip):
     if flask.request.method == "POST":
         try:
-            db.session.add(IpNotes(ip=ip, note=request.form["note"]))
-            db.session.commit()
+            note = request.form["note"].strip()
+            if note:
+                db.session.add(IpNotes(ip=ip, note=note))
+                db.session.commit()
         except BaseException as e:
             return str(e), 500
     return render_template(
