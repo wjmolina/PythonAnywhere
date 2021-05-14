@@ -31,6 +31,10 @@
       height: 20%;
       width: 20%;
     }
+
+    .btn.btn-secondary.btn-sm {
+      width: 25px;
+    }
   </style>
 </head>
 
@@ -61,7 +65,7 @@
       <td>{{ datum.region }}</td>
       <td>{{ datum.city }}</td>
       <td>{{ datum.isp }}</td>
-      <td><button type="button" class="btn btn-secondary btn-sm">0</button></td>
+      <td><a class="btn btn-secondary btn-sm" href="#" role="button">0</a></td>
     </tr>
     {% endfor %}
   </table>
