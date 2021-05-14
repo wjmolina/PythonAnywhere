@@ -185,13 +185,14 @@ def wallpaper_read(key=""):
     attributes = ["country", "region", "city", "isp", "lat", "lon"]
     for result in results:
         if result.ip not in cache:
-            cache[result.ip], response = {}, {}
-
+            response = {}
             try:
                 response = requests.get(f"http://ip-api.com/json/{result.ip}").json()
             except BaseException as e:
                 print(f"BACK-END: COULD NOT GET IP INFO, {e}")
+                continue
 
+            cache[result.ip] = {}
             for attribute in attributes:
                 cache[result.ip][attribute] = response.get(attribute, "")
 
