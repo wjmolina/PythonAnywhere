@@ -52,7 +52,7 @@
       <th>Region</th>
       <th>City</th>
       <th>ISP</th>
-      <th>Notes</th>
+      <!-- <th>Notes</th> -->
     </tr>
     {% for datum in item['wallpaper'] %}
     <tr style="{{ 'background-color: darkred' if datum.ip[0] == 'E'  }}">
@@ -65,7 +65,7 @@
       <td>{{ datum.region }}</td>
       <td>{{ datum.city }}</td>
       <td>{{ datum.isp }}</td>
-      <td><a class="btn btn-secondary btn-sm" href="notes/{{ datum.ip }}" role="button">0</a></td>
+      <!-- <td><a class="btn btn-secondary btn-sm" href="notes/{{ datum.ip }}" role="button">0</a></td> -->
     </tr>
     {% endfor %}
   </table>
