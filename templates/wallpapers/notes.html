@@ -40,6 +40,13 @@
 
 <body>
     <h2>Notes of IP: {{ ip }}</h2>
+    <form action="/wallpaper/notes/{{ ip }}" method="POST">
+        <div class="form-group">
+            <label for="noteTextArea">Write Note</label>
+            <textarea id="noteTextArea" name="note" class="form-control" rows="3" placeholder="Write here."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
     <table class="table table-striped table-dark table-hover table-sm">
         <tr>
             <th>Note</th>

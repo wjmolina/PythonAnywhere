@@ -5,6 +5,7 @@ import ssl
 from datetime import datetime, timedelta
 
 import arrow
+import flask
 import git
 import requests
 from flask import Flask, Response, redirect, render_template, request
@@ -125,18 +126,15 @@ def webhook():
     return "updated PythonAnywhere successfully"
 
 
-@app.route("/wallpaper/notes/<ip>/<note>", methods=["POST"])
-def wallpaper_create_notes(ip, note):
-    try:
-        db.session.add(IpNotes(ip=ip, note=note))
-        db.session.commit()
-        return "Success!", 200
-    except BaseException as e:
-        return str(e), 500
-
-
-@app.route("/wallpaper/notes/<ip>")
+@app.route("/wallpaper/notes/<ip>", methods=["GET", "POST"])
 def wallpaper_read_notes(ip):
+    if flask.request.method == "POST":
+        try:
+            db.session.add(IpNotes(ip=ip, note=request.form["note"]))
+            db.session.commit()
+            return "Success!", 200
+        except BaseException as e:
+            return str(e), 500
     return render_template(
         "wallpapers/notes.html",
         arrow=arrow,
