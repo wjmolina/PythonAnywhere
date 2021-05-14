@@ -65,7 +65,7 @@
       <td>{{ datum.region }}</td>
       <td>{{ datum.city }}</td>
       <td>{{ datum.isp }}</td>
-      <td><a class="btn {{ 'btn-secondary' if datum.notes_count < 1 else 'btn-warning' }} btn-sm" href="notes/{{ datum.ip }}" role="button">{{ datum.notes_count }}</a></td>
+      <td><a class="btn {{ 'btn-secondary' if datum.notes_count < 1 else 'btn-warning' }} btn-sm" href="../wallpapers/notes/{{ datum.ip }}" role="button">{{ datum.notes_count }}</a></td>
     </tr>
     {% endfor %}
   </table>
