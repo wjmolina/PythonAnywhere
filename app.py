@@ -144,6 +144,29 @@ def wallpaper_create(wallpaper, ip):
         response.data = str(e)
         response.status_code = 500
 
+    try:
+        with open("/home/wjm/application/.milestones", "r+") as file:
+            total_hits = (
+                db.session.query(WallpaperData)
+                .distinct(WallpaperData.ip)
+                .group_by(WallpaperData.ip)
+                .count()
+            )
+            print('asdasd ' + total_hits)
+            data = file.read()
+            if not total_hits % 100 and total_hits > int(data):
+                try:
+                    send_email(total_hits)
+                except BaseException as e:
+                    print(f"BACK-END: COULD NOT SEND EMAIL, {e}")
+            file.seek(0)
+            file.write(str(total_hits))
+            file.truncate()
+    except:
+        print(f"BACK-END: COULD NOT SEND EMAIL, {e}")
+        response.data = str(e)
+        response.status_code = 500
+
     return response
 
 
@@ -209,18 +232,6 @@ def wallpaper_read(key=""):
         "wallpaper": [x for x in data if x["wallpaper"] == "ppow"],
         "name": "PPOW",
     }
-
-    with open("/home/wjm/application/.milestones", "r+") as file:
-        total_hits = len(apod) + len(ppow)
-        data = file.read()
-        if not total_hits % 100 and total_hits > int(data):
-            try:
-                send_email(total_hits)
-            except BaseException as e:
-                print(f"BACK-END: COULD NOT SEND EMAIL, {e}")
-        file.seek(0)
-        file.write(str(total_hits))
-        file.truncate()
 
     return render_template(
         "wallpapers/analytics.html",
