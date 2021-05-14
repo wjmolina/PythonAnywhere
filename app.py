@@ -152,7 +152,6 @@ def wallpaper_create(wallpaper, ip):
                 .group_by(WallpaperData.ip)
                 .count()
             )
-            print('asdasd ' + str(total_hits))
             data = file.read()
             if not total_hits % 100 and total_hits > int(data):
                 try:
