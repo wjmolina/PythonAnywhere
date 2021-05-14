@@ -199,8 +199,14 @@ def wallpaper_read(key=""):
         for attribute in attributes:
             datum[attribute] = cache[datum["ip"]][attribute]
 
-    apod = [x for x in data if x["wallpaper"] == "apod"]
-    ppow = [x for x in data if x["wallpaper"] == "ppow"]
+    apod = {
+        "wallpaper": [x for x in data if x["wallpaper"] == "apod"],
+        "name": "APOD",
+    }
+    ppow = {
+        "wallpaper": [x for x in data if x["wallpaper"] == "ppow"],
+        "name": "PPOW",
+    }
 
     with open("/home/wjm/application/.milestones", "r+") as file:
         total_hits = len(apod) + len(ppow)
@@ -216,7 +222,7 @@ def wallpaper_read(key=""):
 
     return render_template(
         "wallpapers/analytics.html",
-        items=[{"wallpaper": apod, "name": "APOD"}, {"wallpaper": ppow, "name": "PPOW"}],
+        items=[apod, ppow],
         arrow=arrow,
     )
 
