@@ -127,8 +127,12 @@ def webhook():
 
 @app.route("/wallpaper/notes/<ip>/<note>", methods=["POST"])
 def wallpaper_create_notes(ip, note):
-    db.session.add(IpNotes(ip=ip, note=note))
-    db.session.commit()
+    try:
+        db.session.add(IpNotes(ip=ip, note=note))
+        db.session.commit()
+        return "Success!", 200
+    except BaseException as e:
+        return str(e), 500
 
 
 @app.route("/wallpaper/<wallpaper>/<ip>", methods=["POST"])
