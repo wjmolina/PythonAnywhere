@@ -138,7 +138,9 @@ def wallpaper_create_notes(ip, note):
 @app.route("/wallpaper/notes/<ip>")
 def wallpaper_read_notes(ip):
     return render_template(
-        "wallpapers/notes.html", notes=IpNotes.query.filter_by(ip=ip).all()
+        "wallpapers/notes.html",
+        ip=ip,
+        notes=IpNotes.query.filter_by(ip=ip).all(),
     )
 
 
