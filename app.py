@@ -139,8 +139,9 @@ def wallpaper_create_notes(ip, note):
 def wallpaper_read_notes(ip):
     return render_template(
         "wallpapers/notes.html",
+        arrow=arrow,
         ip=ip,
-        notes=IpNotes.query.filter_by(ip=ip).all(),
+        notes=IpNotes.query.filter_by(ip=ip).order_by(IpNotes.created_on.desc()).all(),
     )
 
 
