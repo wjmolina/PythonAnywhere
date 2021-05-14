@@ -228,6 +228,7 @@ def wallpaper_read(key=""):
                 "ip": result.ip,
                 "wallpaper": result.wallpaper,
                 "count": result.count,
+                "notes_count": IpNotes.query.filter_by(ip=result.ip).count(),
             }
         )
 
