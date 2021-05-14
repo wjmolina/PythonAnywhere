@@ -216,8 +216,7 @@ def wallpaper_read(key=""):
 
     return render_template(
         "wallpapers/analytics.html",
-        apod=apod,
-        ppow=ppow,
+        items=[{"wallpaper": apod, "name": "APOD"}, {"wallpaper": ppow, "name": "PPOW"}],
         arrow=arrow,
     )
 
