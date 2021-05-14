@@ -135,6 +135,13 @@ def wallpaper_create_notes(ip, note):
         return str(e), 500
 
 
+@app.route("/wallpaper/notes/<ip>")
+def wallpaper_create_notes(ip, note):
+    return render_template(
+        "wallpapers/notes.html", notes=IpNotes.filter_by(ip=ip).all()
+    )
+
+
 @app.route("/wallpaper/<wallpaper>/<ip>", methods=["POST"])
 def wallpaper_create(wallpaper, ip):
     response = Response()
