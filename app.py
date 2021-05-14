@@ -225,11 +225,11 @@ def wallpaper_read(key=""):
 
     apod = {
         "wallpaper": [x for x in data if x["wallpaper"] == "apod"],
-        "name": "APOD",
+        "name": "Astronomy Picture of the Day",
     }
     ppow = {
         "wallpaper": [x for x in data if x["wallpaper"] == "ppow"],
-        "name": "PPOW",
+        "name": "Perseverance Picture of the Week",
     }
 
     return render_template(
