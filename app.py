@@ -132,7 +132,6 @@ def wallpaper_read_notes(ip):
         try:
             db.session.add(IpNotes(ip=ip, note=request.form["note"]))
             db.session.commit()
-            return "Success!", 200
         except BaseException as e:
             return str(e), 500
     return render_template(
