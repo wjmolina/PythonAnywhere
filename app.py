@@ -152,7 +152,7 @@ def wallpaper_create(wallpaper, ip):
                 .group_by(WallpaperData.ip)
                 .count()
             )
-            print('asdasd ' + total_hits)
+            print('asdasd ' + str(total_hits))
             data = file.read()
             if not total_hits % 100 and total_hits > int(data):
                 try:
@@ -162,7 +162,7 @@ def wallpaper_create(wallpaper, ip):
             file.seek(0)
             file.write(str(total_hits))
             file.truncate()
-    except:
+    except BaseException as e:
         print(f"BACK-END: COULD NOT SEND EMAIL, {e}")
         response.data = str(e)
         response.status_code = 500
