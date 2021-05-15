@@ -48,7 +48,7 @@
   <h2>Wallpaper Hits: {{ items|map(attribute='wallpaper')|map('length')|sum }} (Last 4 Days)</h2>
   <p><i>hi</i></p>
   {% for item in items %}
-  <h3><a href="{{ item.url }}">{{ item['name'] }}</a>: {{ item['wallpaper']|length }}</h3>
+  <h3><a href="../wallpaper/{{ item.url }}">{{ item.name }}</a>: {{ item.wallpaper|length }}</h3>
   <table class="table table-striped table-dark table-hover table-sm table-bordered">
     <tr>
       <th width="15%">IP</th>
@@ -60,7 +60,7 @@
       <th width="30%">ISP</th>
       <th width="5%">Notes</th>
     </tr>
-    {% for datum in item['wallpaper'] %}
+    {% for datum in item.wallpaper %}
     <tr style="{{ 'background-color: darkred' if datum.ip[0] == 'E'  }}">
       <td width="15%">{{ datum.ip }}</td>
       <td width="5%">{{ datum.count }}</td>
