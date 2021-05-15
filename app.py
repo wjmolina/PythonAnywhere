@@ -196,18 +196,7 @@ def wallpaper_create(wallpaper, ip):
 
 
 @app.route("/wallpaper_read/")
-@app.route("/wallpaper_read/<key>")
-def wallpaper_read(key=""):
-    password = "esx"
-
-    if key != "":
-        response = make_response(redirect("/wallpaper_read/"))
-        response.set_cookie("key", password)
-        return response
-
-    if request.cookies.get("key") != password:
-        return "How in the world did you end up here?"
-
+def wallpaper_read():
     results = (
         db.session.query(
             WallpaperData.ip,
