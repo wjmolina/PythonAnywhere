@@ -55,9 +55,9 @@
       <th width="15%">When?</th>
       <th width="10%">Country</th>
       <th width="5%">Region</th>
-      <th width="10%">City</th>
+      <th width="15%">City</th>
       <th width="30%">ISP</th>
-      <th width="10%">Notes</th>
+      <th width="5%">Notes</th>
     </tr>
     {% for datum in item['wallpaper'] %}
     <tr style="{{ 'background-color: darkred' if datum.ip[0] == 'E'  }}">
@@ -68,9 +68,9 @@
       </td>
       <td width="10%">{{ datum.country }}</td>
       <td width="5%">{{ datum.region }}</td>
-      <td width="10%">{{ datum.city }}</td>
+      <td width="15%">{{ datum.city }}</td>
       <td width="30%">{{ datum.isp }}</td>
-      <td width="10%"><a class="btn {{ 'btn-secondary' if datum.notes_count < 1 else 'btn-primary' }} btn-sm"
+      <td width="5%"><a class="btn {{ 'btn-secondary' if datum.notes_count < 1 else 'btn-primary' }} btn-sm"
           href="../wallpaper/notes/{{ datum.ip }}" role="button">{{ datum.notes_count }}</a></td>
     </tr>
     {% endfor %}
