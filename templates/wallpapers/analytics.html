@@ -52,9 +52,9 @@
     <tr>
       <th width="10%">IP</th>
       <th width="10%">Hit Count</th>
-      <th width="10%">When?</th>
+      <th width="15%">When?</th>
       <th width="10%">Country</th>
-      <th width="10%">Region</th>
+      <th width="5%">Region</th>
       <th width="10%">City</th>
       <th width="30%">ISP</th>
       <th width="10%">Notes</th>
@@ -63,11 +63,11 @@
     <tr style="{{ 'background-color: darkred' if datum.ip[0] == 'E'  }}">
       <td width="10%">{{ datum.ip }}</td>
       <td width="10%">{{ datum.count }}</td>
-      <td width="10%" title="{{ datum.created_on }}">
+      <td width="15%" title="{{ datum.created_on }}">
         <u style="cursor:pointer">{{ arrow.get(datum.created_on).humanize() }}</u>
       </td>
       <td width="10%">{{ datum.country }}</td>
-      <td width="10%">{{ datum.region }}</td>
+      <td width="5%">{{ datum.region }}</td>
       <td width="10%">{{ datum.city }}</td>
       <td width="30%">{{ datum.isp }}</td>
       <td width="10%"><a class="btn {{ 'btn-secondary' if datum.notes_count < 1 else 'btn-primary' }} btn-sm"
