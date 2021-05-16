@@ -63,6 +63,12 @@ class IpNotes(db.Model):
     created_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 
+class UhComments(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String, nullable=False)
+    created_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+
 db.create_all()
 
 # FUNCTIONS
@@ -286,3 +292,14 @@ def wallpaper_image_url(wallpaper):
                 ).text,
             )[0]
         }
+
+
+@app.route("/wjmolina", methods=["GET", "POST"])
+def wjmolina():
+    if request.method == "POST":
+        db.session.add(UhComments(text=request.form["text"]))
+        db.session.commit()
+    return render_template(
+        "uhpage.html",
+        comments=UhComments.query.order_by(UhComments.created_on.desc()).all(),
+    )
