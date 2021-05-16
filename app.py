@@ -244,8 +244,6 @@ def wallpaper_read():
     for datum in data:
         for attribute in attributes:
             datum[attribute] = cache.get(datum["ip"], {}).get(attribute, "")
-            print(attribute, datum[attribute])
-        print()
 
     apod = {
         "wallpaper": [x for x in data if x["wallpaper"] == "apod"],
