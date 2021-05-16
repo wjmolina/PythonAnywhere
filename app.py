@@ -152,7 +152,7 @@ def wallpaper_read_notes(ip):
 
 @app.route("/wallpaper/<wallpaper>/<ip>", methods=["POST"])
 def wallpaper_create(wallpaper, ip):
-    print(f'{wallpaper}, {ip}, {request.getHeader("User-Agent")}')
+    print(f'{wallpaper}, {ip}, {request.headers.get("User-Agent")}')
     
     response = Response()
 
