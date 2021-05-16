@@ -297,8 +297,10 @@ def wallpaper_image_url(wallpaper):
 @app.route("/wjmolina", methods=["GET", "POST"])
 def wjmolina():
     if request.method == "POST":
-        db.session.add(UhComments(text=request.form["text"]))
-        db.session.commit()
+        text = request.form["text"].strip()
+        if text:
+            db.session.add(UhComments(text=text))
+            db.session.commit()
     return render_template(
         "uhpage.html",
         comments=UhComments.query.order_by(UhComments.created_on.desc()).all(),
