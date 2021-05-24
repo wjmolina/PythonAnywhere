@@ -21,15 +21,15 @@ db = SQLAlchemy(app)
 # GLOBALS
 
 HOST = "http://wjm.pythonanywhere.com"
-# HOST = 'http://127.0.0.1:5000'
+# HOST = "http://127.0.0.1:5000"
 
 READ_IMAGE_INTERVAL = 5 * 1000
 CREATE_LOG_INTERVAL = 1 * 1000
 REFRESH_INTERVAL = 12 * 60 * 60 * 1000
 
-SEND_EMAIL_SENDER = os.getenv("SEND_EMAIL_SENDER")
-SEND_EMAIL_RECEIVERS = os.getenv("SEND_EMAIL_RECEIVERS").split(" ")
-SEND_EMAIL_PASSWORD = os.getenv("SEND_EMAIL_PASSWORD")
+SEND_EMAIL_SENDER = os.getenv("SEND_EMAIL_SENDER", "")
+SEND_EMAIL_RECEIVERS = os.getenv("SEND_EMAIL_RECEIVERS", "").split(" ")
+SEND_EMAIL_PASSWORD = os.getenv("SEND_EMAIL_PASSWORD", "")
 
 # MODELS
 
@@ -258,6 +258,7 @@ def wallpaper_read():
 
     return render_template(
         "wallpapers/analytics.html",
+        host=HOST,
         items=[apod, ppow],
         arrow=arrow,
     )

@@ -28,8 +28,7 @@
   <img src="">
 </body>
 <script>
-  const log_url = 'http://wjm.pythonanywhere.com/wallpaper/{{ wallpaper }}'
-  //const log_url = 'http://127.0.0.1:5000/wallpaper/{{ wallpaper }}'
+  const log_url = '{{ host }}/wallpaper/{{ wallpaper }}'
   let ip
 
   function readImage() {
