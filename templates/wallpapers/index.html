@@ -39,7 +39,7 @@
         "src": response.image_url,
       })
     }).fail(() => {
-      $.post(`${log_url}/ERROR_READ_IMAGE`)
+      $.post(`${log_url}/E${ip}`)
       $("img").prop({
         "alt": "Oops! Something went wrong while we were trying to fetch the image.",
       })
