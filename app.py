@@ -232,9 +232,8 @@ def wallpaper_read():
         if result.ip not in cache:
             response = {}
             try:
-                if result.ip[0] == "E":
-                    result.ip = result.ip[1:]
-                response = requests.get(f"http://ip-api.com/json/{result.ip}").json()
+                clean_ip = result.ip[1 if result.ip[0] == "E" else 0 :]
+                response = requests.get(f"http://ip-api.com/json/{clean_ip}").json()
             except BaseException as e:
                 print(f"BACK-END: COULD NOT GET IP INFO, {e}")
                 continue
