@@ -20,8 +20,8 @@ db = SQLAlchemy(app)
 
 # GLOBALS
 
-HOST = "http://wjm.pythonanywhere.com"
-# HOST = "http://127.0.0.1:5000"
+# HOST = "http://wjm.pythonanywhere.com"
+HOST = "http://127.0.0.1:5000"
 
 READ_IMAGE_INTERVAL = 5 * 1000
 CREATE_LOG_INTERVAL = 1 * 1000
@@ -267,6 +267,8 @@ def wallpaper_read():
 
 @app.route("/wallpaper/<wallpaper>")
 def wallpaper(wallpaper):
+    if wallpaper == "tickertracker":
+        return render_template("wallpapers/tickerTracker.html")
     return render_template(
         "wallpapers/index.html",
         image_url=f"{HOST}/wallpaper/{wallpaper}/image_url",
