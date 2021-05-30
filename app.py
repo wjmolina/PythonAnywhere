@@ -3,15 +3,14 @@ import re
 import smtplib
 import ssl
 from datetime import datetime, timedelta
+from itertools import cycle
 
 import arrow
 import flask
 import git
 import requests
-from flask import Flask, Response, redirect, render_template, request
-from flask.helpers import make_response
+from flask import Flask, Response, render_template, request
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import func
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///sqlite3.db"
@@ -30,6 +29,7 @@ REFRESH_INTERVAL = 12 * 60 * 60 * 1000
 SEND_EMAIL_SENDER = os.getenv("SEND_EMAIL_SENDER", "")
 SEND_EMAIL_RECEIVERS = os.getenv("SEND_EMAIL_RECEIVERS", "").split(" ")
 SEND_EMAIL_PASSWORD = os.getenv("SEND_EMAIL_PASSWORD", "")
+STOCK_API_KEY = cycle(os.getenv("STOCK_API_KEY", "").split(","))
 
 # MODELS
 
@@ -72,6 +72,38 @@ class UhComments(db.Model):
 db.create_all()
 
 # FUNCTIONS
+
+GET_TICKER_OBJECTS_LAST = None
+GET_TICKER_OBJECTS_LAST_RETURN = []
+
+
+def get_ticker_objects():
+    global GET_TICKER_OBJECTS_LAST
+    global GET_TICKER_OBJECTS_LAST_RETURN
+    if (
+        GET_TICKER_OBJECTS_LAST is None
+        or GET_TICKER_OBJECTS_LAST < datetime.utcnow() - timedelta(minutes=6)
+    ):
+        GET_TICKER_OBJECTS_LAST = datetime.utcnow()
+        tickers = ["MSFT", "MA", "GOOG", "AMZN", "AAPL", "TSLA", "V", "SBUX", "NVDA"]
+        ticker_objects = []
+        for ticker in tickers:
+            try:
+                current_key = next(STOCK_API_KEY)
+                response = requests.get(
+                    f"https://financialmodelingprep.com/api/v3/profile/{ticker}?apikey={current_key}"
+                ).json()
+                ticker_objects.append(
+                    {
+                        "symbol": response[0].get("symbol"),
+                        "companyName": response[0].get("companyName"),
+                        "price": response[0].get("price"),
+                    }
+                )
+            except Exception as e:
+                print(f"BACK-END: {e}")
+        GET_TICKER_OBJECTS_LAST_RETURN = ticker_objects
+    return GET_TICKER_OBJECTS_LAST_RETURN
 
 
 def send_email(hits):
@@ -268,7 +300,9 @@ def wallpaper_read():
 @app.route("/wallpaper/<wallpaper>")
 def wallpaper(wallpaper):
     if wallpaper == "tickertracker":
-        return render_template("wallpapers/tickerTracker.html")
+        return render_template(
+            "wallpapers/tickerTracker.html", ticker_objects=get_ticker_objects()
+        )
     return render_template(
         "wallpapers/index.html",
         image_url=f"{HOST}/wallpaper/{wallpaper}/image_url",
