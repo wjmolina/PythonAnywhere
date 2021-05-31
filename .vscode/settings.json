@@ -5,4 +5,5 @@
         "source.organizeImports": true,
     },
     "editor.renderWhitespace": "all",
+    "python.pythonPath": ".venv\\Scripts\\python.exe",
 }
