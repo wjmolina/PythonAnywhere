@@ -1,9 +1,5 @@
-import os
 import re
-import smtplib
-import ssl
 from datetime import datetime, timedelta
-from itertools import cycle
 
 import arrow
 import flask
@@ -13,11 +9,13 @@ from flask import Flask, Response, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///sqlite3.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
-# GLOBALS
+from models import AnonymousName, Comment, IpNotes, UhComments, WallpaperData
+from utils import get_ticker_objects, send_email
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///sqlite3.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 HOST = "http://wjm.pythonanywhere.com"
 # HOST = "http://127.0.0.1:5000"
@@ -25,103 +23,6 @@ HOST = "http://wjm.pythonanywhere.com"
 READ_IMAGE_INTERVAL = 5 * 1000
 CREATE_LOG_INTERVAL = 1 * 1000
 REFRESH_INTERVAL = 12 * 60 * 60 * 1000
-
-SEND_EMAIL_SENDER = os.getenv("SEND_EMAIL_SENDER", "")
-SEND_EMAIL_RECEIVERS = os.getenv("SEND_EMAIL_RECEIVERS", "").split(" ")
-SEND_EMAIL_PASSWORD = os.getenv("SEND_EMAIL_PASSWORD", "")
-STOCK_API_KEY = cycle(os.getenv("STOCK_API_KEY", "").split(","))
-
-# MODELS
-
-
-class Comment(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(120), nullable=False)
-    created_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    user_agent = db.Column(db.String(120), nullable=False)
-
-
-class AnonymousName(db.Model):
-    anonymous_name = db.Column(db.String(120), primary_key=True)
-    user_agent = db.Column(
-        db.String(120), db.ForeignKey("comment.user_agent"), unique=True
-    )
-
-
-class WallpaperData(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    ip = db.Column(db.String, nullable=False)
-    wallpaper = db.Column(db.String, nullable=False)
-    count = db.Column(db.Integer, nullable=False, default=0)
-    created_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-
-
-class IpNotes(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    ip = db.Column(db.String, nullable=False)
-    note = db.Column(db.String, nullable=False)
-    created_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-
-
-class UhComments(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String, nullable=False)
-    created_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-
-
-db.create_all()
-
-# FUNCTIONS
-
-GET_TICKER_OBJECTS_LAST = None
-GET_TICKER_OBJECTS_LAST_RETURN = []
-
-
-def get_ticker_objects():
-    global GET_TICKER_OBJECTS_LAST
-    global GET_TICKER_OBJECTS_LAST_RETURN
-    if (
-        GET_TICKER_OBJECTS_LAST is None
-        or GET_TICKER_OBJECTS_LAST < datetime.utcnow() - timedelta(minutes=6)
-    ):
-        GET_TICKER_OBJECTS_LAST = datetime.utcnow()
-        tickers = ["MSFT", "MA", "GOOG", "AMZN", "AAPL", "TSLA", "V", "SBUX", "NVDA"]
-        ticker_objects = []
-        for ticker in tickers:
-            try:
-                current_key = next(STOCK_API_KEY)
-                response = requests.get(
-                    f"https://financialmodelingprep.com/api/v3/profile/{ticker}?apikey={current_key}"
-                ).json()
-                ticker_objects.append(
-                    {
-                        "symbol": response[0].get("symbol"),
-                        "companyName": response[0].get("companyName"),
-                        "price": response[0].get("price"),
-                    }
-                )
-            except Exception as e:
-                print(f"BACK-END: {e}")
-        GET_TICKER_OBJECTS_LAST_RETURN = ticker_objects
-    return GET_TICKER_OBJECTS_LAST_RETURN
-
-
-def send_email(hits):
-    with smtplib.SMTP_SSL(
-        "smtp.gmail.com", 465, context=ssl.create_default_context()
-    ) as server:
-        server.login(SEND_EMAIL_SENDER, SEND_EMAIL_PASSWORD)
-        for email_receiver in SEND_EMAIL_RECEIVERS:
-            server.sendmail(
-                SEND_EMAIL_SENDER,
-                email_receiver,
-                f"Subject: From the EsX Back-End\n\nThe wallpapers have been served to {hits} unique IPs.",
-            )
-
-
-# ENDPOINTS
-
-cache = {}
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -233,6 +134,9 @@ def wallpaper_create(wallpaper, ip):
     return response
 
 
+wallpaper_read_cache = {}
+
+
 @app.route("/wallpaper_read/")
 def wallpaper_read():
     results = (
@@ -261,7 +165,7 @@ def wallpaper_read():
 
     attributes = ["country", "region", "city", "isp", "lat", "lon"]
     for result in results:
-        if result.ip not in cache:
+        if result.ip not in wallpaper_read_cache:
             response = {}
             try:
                 clean_ip = result.ip[1 if result.ip[0] == "E" else 0 :]
@@ -270,13 +174,15 @@ def wallpaper_read():
                 print(f"BACK-END: COULD NOT GET IP INFO, {e}")
                 continue
 
-            cache[result.ip] = {}
+            wallpaper_read_cache[result.ip] = {}
             for attribute in attributes:
-                cache[result.ip][attribute] = response.get(attribute, "")
+                wallpaper_read_cache[result.ip][attribute] = response.get(attribute, "")
 
     for datum in data:
         for attribute in attributes:
-            datum[attribute] = cache.get(datum["ip"], {}).get(attribute, "")
+            datum[attribute] = wallpaper_read_cache.get(datum["ip"], {}).get(
+                attribute, ""
+            )
 
     apod = {
         "wallpaper": [x for x in data if x["wallpaper"] == "apod"],
