@@ -37,4 +37,5 @@ class UhComments(db.Model):
     text = db.Column(db.String, nullable=False)
     created_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
+
 db.create_all()

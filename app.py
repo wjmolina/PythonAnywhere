@@ -8,26 +8,25 @@ import requests
 from flask import Flask, Response, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
+from utils import get_random_string, get_ticker_objects, send_email
+
 app = Flask(__name__)
+
+app.config.from_object("default_config")
+try:
+    app.config.from_object("config")
+except:
+    print("INFO: could not load config.py")
+
 db = SQLAlchemy(app)
 
 from models import AnonymousName, Comment, IpNotes, UhComments, WallpaperData
-from utils import get_ticker_objects, send_email
-
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///sqlite3.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-HOST = "http://wjm.pythonanywhere.com"
-# HOST = "http://127.0.0.1:5000"
-
-READ_IMAGE_INTERVAL = 5 * 1000
-CREATE_LOG_INTERVAL = 1 * 1000
-REFRESH_INTERVAL = 12 * 60 * 60 * 1000
 
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST" and request.form["text"]:
+        print(request)
         db.session.add(
             Comment(text=request.form["text"], user_agent=request.headers["User-Agent"])
         )
@@ -37,10 +36,12 @@ def index():
             .first()
         )
         if not user_agent:
-            anonymous_name = (
-                db.session.query(AnonymousName).filter_by(user_agent=None).first()
+            db.session.add(
+                AnonymousName(
+                    user_agent=request.headers["User-Agent"],
+                    anonymous_name=get_random_string(),
+                )
             )
-            anonymous_name.user_agent = request.headers["User-Agent"]
         db.session.commit()
     return render_template("index.html", comments=comments())
 
@@ -197,7 +198,7 @@ def wallpaper_read():
 
     return render_template(
         "wallpapers/analytics.html",
-        host=HOST,
+        host=app.config["HOST"],
         items=[apod, ppow],
         arrow=arrow,
     )
@@ -206,16 +207,17 @@ def wallpaper_read():
 @app.route("/wallpaper/<wallpaper>")
 def wallpaper(wallpaper):
     if wallpaper == "tickertracker":
+        print(get_ticker_objects())
         return render_template(
             "wallpapers/tickerTracker.html", ticker_objects=get_ticker_objects()
         )
     return render_template(
         "wallpapers/index.html",
-        image_url=f"{HOST}/wallpaper/{wallpaper}/image_url",
+        image_url=f"{app.config['HOST']}/wallpaper/{wallpaper}/image_url",
         wallpaper=wallpaper,
-        read_image_interval=READ_IMAGE_INTERVAL,
-        create_log_interval=CREATE_LOG_INTERVAL,
-        refresh_interval=REFRESH_INTERVAL,
+        read_image_interval=app.config["READ_IMAGE_INTERVAL"],
+        create_log_interval=app.config["CREATE_LOG_INTERVAL"],
+        refresh_interval=app.config["REFRESH_INTERVAL"],
     )
 
 
