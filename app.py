@@ -207,7 +207,6 @@ def wallpaper_read():
 @app.route("/wallpaper/<wallpaper>")
 def wallpaper(wallpaper):
     if wallpaper == "tickertracker":
-        print(get_ticker_objects())
         return render_template(
             "wallpapers/tickerTracker.html", ticker_objects=get_ticker_objects()
         )
