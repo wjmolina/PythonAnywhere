@@ -12,7 +12,7 @@
     <div class="periodic-element-inner">
       <div class="title">{{ obj.symbol }}</div>
       <div class="description">${{ obj.price }}</div>
-      <div class="description">{{ obj.changes }} <i class="fas {{ 'fa-arrow-down' if obj.changes < 0 else fa-arrow-up }}"></i></div>
+      <div class="description">{{ obj.changes }} <i class="fas {{ 'fa-arrow-down' if obj.changes < 0 else 'fa-arrow-up' }}"></i></div>
     </div>
   </div>
   {% endfor %}
