@@ -17,7 +17,7 @@ def get_ticker_objects():
         or GET_TICKER_OBJECTS_LAST < datetime.utcnow() - timedelta(minutes=6)
     ):
         GET_TICKER_OBJECTS_LAST = datetime.utcnow()
-        tickers = ["MSFT", "MA", "GOOG", "AMZN", "AAPL", "TSLA", "V", "SBUX", "NVDA"]
+        tickers = ["MSFT", "MA", "GOOG", "AMZN", "AAPL", "TSLA", "V", "AMC", "NVDA"]
         ticker_objects = []
         for ticker in tickers:
             try:
