@@ -79,5 +79,27 @@
 </div>
 <footer>
   <a href="" target="_blank"><i class="icon-social-google icons"></i></a>
-  <a href="" target="_blank"><i class="icon-social-steam icons"></i></a>
+  <a id="popButton"><i class="icon-social-steam icons"></i></a>
 </footer>
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <textarea id="sendTextArea" rows="10" placeholder="Send us an anonymous message."></textarea>
+    <input id="sendButton" type="button" value="Send">
+  </div>
+</div>
+<script>
+  const modal = document.getElementById("modal");
+  const popButton = document.getElementById("popButton");
+  const sendButton = document.getElementById("sendButton");
+  popButton.onclick = function () {
+    modal.style.display = "block";
+  }
+  sendButton.onclick = function () {
+    modal.style.display = "none";
+  }
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+</script>
