@@ -207,7 +207,7 @@ def wallpaper_read():
 
     return render_template(
         "wallpapers/analytics.html",
-        items=[apod, ppow, tickertracker],
+        items=[tickertracker, apod, ppow],
         arrow=arrow,
     )
 
