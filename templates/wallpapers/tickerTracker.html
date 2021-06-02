@@ -1,16 +1,44 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-  <link rel="stylesheet" type="text/css" href="../../static/styles/tickerTracker.css">
-</head>
-
-<body>
-  <div class="ticker-grid">
-    {% for index in range(9) %}
-    <div class="grid-n">{{ index + 1 }}</div>
-    {% endfor %}
+<link rel="stylesheet" type="text/css" href="../../static/styles/tickerTracker.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css">
+<h1>Top Stocks</h1>
+<div class="periodic-table">
+  {% for obj in ticker_objects %}
+  <div class="periodic-element negative" data-description="{{ obj.companyName }}">
+    <div class="periodic-element-inner">
+      <div class="title">{{ obj.symbol }}</div>
+      <div class="description">{{ obj.price }}</div>
+      <div class="description">{{ obj.changes }}</div>
+    </div>
   </div>
-</body>
-
-</html>
+  {% endfor %}
+</div>
+<div class="legend-table">
+  <!-- <span class="legend-table__text">Last Update: 2021-06-01</span> -->
+</div>
+<footer>
+  <a id="popButton"><i class="icon-social-google icons"></i></a>
+  <a href="https://steamcommunity.com/id/PolarisDesu" target="_blank"><i class="icon-social-steam icons"></i></a>
+</footer>
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <textarea id="sendTextArea" rows="10" placeholder="Send us an anonymous message."></textarea>
+    <input id="sendButton" type="button" value="Send">
+  </div>
+</div>
+<script>
+  const modal = document.getElementById("modal");
+  const popButton = document.getElementById("popButton");
+  const sendButton = document.getElementById("sendButton");
+  popButton.onclick = function () {
+    modal.style.display = "block";
+  }
+  sendButton.onclick = function () {
+    modal.style.display = "none";
+  }
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+</script>
