@@ -21,7 +21,7 @@
       <div class="periodic-element-inner">
         <div class="title">{{ obj.symbol }}</div>
         <div class="description">${{ '%0.2f' % obj.price | float }}</div>
-        <div class="description">{{ obj.changes }} <i
+        <div class="description">{{ '+' if obj.changes > 0 }}{{ '%0.2f' % obj.changes | float }} <i
             class="fas {{ 'fa-arrow-down' if obj.changes < 0 else 'fa-arrow-up' }}"></i></div>
         <div class="description"><img src="{{ obj.image }}"></div>
         <div class="description">({{ (100 * obj.changes / obj.price) | abs | round(2, 'floor') }}%)</div>
