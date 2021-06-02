@@ -2,6 +2,13 @@ body {
   background: #191919;
   font-family: "Helvetica", sans-serif;
 }
+img {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 25px;
+  height: 25px;
+}
 h1 {
   margin-top: 1em;
   font: 700 5em "Helvetica", sans-serif;

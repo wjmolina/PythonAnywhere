@@ -23,6 +23,7 @@
         <div class="description">${{ obj.price }}</div>
         <div class="description">{{ obj.changes }} <i
             class="fas {{ 'fa-arrow-down' if obj.changes < 0 else 'fa-arrow-up' }}"></i></div>
+        <div class="description"><img src="{{ obj.image }}"></div>
       </div>
     </div>{% endfor %}
   </div>
