@@ -72,7 +72,7 @@
       url: "/send_email",
       data: JSON.stringify({
         "message": document.getElementById("sendTextArea").value,
-        "ip": ip
+        "ip": ip ?? "Unknown"
       }),
       contentType: "application/json"
     })
