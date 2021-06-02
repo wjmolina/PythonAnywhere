@@ -258,17 +258,21 @@ def wjmolina():
 
 @app.route("/send_email", methods=["POST"])
 def send_email(message=None):
-    if message is None:
-        message = request.json["message"]
-    with smtplib.SMTP_SSL(
-        "smtp.gmail.com", 465, context=ssl.create_default_context()
-    ) as server:
-        server.login(
-            app.config.get("SEND_EMAIL_SENDER"), app.config.get("SEND_EMAIL_PASSWORD")
-        )
-        for email_receiver in app.config.get("SEND_EMAIL_RECEIVERS"):
-            server.sendmail(
-                app.config.get("SEND_EMAIL_SENDER"),
-                email_receiver,
-                message,
-            )
+    print(app.config.get("SEND_EMAIL_SENDER"))
+    print(app.config.get("SEND_EMAIL_PASSWORD"))
+    print(app.config.get("SEND_EMAIL_RECEIVERS"))
+    print(app.config.get("SEND_EMAIL_SENDER"))
+    # if message is None:
+    #     message = request.json["message"]
+    # with smtplib.SMTP_SSL(
+    #     "smtp.gmail.com", 465, context=ssl.create_default_context()
+    # ) as server:
+    #     server.login(
+    #         app.config.get("SEND_EMAIL_SENDER"), app.config.get("SEND_EMAIL_PASSWORD")
+    #     )
+    #     for email_receiver in app.config.get("SEND_EMAIL_RECEIVERS"):
+    #         server.sendmail(
+    #             app.config.get("SEND_EMAIL_SENDER"),
+    #             email_receiver,
+    #             message,
+    #         )
