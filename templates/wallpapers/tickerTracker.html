@@ -4,7 +4,7 @@
 <h1>Top Stocks</h1>
 <div class="periodic-table">
   {% for obj in ticker_objects %}
-  <div class="periodic-element negative" data-description="{{ obj.companyName }}">
+  <div class="periodic-element {{ 'negative' if obj.changes < 0 else 'positive'}}" data-description="{{ obj.companyName }}">
     <div class="periodic-element-inner">
       <div class="title">{{ obj.symbol }}</div>
       <div class="description">{{ obj.price }}</div>
