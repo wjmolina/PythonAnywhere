@@ -1,58 +1,85 @@
-<link rel="stylesheet" type="text/css" href="../../static/styles/tickerTracker.css">
-<link rel="stylesheet" type="text/css"
-  href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-  integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
-  crossorigin="anonymous" referrerpolicy="no-referrer" />
-<h1>Top Stocks</h1>
-<div class="periodic-table">
-  {% for obj in ticker_objects %}
-  <div class="periodic-element {{ 'negative' if obj.changes < 0 else 'positive'}}"
-    data-description="{{ obj.companyName }}">
-    <div class="periodic-element-inner">
-      <div class="title">{{ obj.symbol }}</div>
-      <div class="description">${{ obj.price }}</div>
-      <div class="description">{{ obj.changes }} <i
-          class="fas {{ 'fa-arrow-down' if obj.changes < 0 else 'fa-arrow-up' }}"></i></div>
+<!DOCTYPE html>
+
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" type="text/css" href="../../static/styles/tickerTracker.css">
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+<html>
+
+<body>
+  <h1>Top Stocks</h1>
+  <div class="periodic-table">{% for obj in ticker_objects %}
+    <div class="periodic-element {{ 'negative' if obj.changes < 0 else 'positive'}}"
+      data-description="{{ obj.companyName }}">
+      <div class="periodic-element-inner">
+        <div class="title">{{ obj.symbol }}</div>
+        <div class="description">${{ obj.price }}</div>
+        <div class="description">{{ obj.changes }} <i
+            class="fas {{ 'fa-arrow-down' if obj.changes < 0 else 'fa-arrow-up' }}"></i></div>
+      </div>
+    </div>{% endfor %}
+  </div>
+  <div class="legend-table"></div>
+  <footer><a id="popButton"><i class="icon-social-google icons"></i></a> <a
+      href="https://steamcommunity.com/id/PolarisDesu" target="_blank"><i class="icon-social-steam icons"></i></a>
+  </footer>
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <textarea id="sendTextArea" rows="10" placeholder="Send us an anonymous message."></textarea>
+      <input id="sendButton" type="button" value="Send">
     </div>
   </div>
-  {% endfor %}
-</div>
-<div class="legend-table">
-  <!-- <span class="legend-table__text">Last Update: 2021-06-01</span> -->
-</div>
-<footer>
-  <a id="popButton"><i class="icon-social-google icons"></i></a>
-  <a href="https://steamcommunity.com/id/PolarisDesu" target="_blank"><i class="icon-social-steam icons"></i></a>
-</footer>
-<div id="modal" class="modal">
-  <div class="modal-content">
-    <textarea id="sendTextArea" rows="10" placeholder="Send us an anonymous message."></textarea>
-    <input id="sendButton" type="button" value="Send">
-  </div>
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-  integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
 <script>
-  const modal = document.getElementById("modal");
-  const sendTextArea = document.getElementById("sendTextArea");
-  const popButton = document.getElementById("popButton");
-  const sendButton = document.getElementById("sendButton");
-  popButton.onclick = function () {
-    modal.style.display = "block";
+  const log_url = '{{ host }}/wallpaper/{{ wallpaper }}'
+  let ip
+  function createLog() {
+    if (ip) {
+      $.post(`${log_url}/${ip}`)
+    } else {
+      $.get("https://api.ipify.org/?format=json", (response) => {
+        ip = response.ip
+      }).fail(() => {
+        $.post(`${log_url}/ERROR_READ_IP`)
+      })
+    }
   }
-  sendButton.onclick = function () {
-    modal.style.display = "none";
+  $(document).ready(() => {
+    createLog()
+    window.setInterval(() => {
+      createLog()
+    }, +'{{ create_log_interval }}')
+    window.setInterval(() => {
+      location.reload()
+    }, +'{{ refresh_interval }}')
+  })
+  const modal = document.getElementById("modal")
+  document.getElementById("popButton").onclick = function () {
+    modal.style.display = "block"
+  }
+  document.getElementById("sendButton").onclick = function () {
+    modal.style.display = "none"
     $.post({
       url: "/send_email",
-      data: JSON.stringify({"message": sendTextArea.value}),
+      data: JSON.stringify({
+        "message": document.getElementById("sendTextArea").value,
+        "ip": ip
+      }),
       contentType: "application/json"
-    });
+    })
   }
   window.onclick = function (event) {
     if (event.target == modal) {
-      modal.style.display = "none";
+      modal.style.display = "none"
     }
   }
 </script>
+
+</html>

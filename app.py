@@ -199,11 +199,15 @@ def wallpaper_read():
         "name": "Perseverance Picture of the Week",
         "url": "ppow",
     }
+    tickertracker = {
+        "wallpaper": [x for x in data if x["wallpaper"] == "tickertracker"],
+        "name": "Ticker Tracker",
+        "url": "tickertracker",
+    }
 
     return render_template(
         "wallpapers/analytics.html",
-        host=app.config["HOST"],
-        items=[apod, ppow],
+        items=[apod, ppow, tickertracker],
         arrow=arrow,
     )
 
@@ -212,7 +216,13 @@ def wallpaper_read():
 def wallpaper(wallpaper):
     if wallpaper == "tickertracker":
         return render_template(
-            "wallpapers/tickerTracker.html", ticker_objects=get_ticker_objects()
+            "wallpapers/tickerTracker.html",
+            ticker_objects=get_ticker_objects(),
+            wallpaper=wallpaper,
+            read_image_interval=app.config["READ_IMAGE_INTERVAL"],
+            create_log_interval=app.config["CREATE_LOG_INTERVAL"],
+            refresh_interval=app.config["REFRESH_INTERVAL"],
+            host=app.config["HOST"],
         )
     return render_template(
         "wallpapers/index.html",
@@ -221,6 +231,7 @@ def wallpaper(wallpaper):
         read_image_interval=app.config["READ_IMAGE_INTERVAL"],
         create_log_interval=app.config["CREATE_LOG_INTERVAL"],
         refresh_interval=app.config["REFRESH_INTERVAL"],
+        host=app.config["HOST"],
     )
 
 
@@ -270,5 +281,5 @@ def send_email(message=None):
             server.sendmail(
                 app.config.get("SEND_EMAIL_SENDER"),
                 email_receiver,
-                message,
+                f"Subject: Message from {request.json['ip']}\n\n{message}",
             )
