@@ -2,6 +2,7 @@ import re
 import smtplib
 import ssl
 from datetime import datetime, timedelta
+from email.mime.text import MIMEText
 
 import arrow
 import flask
@@ -270,6 +271,10 @@ def wjmolina():
 def send_email(message=None):
     if message is None:
         message = request.json["message"]
+    msg = MIMEText(message)
+    msg["Subject"] = f"Subject: Message from {request.json['ip']}"
+    msg["From"] = f"EsX Back-End <{app.config.get('SEND_EMAIL_SENDER')}>"
+    msg["To"] = app.config.get("SEND_EMAIL_RECEIVERS")
     with smtplib.SMTP_SSL(
         "smtp.gmail.com", 465, context=ssl.create_default_context()
     ) as server:
@@ -278,7 +283,5 @@ def send_email(message=None):
         )
         for email_receiver in app.config.get("SEND_EMAIL_RECEIVERS").split(","):
             server.sendmail(
-                app.config.get("SEND_EMAIL_SENDER"),
-                email_receiver,
-                f"Subject: Message from {request.json['ip']}\n\n{message}",
+                app.config.get("SEND_EMAIL_SENDER"), email_receiver, msg.as_string()
             )
