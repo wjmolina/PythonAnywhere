@@ -219,9 +219,8 @@ def wallpaper(wallpaper):
             "wallpapers/tickerTracker.html",
             ticker_objects=get_ticker_objects(),
             wallpaper=wallpaper,
-            read_image_interval=app.config["READ_IMAGE_INTERVAL"],
             create_log_interval=app.config["CREATE_LOG_INTERVAL"],
-            refresh_interval=app.config["REFRESH_INTERVAL"],
+            refresh_interval=6 * 60 * 1000,
             host=app.config["HOST"],
         )
     return render_template(
