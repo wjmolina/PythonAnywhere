@@ -1,4 +1,6 @@
 import re
+import smtplib
+import ssl
 from datetime import datetime, timedelta
 
 import arrow
@@ -8,7 +10,7 @@ import requests
 from flask import Flask, Response, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
-from utils import get_random_string, get_ticker_objects, send_email
+from utils import get_random_string, get_ticker_objects
 
 app = Flask(__name__)
 
@@ -121,7 +123,9 @@ def wallpaper_create(wallpaper, ip):
             data = file.read()
             if not total_hits % 100 and total_hits > int(data):
                 try:
-                    send_email(total_hits)
+                    send_email(
+                        f"Subject: From the EsX Back-End\n\nThe wallpapers have been served to {total_hits} unique IPs."
+                    )
                 except BaseException as e:
                     print(f"BACK-END: COULD NOT SEND EMAIL, {e}")
             file.seek(0)
@@ -250,3 +254,21 @@ def wjmolina():
         "uhpage.html",
         comments=UhComments.query.order_by(UhComments.created_on.desc()).all(),
     )
+
+
+@app.route("/send_email", methods=["POST"])
+def send_email(message=None):
+    if message is None:
+        message = request.json["message"]
+    with smtplib.SMTP_SSL(
+        "smtp.gmail.com", 465, context=ssl.create_default_context()
+    ) as server:
+        server.login(
+            app.config.get("SEND_EMAIL_SENDER"), app.config.get("SEND_EMAIL_PASSWORD")
+        )
+        for email_receiver in app.config.get("SEND_EMAIL_RECEIVERS"):
+            server.sendmail(
+                app.config.get("SEND_EMAIL_SENDER"),
+                email_receiver,
+                message,
+            )

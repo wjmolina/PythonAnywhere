@@ -1,5 +1,3 @@
-import smtplib
-import ssl
 from datetime import datetime, timedelta
 from random import choices
 from string import ascii_letters, digits
@@ -33,21 +31,6 @@ def get_ticker_objects():
                 print(f"BACK-END: {e}")
         GET_TICKER_OBJECTS_LAST_RETURN = ticker_objects
     return GET_TICKER_OBJECTS_LAST_RETURN
-
-
-def send_email(hits):
-    with smtplib.SMTP_SSL(
-        "smtp.gmail.com", 465, context=ssl.create_default_context()
-    ) as server:
-        server.login(
-            app.config.get("SEND_EMAIL_SENDER"), app.config.get("SEND_EMAIL_PASSWORD")
-        )
-        for email_receiver in app.config.get("SEND_EMAIL_RECEIVERS"):
-            server.sendmail(
-                app.config.get("SEND_EMAIL_SENDER"),
-                email_receiver,
-                f"Subject: From the EsX Back-End\n\nThe wallpapers have been served to {hits} unique IPs.",
-            )
 
 
 def get_random_string(length=10):
