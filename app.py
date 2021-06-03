@@ -221,7 +221,7 @@ def wallpaper(wallpaper):
             ticker_objects=get_ticker_objects(),
             wallpaper=wallpaper,
             create_log_interval=app.config["CREATE_LOG_INTERVAL"],
-            refresh_interval=1000,
+            refresh_interval=5 * 1000,
             host=app.config["HOST"],
         )
     return render_template(
