@@ -9,7 +9,7 @@ GET_TICKER_OBJECTS_LAST = None
 GET_TICKER_OBJECTS_LAST_RETURN = []
 
 
-def get_ticker_objects():
+def get_ticker_objects(tickers):
     global GET_TICKER_OBJECTS_LAST
     global GET_TICKER_OBJECTS_LAST_RETURN
     if (
@@ -17,7 +17,6 @@ def get_ticker_objects():
         or GET_TICKER_OBJECTS_LAST < datetime.utcnow() - timedelta(minutes=6)
     ):
         GET_TICKER_OBJECTS_LAST = datetime.utcnow()
-        tickers = ["MSFT", "MA", "GOOG", "AMZN", "AAPL", "TSLA", "V", "AMC", "NVDA"]
         ticker_objects = []
         for ticker in tickers:
             try:
