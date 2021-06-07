@@ -213,15 +213,27 @@ def wallpaper_read():
     )
 
 
-TICKERS = ["MSFT", "MA", "GOOG", "AMZN", "AAPL", "TSLA", "V", "AMC", "NVDA"]
-
-
 @app.route("/wallpaper/<wallpaper>")
 def wallpaper(wallpaper):
     if wallpaper == "tickertracker":
+        try:
+            with open(".tickers", "r") as tickers_file:
+                tickers = tickers_file.read()
+        except:
+            tickers = [
+                "AAPL",
+                "MSFT",
+                "GOOG",
+                "AMZN",
+                "FB",
+                "BRK.A",
+                "BABA",
+                "TSLA",
+                "TSM",
+            ]
         return render_template(
             "wallpapers/tickerTracker.html",
-            ticker_objects=get_ticker_objects(TICKERS),
+            ticker_objects=get_ticker_objects(tickers),
             wallpaper=wallpaper,
             create_log_interval=app.config["CREATE_LOG_INTERVAL"],
             refresh_interval=5 * 1000,
@@ -240,8 +252,8 @@ def wallpaper(wallpaper):
 
 @app.route("/wallpaper/tickertracker/update/<tickers>", methods=["POST"])
 def update_tickers(tickers):
-    global TICKERS
-    TICKERS = tickers.split(",")
+    with open(".tickers", "w") as tickers_file:
+        tickers_file.write(tickers)
     return "Success", 200
 
 
