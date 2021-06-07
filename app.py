@@ -218,7 +218,7 @@ def wallpaper(wallpaper):
     if wallpaper == "tickertracker":
         try:
             with open("/home/wjm/application/.tickers", "r") as tickers_file:
-                tickers = tickers_file.read()
+                tickers = tickers_file.read().split(",")
         except:
             tickers = [
                 "AAPL",
