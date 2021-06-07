@@ -238,8 +238,8 @@ def wallpaper(wallpaper):
     )
 
 
-@app.route("/wallpaper/tickertracker/update/<tickers>")
-def update_tickers(tickers, methods=["POST"]):
+@app.route("/wallpaper/tickertracker/update/<tickers>", methods=["POST"])
+def update_tickers(tickers):
     global TICKERS
     TICKERS = tickers.split(",")
     return "Success", 200
