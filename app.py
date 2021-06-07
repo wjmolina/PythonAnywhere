@@ -217,7 +217,7 @@ def wallpaper_read():
 def wallpaper(wallpaper):
     if wallpaper == "tickertracker":
         try:
-            with open(".tickers", "r") as tickers_file:
+            with open("/home/wjm/application/.tickers", "r") as tickers_file:
                 tickers = tickers_file.read()
         except:
             tickers = [
@@ -252,7 +252,7 @@ def wallpaper(wallpaper):
 
 @app.route("/wallpaper/tickertracker/update/<tickers>", methods=["POST"])
 def update_tickers(tickers):
-    with open(".tickers", "w") as tickers_file:
+    with open("/home/wjm/application/.tickers", "w") as tickers_file:
         tickers_file.write(tickers)
     return "Success", 200
 
