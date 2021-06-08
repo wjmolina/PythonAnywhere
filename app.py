@@ -399,7 +399,7 @@ def gomoku_board(ip):
 
         db.session.commit()
 
-    if datetime.utcnow() - game.updated_on > timedelta(days=1) and all(
+    if datetime.utcnow() - game.updated_on > timedelta(**app.config.get("GOMOKU_MOVE_TIME")) and all(
         [game.white, game.black]
     ):
         game.winner = "1" if game.get_turn() == "2" else "2"
@@ -432,7 +432,7 @@ def gomoku_board(ip):
         ),
         win=win,
         loss=loss,
-        seconds=(timedelta(days=1) + (game.updated_on - datetime.utcnow())).seconds
+        seconds=(timedelta(**app.config.get("GOMOKU_MOVE_TIME")) + (game.updated_on - datetime.utcnow())).seconds
         if all([game.white, game.black])
         else "∞",
     )
