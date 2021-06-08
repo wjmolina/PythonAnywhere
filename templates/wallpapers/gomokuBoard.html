@@ -320,7 +320,7 @@
 <div>{{ turn }}</div>
 <div>win: {{ win }}, loss: {{ loss }}, total: {{ win + loss }}</div>
 Time left: <div class="progressbar"> 
-	<span style="width: {{ seconds / 864 }}%"></span>
+	<span style="width: {{ 100 * (seconds | int) / (total_seconds | int) }}%"></span>
 </div>
 
 <script>
