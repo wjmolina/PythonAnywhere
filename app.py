@@ -353,7 +353,14 @@ def gomoku_board(ip):
     player: Player = Player.query.filter_by(ip=ip).first()
 
     if not player:
-        player = Player(ip=ip)
+        response = requests.get(f"http://ip-api.com/json/{ip}").json()
+        player = Player(
+            ip=ip,
+            country=response.get("country"),
+            region=response.get("region"),
+            city=response.get("city"),
+            isp=response.get("isp"),
+        )
         db.session.add(player)
         db.session.commit()
 
@@ -387,7 +394,7 @@ def gomoku_board(ip):
 
         db.session.commit()
 
-    if datetime.utcnow() - game.updated_on > timedelta(seconds=20) and all(
+    if datetime.utcnow() - game.updated_on > timedelta(hours=1) and all(
         [game.white, game.black]
     ):
         game.winner = "1" if game.get_turn() == "2" else "2"
@@ -420,4 +427,7 @@ def gomoku_board(ip):
         ),
         win=win,
         loss=loss,
+        seconds=(timedelta(hours=1) + (game.updated_on - datetime.utcnow())).seconds
+        if all([game.white, game.black])
+        else "∞",
     )
