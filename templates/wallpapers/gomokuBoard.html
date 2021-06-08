@@ -34,6 +34,9 @@
   		border-radius: 25px;
   		padding: 10px;
   		box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.3);
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
 	}
     .progressbar > span {
   		display: block;
@@ -319,8 +322,9 @@
 </table>
 <div>{{ turn }}</div>
 <div>win: {{ win }}, loss: {{ loss }}, total: {{ win + loss }}</div>
-Time left: <div class="progressbar"> 
-	<span style="width: {{ 100 * (seconds | int) / (total_seconds | int) }}%"></span>
+Time left: {{ seconds }}
+<div class="progressbar">
+    <span style="width: {{ 100 * (seconds | int) / (total_seconds | int) if seconds != '∞' else 100 }}%"></span>
 </div>
 
 <script>
