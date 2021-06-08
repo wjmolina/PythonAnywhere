@@ -387,6 +387,12 @@ def gomoku_board(ip):
 
         db.session.commit()
 
+    if datetime.utcnow() - game.updated_on > timedelta(seconds=20) and all(
+        [game.white, game.black]
+    ):
+        game.winner = "1" if game.get_turn() == "2" else "2"
+        db.session.commit()
+
     finished_games = Game.query.filter(
         and_(or_(Game.white == player.id, Game.black == player.id), Game.winner != "0")
     ).all()
@@ -406,11 +412,12 @@ def gomoku_board(ip):
         "wallpapers/gomokuBoard.html",
         state=game.state,
         turn=(
-            "your "
+            "your turn"
             if game.get_turn() == ("1" if game.white == player.id else "2")
-            else "opponent's "
-        )
-        + "turn",
+            else "opponent's turn"
+            if all([game.white, game.black])
+            else "waiting for opponent"
+        ),
         win=win,
         loss=loss,
     )
