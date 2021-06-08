@@ -435,4 +435,5 @@ def gomoku_board(ip):
         seconds=(timedelta(**app.config.get("GOMOKU_MOVE_TIME")) + (game.updated_on - datetime.utcnow())).seconds
         if all([game.white, game.black])
         else "∞",
+        total_seconds=timedelta(**app.config.get("GOMOKU_MOVE_TIME")).seconds
     )
