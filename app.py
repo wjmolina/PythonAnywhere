@@ -323,7 +323,7 @@ def send_email(message=None):
 @app.route("/wallpaper/gomoku/<ip>/<move>", methods=["POST"])
 def gomoku(ip=None, move=None):
     if request.method == "GET":
-        return render_template("wallpapers/gomoku.html")
+        return render_template("wallpapers/gomoku.html", host=app.config["HOST"])
 
     if request.method == "POST":
         player: Player = Player.query.filter_by(ip=ip).first()

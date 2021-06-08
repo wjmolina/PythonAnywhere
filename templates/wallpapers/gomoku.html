@@ -23,7 +23,7 @@
 
         function play(move) {
             if (ip) {
-                $.post(`http://wjm.pythonanywhere.com/wallpaper/gomoku/${ip}/${move}`)
+                $.post(`{{ host }}/wallpaper/gomoku/${ip}/${move}`)
             } else {
                 alert("could not make move")
             }
@@ -31,7 +31,7 @@
 
         window.setInterval(function () {
             if (ip) {
-                $.get(`http://wjm.pythonanywhere.com/wallpaper/gomoku_board/${ip}`).done(function (response) {
+                $.get(`{{ host }}/wallpaper/gomoku_board/${ip}`).done(function (response) {
                     $("#board").html(response)
                 })
             } else {
