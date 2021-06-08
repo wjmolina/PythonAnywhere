@@ -387,6 +387,21 @@ def gomoku_board(ip):
 
         db.session.commit()
 
+    finished_games = Game.query.filter(
+        and_(or_(Game.white == player.id, Game.black == player.id), Game.winner != "0")
+    ).all()
+    win, loss = 0, 0
+    for finished_game in finished_games:
+        if (
+            finished_game.white == player.id
+            and finished_game.winner == "1"
+            or finished_game.black == player.id
+            and finished_game.winner == "2"
+        ):
+            win += 1
+        else:
+            loss += 1
+
     return render_template(
         "wallpapers/gomokuBoard.html",
         state=game.state,
@@ -396,4 +411,6 @@ def gomoku_board(ip):
             else "opponent's "
         )
         + "turn",
+        win=win,
+        loss=loss,
     )
