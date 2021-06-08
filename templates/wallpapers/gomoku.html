@@ -16,12 +16,11 @@
         if (!ip) {
             $.get("https://api.ipify.org/?format=json").done(function (response) {
                 ip = response.ip
+                refreshBoard()
             }).fail(function () {
                 location.reload()
             })
         }
-
-        refreshBoard()
 
         function play(move) {
             if (ip) {
