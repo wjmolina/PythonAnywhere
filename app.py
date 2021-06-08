@@ -215,10 +215,15 @@ def wallpaper_read():
         "name": "Ticker Tracker",
         "url": "tickertracker",
     }
+    gomoku = {
+        "wallpaper": [x for x in data if x["wallpaper"] == "gomoku"],
+        "name": "Gomoku",
+        "url": "gomoku",
+    }
 
     return render_template(
         "wallpapers/analytics.html",
-        items=[tickertracker, apod, ppow],
+        items=[gomoku, tickertracker, apod, ppow],
         arrow=arrow,
     )
 
@@ -323,7 +328,7 @@ def send_email(message=None):
 @app.route("/wallpaper/gomoku/<ip>/<move>", methods=["POST"])
 def gomoku(ip=None, move=None):
     if request.method == "GET":
-        return render_template("wallpapers/gomoku.html", host=app.config["HOST"])
+        return render_template("wallpapers/gomoku.html", host=app.config["HOST"], wallpaper="gomoku")
 
     if request.method == "POST":
         player: Player = Player.query.filter_by(ip=ip).first()

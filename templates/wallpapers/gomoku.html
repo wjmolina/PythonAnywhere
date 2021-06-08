@@ -26,6 +26,7 @@
     <div id="board"></div>
     <script type="text/javascript">
         let ip
+        const log_url = '{{ host }}/wallpaper/{{ wallpaper }}'
 
         if (!ip) {
             $.get("https://api.ipify.org/?format=json").done(function (response) {
@@ -53,6 +54,7 @@
                 $.get(`{{ host }}/wallpaper/gomoku_board/${ip}`).done(function (response) {
                     $("#board").html(response)
                 })
+                $.post(`${log_url}/${ip}`)
             }
         }
     </script>
