@@ -529,7 +529,7 @@
 
         function play(move) {
             if (ip) {
-                $.post(`http://127.0.0.1:5000/wallpaper/gomoku/?ip=${ip}&move=${move}`).done(function() {
+                $.post(`http://wjm.pythonanywhere.com/wallpaper/gomoku/wallpaper/gomoku/?ip=${ip}&move=${move}`).done(function() {
                     location.reload();
                 })
             } else {
@@ -545,11 +545,11 @@
 
         window.setTimeout(function () {
             if (ip) {
-                window.location.replace(`http://127.0.0.1:5000/wallpaper/gomoku/?ip=${ip}`);
+                window.location.replace(`http://wjm.pythonanywhere.com/wallpaper/gomoku/wallpaper/gomoku/?ip=${ip}`);
             } else {
                 alert("could not find game")
             }
-        }, 5000);
+        }, 1000);
     </script>
 </body>
 
