@@ -14,30 +14,34 @@
         let ip
 
         if (!ip) {
-            $.get("https://api.ipify.org/?format=json", (response) => {
+            $.get("https://api.ipify.org/?format=json").done(function (response) {
                 ip = response.ip
             }).fail(function () {
                 location.reload()
             })
         }
 
+        refreshBoard()
+
         function play(move) {
             if (ip) {
-                $.post(`{{ host }}/wallpaper/gomoku/${ip}/${move}`)
-            } else {
-                alert("could not make move")
+                $.post(`{{ host }}/wallpaper/gomoku/${ip}/${move}`).done(function () {
+                    refreshBoard()
+                })
             }
         }
 
         window.setInterval(function () {
+            refreshBoard()
+        }, 5000);
+
+        function refreshBoard() {
             if (ip) {
                 $.get(`{{ host }}/wallpaper/gomoku_board/${ip}`).done(function (response) {
                     $("#board").html(response)
                 })
-            } else {
-                alert("could not find game")
             }
-        }, 1000);
+        }
     </script>
 </body>
 
