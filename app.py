@@ -387,4 +387,13 @@ def gomoku_board(ip):
 
         db.session.commit()
 
-    return render_template("wallpapers/gomokuBoard.html", state=game.state)
+    return render_template(
+        "wallpapers/gomokuBoard.html",
+        state=game.state,
+        turn=(
+            "your "
+            if game.get_turn() == ("1" if game.white == player.id else "2")
+            else "opponent's "
+        )
+        + "turn",
+    )
