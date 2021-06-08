@@ -432,7 +432,7 @@ def gomoku_board(ip):
         ),
         win=win,
         loss=loss,
-        seconds=(timedelta(hours=1) + (game.updated_on - datetime.utcnow())).seconds
+        seconds=(timedelta(days=1) + (game.updated_on - datetime.utcnow())).seconds
         if all([game.white, game.black])
         else "∞",
     )
