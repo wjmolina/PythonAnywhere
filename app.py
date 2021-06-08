@@ -319,55 +319,14 @@ def send_email(message=None):
             )
 
 
-@app.route("/wallpaper/gomoku/", methods=["GET", "POST"])
-def gomoku():
-    if "ip" not in request.args:
-        return render_template("wallpapers/gomoku.html", state = "0" * 15 * 15)
-
+@app.route("/wallpaper/gomoku/", methods=["GET"])
+@app.route("/wallpaper/gomoku/<ip>/<move>", methods=["POST"])
+def gomoku(ip=None, move=None):
     if request.method == "GET":
-        player: Player = Player.query.filter_by(ip=request.args["ip"]).first()
+        return render_template("wallpapers/gomoku.html")
 
-        if not player:
-            player = Player(ip=request.args["ip"])
-            db.session.add(player)
-            db.session.commit()
-
-        game: Game = Game.query.filter(
-            and_(
-                or_(Game.white == player.id, Game.black == player.id),
-                Game.winner == "0",
-            )
-        ).first()
-
-        if not game:
-            game: Game = Game.query.filter(
-                and_(
-                    or_(Game.white == None, Game.black == None),
-                    Game.winner == "0",
-                )
-            ).first()
-
-            if game:
-                if game.white is None:
-                    game.white = player.id
-                else:
-                    game.black = player.id
-            else:
-                if randint(1, 2) == 1:
-                    game = Game(white=player.id)
-                else:
-                    game = Game(black=player.id)
-
-                db.session.add(game)
-
-            db.session.commit()
-
-        return render_template("wallpapers/gomoku.html", state=game.state)
-    elif request.method == "POST":
-        if "move" not in request.args:
-            return "missing move", 400
-
-        player: Player = Player.query.filter_by(ip=request.args["ip"]).first()
+    if request.method == "POST":
+        player: Player = Player.query.filter_by(ip=ip).first()
 
         if not player:
             return "player does not exist", 500
@@ -383,9 +342,49 @@ def gomoku():
             return "game does not exist", 500
 
         if game.get_turn() == ("1" if game.white == player.id else "2"):
-            game.put_move(request.args["move"])
+            game.put_move(move)
             return "success", 200
         else:
             return "not your turn", 400
-    else:
-        return "how did you get here?", 404
+
+
+@app.route("/wallpaper/gomoku_board/<ip>", methods=["GET"])
+def gomoku_board(ip):
+    player: Player = Player.query.filter_by(ip=ip).first()
+
+    if not player:
+        player = Player(ip=ip)
+        db.session.add(player)
+        db.session.commit()
+
+    game: Game = Game.query.filter(
+        and_(
+            or_(Game.white == player.id, Game.black == player.id),
+            Game.winner == "0",
+        )
+    ).first()
+
+    if not game:
+        game: Game = Game.query.filter(
+            and_(
+                or_(Game.white == None, Game.black == None),
+                Game.winner == "0",
+            )
+        ).first()
+
+        if game:
+            if game.white is None:
+                game.white = player.id
+            else:
+                game.black = player.id
+        else:
+            if randint(1, 2) == 1:
+                game = Game(white=player.id)
+            else:
+                game = Game(black=player.id)
+
+            db.session.add(game)
+
+        db.session.commit()
+
+    return render_template("wallpapers/gomokuBoard.html", state=game.state)
