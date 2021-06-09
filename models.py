@@ -1,4 +1,5 @@
 from datetime import datetime
+from random import choice
 
 from sqlalchemy import ForeignKey
 
@@ -106,6 +107,9 @@ class Game(db.Model):
                 ):
                     return self.state[i * 15 + j]
         return "0" if self.state.count("0") else "d"
+
+    def put_random_move(self):
+        self.put_move(choice([i for i, m in enumerate(self.state) if m == "0"]))
 
 
 db.create_all()

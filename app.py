@@ -404,6 +404,7 @@ def gomoku_board(ip):
         )
         db.session.add(player)
         db.session.commit()
+        player: Player = Player.query.filter_by(ip=ip).first()
 
     game: Game = Game.query.filter(
         and_(
@@ -430,18 +431,50 @@ def gomoku_board(ip):
                 game = Game(black=player.id)
             db.session.add(game)
         db.session.commit()
+        game: Game = Game.query.filter(
+            and_(
+                or_(Game.white == player.id, Game.black == player.id),
+                Game.winner == "0",
+            )
+        ).first()
 
-    if game.white == player.id:
-        opponent: Player = Player.query.filter_by(id=game.black).first()
-    else:
-        opponent = Player.query.filter_by(id=game.white).first()
-
-    if (seconds_left := get_seconds_left(game)) != "∞" and seconds_left <= 0:
+    seconds_left = get_seconds_left(game)
+    if seconds_left != "∞" and seconds_left <= 0:
         if game.state.count("1") + game.state.count("2") < 3:
             db.session.delete(game)
         else:
             game.winner = "1" if game.get_turn() == "2" else "2"
         db.session.commit()
+
+    ai_idiot = Player.query.filter_by(ip="ai_idiot").first()
+    if not ai_idiot:
+        ai_idiot = Player(ip="ai_idiot")
+        db.session.add(ai_idiot)
+        db.session.commit()
+        ai_idiot = Player.query.filter_by(ip="ai_idiot").first()
+
+    if datetime.utcnow() - game.updated_on >= timedelta(minutes=1) or ai_idiot.id in {
+        game.white,
+        game.black,
+    }:
+        if not all([game.white, game.black]):
+            if not game.white:
+                game.white = ai_idiot.id
+            else:
+                game.black = ai_idiot.id
+
+        if datetime.utcnow() - game.updated_on >= timedelta(seconds=5):
+            if game.white == ai_idiot.id and game.get_turn() == "1":
+                game.put_random_move()
+            elif game.black == ai_idiot.id and game.get_turn() == "2":
+                game.put_random_move()
+
+        db.session.commit()
+
+    if game.white == player.id:
+        opponent: Player = Player.query.filter_by(id=game.black).first()
+    else:
+        opponent = Player.query.filter_by(id=game.white).first()
 
     finished_games = Game.query.filter(
         and_(or_(Game.white == player.id, Game.black == player.id), Game.winner != "0")
