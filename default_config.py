@@ -16,3 +16,4 @@ SEND_EMAIL_PASSWORD = ""
 STOCK_API_KEYS = cycle("demo".split(","))
 
 GOMOKU_MOVE_TIME = {"minutes": 5}
+GOMOKU_MOVE_TIME_IDLE = {"seconds": 30}

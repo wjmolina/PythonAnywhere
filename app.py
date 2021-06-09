@@ -123,29 +123,29 @@ def wallpaper_create(wallpaper, ip):
         response.data = str(e)
         response.status_code = 500
 
-    try:
-        with open("/home/wjm/application/.milestones", "r+") as file:
-            total_hits = (
-                db.session.query(WallpaperData)
-                .distinct(WallpaperData.ip)
-                .group_by(WallpaperData.ip)
-                .count()
-            )
-            data = file.read()
-            if not total_hits % 100 and total_hits > int(data):
-                try:
-                    send_email(
-                        f"Subject: From the EsX Back-End\n\nThe wallpapers have been served to {total_hits} unique IPs."
-                    )
-                except BaseException as e:
-                    print(f"BACK-END: COULD NOT SEND EMAIL, {e}")
-            file.seek(0)
-            file.write(str(total_hits))
-            file.truncate()
-    except BaseException as e:
-        print(f"BACK-END: COULD NOT SEND EMAIL, {e}")
-        response.data = str(e)
-        response.status_code = 500
+    # try:
+    #     with open("/home/wjm/application/.milestones", "r+") as file:
+    #         total_hits = (
+    #             db.session.query(WallpaperData)
+    #             .distinct(WallpaperData.ip)
+    #             .group_by(WallpaperData.ip)
+    #             .count()
+    #         )
+    #         data = file.read()
+    #         if not total_hits % 100 and total_hits > int(data):
+    #             try:
+    #                 send_email(
+    #                     f"Subject: From the EsX Back-End\n\nThe wallpapers have been served to {total_hits} unique IPs."
+    #                 )
+    #             except BaseException as e:
+    #                 print(f"BACK-END: COULD NOT SEND EMAIL, {e}")
+    #         file.seek(0)
+    #         file.write(str(total_hits))
+    #         file.truncate()
+    # except BaseException as e:
+    #     print(f"BACK-END: COULD NOT SEND EMAIL, {e}")
+    #     response.data = str(e)
+    #     response.status_code = 500
 
     return response
 
@@ -328,7 +328,9 @@ def send_email(message=None):
 @app.route("/wallpaper/gomoku/<ip>/<move>", methods=["POST"])
 def gomoku(ip=None, move=None):
     if request.method == "GET":
-        return render_template("wallpapers/gomoku.html", host=app.config["HOST"], wallpaper="gomoku")
+        return render_template(
+            "wallpapers/gomoku.html", host=app.config["HOST"], wallpaper="gomoku"
+        )
 
     if request.method == "POST":
         player: Player = Player.query.filter_by(ip=ip).first()
@@ -355,8 +357,21 @@ def gomoku(ip=None, move=None):
 
 @app.route("/wallpaper/gomoku_board/<ip>", methods=["GET"])
 def gomoku_board(ip):
-    player: Player = Player.query.filter_by(ip=ip).first()
+    def get_move_timedelta(game: Game):
+        if all([game.white, game.black]):
+            if game.state.count("1") + game.state.count("2") < 2:
+                return timedelta(**app.config.get("GOMOKU_MOVE_TIME_IDLE"))
+            return timedelta(**app.config.get("GOMOKU_MOVE_TIME"))
+        return timedelta(days=1)
 
+    def get_seconds_left(game):
+        if all([game.white, game.black]):
+            return (
+                get_move_timedelta(game) + game.updated_on - datetime.utcnow()
+            ).seconds
+        return "∞"
+
+    player: Player = Player.query.filter_by(ip=ip).first()
     if not player:
         response = requests.get(f"http://ip-api.com/json/{ip}").json()
         player = Player(
@@ -375,7 +390,6 @@ def gomoku_board(ip):
             Game.winner == "0",
         )
     ).first()
-
     if not game:
         game: Game = Game.query.filter(
             and_(
@@ -383,7 +397,6 @@ def gomoku_board(ip):
                 Game.winner == "0",
             )
         ).first()
-
         if game:
             if game.white is None:
                 game.white = player.id
@@ -394,15 +407,14 @@ def gomoku_board(ip):
                 game = Game(white=player.id)
             else:
                 game = Game(black=player.id)
-
             db.session.add(game)
-
         db.session.commit()
 
-    if datetime.utcnow() - game.updated_on > timedelta(**app.config.get("GOMOKU_MOVE_TIME")) and all(
-        [game.white, game.black]
-    ):
-        game.winner = "1" if game.get_turn() == "2" else "2"
+    if (seconds_left := get_seconds_left(game)) != "∞" and seconds_left <= 0:
+        if game.state.count("1") + game.state.count("2") < 2:
+            db.session.delete(game)
+        else:
+            game.winner = "1" if game.get_turn() == "2" else "2"
         db.session.commit()
 
     finished_games = Game.query.filter(
@@ -432,8 +444,6 @@ def gomoku_board(ip):
         ),
         win=win,
         loss=loss,
-        seconds=(timedelta(**app.config.get("GOMOKU_MOVE_TIME")) + (game.updated_on - datetime.utcnow())).seconds
-        if all([game.white, game.black])
-        else "∞",
-        total_seconds=timedelta(**app.config.get("GOMOKU_MOVE_TIME")).seconds
+        seconds=get_seconds_left(game),
+        total_seconds=get_move_timedelta(game).seconds,
     )
