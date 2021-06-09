@@ -475,6 +475,6 @@ def gomoku_board(ip):
         draw=draw,
         seconds=str(get_seconds_left(game)),
         total_seconds=str(get_move_timedelta(game).total_seconds()),
-        your_elo=f"{player.elo:0.1f}",
-        opponent_elo=f"{opponent.elo:0.1f}" if opponent else "???",
+        your_elo=f"{player.elo:0.0f}",
+        opponent_elo=f"{opponent.elo:0.0f}" if opponent else "???",
     )
