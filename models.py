@@ -109,7 +109,83 @@ class Game(db.Model):
         return "0" if self.state.count("0") else "d"
 
     def put_random_move(self):
-        self.put_move(choice([i for i, m in enumerate(self.state) if m == "0"]))
+        def next_to_opp_moves():
+            result = []
+            for pos, pce in enumerate(self.state):
+                if pce == "0":
+                    i, j = pos // 15, pos % 15
+                    for k in range(-1, 2):
+                        for l in range(-1, 2):
+                            if (
+                                {k, l} != {0}
+                                and 0 <= (i + k) * 15 + (j + l) < 225
+                                and self.state[(i + k) * 15 + (j + l)] != "0"
+                            ):
+                                result.append(pos)
+            return result or [choice(range(225))]
+
+        ai_move = None
+
+        # ai_move = alpha_beta(
+        #     self, 4, float("-inf"), float("inf"), self.get_turn() == "1"
+        # )[1]
+
+        if not ai_move:
+            ai_move = choice(next_to_opp_moves())
+
+        self.put_move(ai_move)
+
+    def is_terminal(self):
+        return self.get_winner() in {"1", "2", "d"}
+
+    def children(self):
+        for move, pos in enumerate(self.state):
+            if pos == "0":
+                child = Game(state=str(self.state))
+                child.put_move(move)
+                yield child, move
+
+    def value(self):
+        return (
+            float("inf")
+            if (winner := self.get_winner()) == "1"
+            else float("-inf")
+            if winner == "2"
+            else 0
+        )
+
+
+def alpha_beta(node, depth, alpha, beta, is_max_p):
+    if not depth or node.is_terminal():
+        return node.value(), None
+    if is_max_p:
+        value, best_move = float("-inf"), None
+        for child, move in node.children():
+            value, best_move = max(
+                [
+                    (value, best_move),
+                    (alpha_beta(child, depth - 1, alpha, beta, False)[0], move),
+                ],
+                key=lambda x: x[0],
+            )
+            if value >= beta:
+                break
+            alpha = max(alpha, value)
+        return value, best_move
+    else:
+        value, best_move = float("inf"), None
+        for child, move in node.children():
+            value, best_move = min(
+                [
+                    (value, best_move),
+                    (alpha_beta(child, depth - 1, alpha, beta, True)[0], move),
+                ],
+                key=lambda x: x[0],
+            )
+            if value <= alpha:
+                break
+            beta = min(beta, value)
+        return value, best_move
 
 
 db.create_all()
