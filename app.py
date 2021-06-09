@@ -350,6 +350,27 @@ def gomoku(ip=None, move=None):
 
         if game.get_turn() == ("1" if game.white == player.id else "2"):
             game.put_move(move)
+
+            # Make this prettier later.
+            if (winner := game.get_winner()) == "d":
+                a: Player = Player.query.filter_by(id=game.white).first()
+                b: Player = Player.query.filter_by(id=game.black).first()
+                a.elo = a.elo + 32 * (0.5 - 1 / (10 ** ((b.elo - a.elo) / 400) + 1))
+                b.elo = b.elo + 32 * (0.5 - 1 / (10 ** ((a.elo - b.elo) / 400) + 1))
+                db.session.commit()
+            elif winner == "1":
+                w: Player = Player.query.filter_by(id=game.white).first()
+                l: Player = Player.query.filter_by(id=game.black).first()
+                w.elo = w.elo + 32 * (1 - 1 / (10 ** ((l.elo - w.elo) / 400) + 1))
+                l.elo = l.elo + 32 * (0 - 1 / (10 ** ((w.elo - l.elo) / 400) + 1))
+                db.session.commit()
+            elif winner == "2":
+                w: Player = Player.query.filter_by(id=game.black).first()
+                l: Player = Player.query.filter_by(id=game.white).first()
+                w.elo = w.elo + 32 * (1 - 1 / (10 ** ((l.elo - w.elo) / 400) + 1))
+                l.elo = l.elo + 32 * (0 - 1 / (10 ** ((w.elo - l.elo) / 400) + 1))
+                db.session.commit()
+
             return "success", 200
         else:
             return "not your turn", 400
@@ -410,6 +431,11 @@ def gomoku_board(ip):
             db.session.add(game)
         db.session.commit()
 
+    if game.white == player.id:
+        opponent: Player = Player.query.filter_by(id=game.black).first()
+    else:
+        opponent = Player.query.filter_by(id=game.white).first()
+
     if (seconds_left := get_seconds_left(game)) != "∞" and seconds_left <= 0:
         if game.state.count("1") + game.state.count("2") < 3:
             db.session.delete(game)
@@ -448,4 +474,6 @@ def gomoku_board(ip):
         if seconds_left != "∞"
         else "∞",
         total_seconds=int(get_move_timedelta(game).total_seconds()),
+        your_elo=player.elo,
+        opponent_elo=opponent.elo if opponent else "TBD",
     )

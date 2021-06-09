@@ -47,7 +47,10 @@ class Player(db.Model):
     region = db.Column(db.String, nullable=True)
     city = db.Column(db.String, nullable=True)
     isp = db.Column(db.String, nullable=True)
-    updated_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    elo = db.Column(db.Float, nullable=False, default=1000)
+    updated_on = db.Column(
+        db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
 
 
 class Game(db.Model):
@@ -56,7 +59,9 @@ class Game(db.Model):
     black = db.Column(db.Integer, db.ForeignKey("player.id"), nullable=True)
     state = db.Column(db.String, nullable=False, default="0" * 15 * 15)
     winner = db.Column(db.String, nullable=False, default="0")
-    updated_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_on = db.Column(
+        db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
 
     def put_move(self, move):
         if self.get_winner() == "0" and self.state[int(move)] == "0":
@@ -100,7 +105,7 @@ class Game(db.Model):
                     for k in range(5)
                 ):
                     return self.state[i * 15 + j]
-        return "0"
+        return "0" if self.state.count("0") else "d"
 
 
 db.create_all()
