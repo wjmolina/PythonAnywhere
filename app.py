@@ -368,7 +368,7 @@ def gomoku_board(ip):
         if all([game.white, game.black]):
             return (
                 get_move_timedelta(game) + game.updated_on - datetime.utcnow()
-            ).seconds
+            ).total_seconds()
         return "∞"
 
     player: Player = Player.query.filter_by(ip=ip).first()
@@ -445,5 +445,5 @@ def gomoku_board(ip):
         win=win,
         loss=loss,
         seconds=get_seconds_left(game),
-        total_seconds=get_move_timedelta(game).seconds,
+        total_seconds=get_move_timedelta(game).total_seconds(),
     )
