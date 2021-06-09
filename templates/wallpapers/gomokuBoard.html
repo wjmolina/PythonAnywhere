@@ -332,7 +332,7 @@
 <div>win: {{ win }}, loss: {{ loss }}, draw: {{ draw }}, total: {{ win + loss + draw }}</div>
 time left: {{ seconds }}
 <div class="progressbar">
-    <span style="width: {{ '%0.0f' % (100 * (seconds | float) / (total_seconds | float)) if seconds != '∞' else 100 }}%"></span>
+    <span style="width: {{ '%0.0f' % (100 * seconds / total_seconds) if seconds != '∞' else 100 }}%"></span>
 </div>
 
 <script>
