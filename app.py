@@ -12,7 +12,6 @@ import requests
 from flask import Flask, Response, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import and_, or_
-from sqlalchemy.sql import func
 
 from utils import get_random_string, get_ticker_objects
 
@@ -406,16 +405,6 @@ def gomoku_board(ip):
         db.session.add(player)
         db.session.commit()
 
-    player = (
-        Player.query.with_entities(
-            Player.id,
-            Player.elo,
-            func.row_number().over(order_by=Player.elo.desc()).label("rank"),
-        )
-        .filter(Player.id == player.id)
-        .first()
-    )
-
     game: Game = Game.query.filter(
         and_(
             or_(Game.white == player.id, Game.black == player.id),
@@ -442,20 +431,10 @@ def gomoku_board(ip):
             db.session.add(game)
         db.session.commit()
 
-    opponent = (
-        Player.query.with_entities(
-            Player.id,
-            Player.elo,
-            func.row_number().over(order_by=Player.elo.desc()).label("rank"),
-        )
-        .filter(
-            and_(
-                or_(Player.id == game.white, Player.id == game.black),
-                Player.id != player.id,
-            )
-        )
-        .first()
-    )
+    if game.white == player.id:
+        opponent: Player = Player.query.filter_by(id=game.black).first()
+    else:
+        opponent = Player.query.filter_by(id=game.white).first()
 
     if (seconds_left := get_seconds_left(game)) != "∞" and seconds_left <= 0:
         if game.state.count("1") + game.state.count("2") < 3:
@@ -500,6 +479,4 @@ def gomoku_board(ip):
         total_seconds=int(get_move_timedelta(game).total_seconds()),
         your_elo=player.elo,
         opponent_elo=f"{opponent.elo:0.1f}" if opponent else "???",
-        your_rank=f"#{player.rank}",
-        opponent_rank=f"#{opponent.rank}" if opponent else "???",
     )
