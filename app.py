@@ -473,10 +473,8 @@ def gomoku_board(ip):
         win=win,
         loss=loss,
         draw=draw,
-        seconds=int(seconds_left := get_seconds_left(game))
-        if seconds_left != "∞"
-        else "∞",
-        total_seconds=int(get_move_timedelta(game).total_seconds()),
-        your_elo=player.elo,
+        seconds=str(get_seconds_left(game)),
+        total_seconds=str(get_move_timedelta(game).total_seconds()),
+        your_elo=f"{player.elo:0.1f}",
         opponent_elo=f"{opponent.elo:0.1f}" if opponent else "???",
     )
