@@ -359,7 +359,7 @@ def gomoku(ip=None, move=None):
 def gomoku_board(ip):
     def get_move_timedelta(game: Game):
         if all([game.white, game.black]):
-            if game.state.count("1") + game.state.count("2") < 2:
+            if game.state.count("1") + game.state.count("2") < 3:
                 return timedelta(**app.config.get("GOMOKU_MOVE_TIME_IDLE"))
             return timedelta(**app.config.get("GOMOKU_MOVE_TIME"))
         return timedelta(days=1)
@@ -411,7 +411,7 @@ def gomoku_board(ip):
         db.session.commit()
 
     if (seconds_left := get_seconds_left(game)) != "∞" and seconds_left <= 0:
-        if game.state.count("1") + game.state.count("2") < 2:
+        if game.state.count("1") + game.state.count("2") < 3:
             db.session.delete(game)
         else:
             game.winner = "1" if game.get_turn() == "2" else "2"
