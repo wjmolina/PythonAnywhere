@@ -475,5 +475,5 @@ def gomoku_board(ip):
         else "∞",
         total_seconds=int(get_move_timedelta(game).total_seconds()),
         your_elo=player.elo,
-        opponent_elo=opponent.elo if opponent else "TBD",
+        opponent_elo=f"{opponent.elo:0.1f}" if opponent else "???",
     )
