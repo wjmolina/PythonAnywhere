@@ -445,5 +445,5 @@ def gomoku_board(ip):
         win=win,
         loss=loss,
         seconds=get_seconds_left(game),
-        total_seconds=get_move_timedelta(game).total_seconds(),
+        total_seconds=int(get_move_timedelta(game).total_seconds()),
     )
