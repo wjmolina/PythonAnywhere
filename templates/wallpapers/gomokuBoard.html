@@ -330,9 +330,9 @@
 <div>{{ turn }}</div>
 <div>your rating: {{ your_elo }}, opponent rating: {{ opponent_elo }}</div>
 <div>win: {{ win }}, loss: {{ loss }}, draw: {{ draw }}, total: {{ win + loss + draw }}</div>
-time left: {{ seconds }}
+time left: {{ '%0.0f' % seconds }}
 <div class="progressbar">
-    <span style="width: {{ '%0.0f' % ((100 * seconds / total_seconds) | float) if seconds != '∞' else 100 }}%"></span>
+    <span style="width: {{ 100 * seconds / total_seconds if seconds != '∞' else 100 }}%"></span>
 </div>
 
 <script>
