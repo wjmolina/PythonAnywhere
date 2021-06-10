@@ -1,8 +1,6 @@
 from datetime import datetime
 from random import choice
 
-from sqlalchemy import ForeignKey
-
 from app import db
 
 

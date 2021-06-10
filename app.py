@@ -3,7 +3,7 @@ import smtplib
 import ssl
 from datetime import datetime, timedelta
 from email.mime.text import MIMEText
-from random import randint
+from random import choice, randint
 from threading import Thread
 from time import sleep
 
@@ -38,54 +38,41 @@ from models import (
 )
 
 
-def ai_player(app_context):
-    app_context.push()
-
-    ai_idiot: Player = Player.query.filter_by(ip="ai_idiot").first()
-    if not ai_idiot:
-        ai_idiot = Player(ip="ai_idiot")
-        db.session.add(ai_idiot)
-        db.session.commit()
-        ai_idiot = Player.query.filter_by(ip="ai_idiot").first()
+def ai_player():
+    def next_to_opp_moves(state):
+        result = []
+        for pos, pce in enumerate(state):
+            if pce == "0":
+                i, j = pos // 15, pos % 15
+                for k in range(-1, 2):
+                    for l in range(-1, 2):
+                        if (
+                            {k, l} != {0}
+                            and 0 <= (i + k) * 15 + (j + l) < 225
+                            and state[(i + k) * 15 + (j + l)] != "0"
+                        ):
+                            result.append(pos)
+        return choice(result or range(225))
 
     while True:
-        games: Game = Game.query.filter(
-            or_(
-                and_(
-                    or_(Game.white == None, Game.black == None),
-                    Game.winner == "0",
-                ),
-                Game.white == ai_idiot.id,
-                Game.black == ai_idiot.id,
+        sleep(5)
+        requests.get(f"{app.config['HOST']}/wallpaper/gomoku_board/ai_player")
+        ai: Player = Player.query.filter_by(ip="ai_player").first()
+        game: Game = Game.query.filter(
+            and_(
+                or_(Game.white == ai.id, Game.black == ai.id),
+                Game.winner == "0",
             )
-        ).all()
-        for game in games:
-            if game and (
-                datetime.utcnow() - game.updated_on >= timedelta(seconds=5)
-                or ai_idiot.id
-                in {
-                    game.white,
-                    game.black,
-                }
-            ):
-                if not all([game.white, game.black]):
-                    if not game.white:
-                        game.white = ai_idiot.id
-                    else:
-                        game.black = ai_idiot.id
-
-                if datetime.utcnow() - game.updated_on >= timedelta(seconds=5):
-                    if game.white == ai_idiot.id and game.get_turn() == "1":
-                        game.put_random_move()
-                    elif game.black == ai_idiot.id and game.get_turn() == "2":
-                        game.put_random_move()
-                db.session.commit()
-        sleep(1)
+        ).first()
+        if game:
+            requests.post(
+                f"{app.config['HOST']}/wallpaper/gomoku/ai_player/{next_to_opp_moves(game.state)}"
+            )
 
 
-# ai_daemon = Thread(target=ai_player, args=(app.app_context(),))
-# ai_daemon.daemon = True
-# ai_daemon.start()
+ai_daemon = Thread(target=ai_player)
+ai_daemon.daemon = True
+ai_daemon.start()
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -408,19 +395,18 @@ def gomoku(ip=None, move=None):
                 b: Player = Player.query.filter_by(id=game.black).first()
                 a.elo = a.elo + 32 * (0.5 - 1 / (10 ** ((b.elo - a.elo) / 400) + 1))
                 b.elo = b.elo + 32 * (0.5 - 1 / (10 ** ((a.elo - b.elo) / 400) + 1))
-                db.session.commit()
             elif winner == "1":
                 w: Player = Player.query.filter_by(id=game.white).first()
                 l: Player = Player.query.filter_by(id=game.black).first()
                 w.elo = w.elo + 32 * (1 - 1 / (10 ** ((l.elo - w.elo) / 400) + 1))
                 l.elo = l.elo + 32 * (0 - 1 / (10 ** ((w.elo - l.elo) / 400) + 1))
-                db.session.commit()
             elif winner == "2":
                 w: Player = Player.query.filter_by(id=game.black).first()
                 l: Player = Player.query.filter_by(id=game.white).first()
                 w.elo = w.elo + 32 * (1 - 1 / (10 ** ((l.elo - w.elo) / 400) + 1))
                 l.elo = l.elo + 32 * (0 - 1 / (10 ** ((w.elo - l.elo) / 400) + 1))
-                db.session.commit()
+            
+            db.session.commit()
 
             return "success", 200
         else:
