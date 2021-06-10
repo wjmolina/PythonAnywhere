@@ -38,7 +38,9 @@ from models import (
 )
 
 
-def ai_player():
+def ai_player(app_context):
+    app_context.push()
+
     ai_idiot: Player = Player.query.filter_by(ip="ai_idiot").first()
     if not ai_idiot:
         ai_idiot = Player(ip="ai_idiot")
@@ -81,9 +83,9 @@ def ai_player():
         sleep(1)
 
 
-# ai_daemon = Thread(target=ai_player)
-# ai_daemon.daemon = True
-# ai_daemon.start()
+ai_daemon = Thread(target=ai_player, args=(app.app_context(),))
+ai_daemon.daemon = True
+ai_daemon.start()
 
 
 @app.route("/", methods=["GET", "POST"])
