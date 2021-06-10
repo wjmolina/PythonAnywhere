@@ -524,10 +524,14 @@ def gomoku_board(ip):
                 f"https://apps.yunzhu.li/gomoku/move?s={game.state}"
             ).json()
             print("AI done thinking")
-            game.put_move(
-                int(response["result"]["move_r"]) * 19
-                + int(response["result"]["move_c"])
-            )
+            try:
+                game.put_move(
+                    int(response["result"]["move_r"]) * 19
+                    + int(response["result"]["move_c"])
+                )
+            except:
+                print("AI is making random move")
+                game.put_move(choice(i for i, x in enumerate(game.state) if x == "0"))
 
     # Get the opponent.
     if game.white == player.id:
