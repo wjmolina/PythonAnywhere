@@ -510,8 +510,10 @@ def gomoku_board(ip):
         ):
             if not game.white:
                 game.white = ai_player.id
+                db.session.commit()
             elif not game.black:
                 game.black = ai_player.id
+                db.session.commit()
 
         if (
             game.get_turn() == "1"
