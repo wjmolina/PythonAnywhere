@@ -76,7 +76,7 @@ class Game(db.Model):
         return "2" if (self.state.count("1") + self.state.count("2")) % 2 else "1"
 
     def get_winner(self):
-        for i in range(11):
+        for i in range(15):
             for j in range(19):
                 if self.state[i * 19 + j] != "0" and all(
                     self.state[i * 19 + j] == self.state[(i + k) * 19 + j]
@@ -84,20 +84,20 @@ class Game(db.Model):
                 ):
                     return self.state[i * 19 + j]
         for i in range(19):
-            for j in range(11):
+            for j in range(15):
                 if self.state[i * 19 + j] != "0" and all(
                     self.state[i * 19 + j] == self.state[i * 19 + j + k]
                     for k in range(5)
                 ):
                     return self.state[i * 19 + j]
-        for i in range(11):
-            for j in range(11):
+        for i in range(15):
+            for j in range(15):
                 if self.state[i * 19 + j] != "0" and all(
                     self.state[i * 19 + j] == self.state[(i + k) * 19 + j + k]
                     for k in range(5)
                 ):
                     return self.state[i * 19 + j]
-        for i in range(11):
+        for i in range(15):
             for j in range(4, 19):
                 if self.state[i * 19 + j] != "0" and all(
                     self.state[i * 19 + j] == self.state[(i - k) * 19 + j + k]
