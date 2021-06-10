@@ -4,6 +4,8 @@ import ssl
 from datetime import datetime, timedelta
 from email.mime.text import MIMEText
 from random import randint
+from threading import Thread
+from time import sleep
 
 import arrow
 import flask
@@ -36,10 +38,57 @@ from models import (
 )
 
 
+def ai_player():
+    ai_idiot: Player = Player.query.filter_by(ip="ai_idiot").first()
+    if not ai_idiot:
+        ai_idiot = Player(ip="ai_idiot")
+        db.session.add(ai_idiot)
+        db.session.commit()
+        ai_idiot = Player.query.filter_by(ip="ai_idiot").first()
+
+    while True:
+        games: Game = Game.query.filter(
+            or_(
+                and_(
+                    or_(Game.white == None, Game.black == None),
+                    Game.winner == "0",
+                ),
+                Game.white == ai_idiot.id,
+                Game.black == ai_idiot.id,
+            )
+        ).all()
+        for game in games:
+            if game and (
+                datetime.utcnow() - game.updated_on >= timedelta(seconds=5)
+                or ai_idiot.id
+                in {
+                    game.white,
+                    game.black,
+                }
+            ):
+                if not all([game.white, game.black]):
+                    if not game.white:
+                        game.white = ai_idiot.id
+                    else:
+                        game.black = ai_idiot.id
+
+                if datetime.utcnow() - game.updated_on >= timedelta(seconds=5):
+                    if game.white == ai_idiot.id and game.get_turn() == "1":
+                        game.put_random_move()
+                    elif game.black == ai_idiot.id and game.get_turn() == "2":
+                        game.put_random_move()
+                db.session.commit()
+        sleep(1)
+
+
+ai_daemon = Thread(target=ai_player)
+ai_daemon.daemon = True
+ai_daemon.start()
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST" and request.form["text"]:
-        print(request)
         db.session.add(
             Comment(text=request.form["text"], user_agent=request.headers["User-Agent"])
         )
@@ -392,6 +441,7 @@ def gomoku_board(ip):
             ).total_seconds()
         return "∞"
 
+    # Get or create the player associated to the given IP.
     player: Player = Player.query.filter_by(ip=ip).first()
     if not player:
         response = requests.get(f"http://ip-api.com/json/{ip}").json()
@@ -406,6 +456,7 @@ def gomoku_board(ip):
         db.session.commit()
         player: Player = Player.query.filter_by(ip=ip).first()
 
+    # Get or create the game associated to the player.
     game: Game = Game.query.filter(
         and_(
             or_(Game.white == player.id, Game.black == player.id),
@@ -438,6 +489,7 @@ def gomoku_board(ip):
             )
         ).first()
 
+    # Check whether the game is finished.
     seconds_left = get_seconds_left(game)
     if seconds_left != "∞" and seconds_left <= 0:
         if game.state.count("1") + game.state.count("2") < 3:
@@ -446,36 +498,13 @@ def gomoku_board(ip):
             game.winner = "1" if game.get_turn() == "2" else "2"
         db.session.commit()
 
-    ai_idiot = Player.query.filter_by(ip="ai_idiot").first()
-    if not ai_idiot:
-        ai_idiot = Player(ip="ai_idiot")
-        db.session.add(ai_idiot)
-        db.session.commit()
-        ai_idiot = Player.query.filter_by(ip="ai_idiot").first()
-
-    if datetime.utcnow() - game.updated_on >= timedelta(minutes=1) or ai_idiot.id in {
-        game.white,
-        game.black,
-    }:
-        if not all([game.white, game.black]):
-            if not game.white:
-                game.white = ai_idiot.id
-            else:
-                game.black = ai_idiot.id
-
-        if datetime.utcnow() - game.updated_on >= timedelta(seconds=5):
-            if game.white == ai_idiot.id and game.get_turn() == "1":
-                game.put_random_move()
-            elif game.black == ai_idiot.id and game.get_turn() == "2":
-                game.put_random_move()
-
-        db.session.commit()
-
+    # Get the opponent.
     if game.white == player.id:
         opponent: Player = Player.query.filter_by(id=game.black).first()
     else:
         opponent = Player.query.filter_by(id=game.white).first()
 
+    # Get the player's score.
     finished_games = Game.query.filter(
         and_(or_(Game.white == player.id, Game.black == player.id), Game.winner != "0")
     ).all()
