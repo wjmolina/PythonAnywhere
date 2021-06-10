@@ -11,6 +11,7 @@ import arrow
 import flask
 import git
 import requests
+from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, Response, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import and_, or_
@@ -70,9 +71,9 @@ def ai_player():
             )
 
 
-ai_daemon = Thread(target=ai_player)
-ai_daemon.daemon = True
-ai_daemon.start()
+scheduler = BackgroundScheduler()
+scheduler.add_job(ai_player, "interval", seconds=10)
+scheduler.start()
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -405,7 +406,7 @@ def gomoku(ip=None, move=None):
                 l: Player = Player.query.filter_by(id=game.white).first()
                 w.elo = w.elo + 32 * (1 - 1 / (10 ** ((l.elo - w.elo) / 400) + 1))
                 l.elo = l.elo + 32 * (0 - 1 / (10 ** ((w.elo - l.elo) / 400) + 1))
-            
+
             db.session.commit()
 
             return "success", 200
