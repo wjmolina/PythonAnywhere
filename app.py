@@ -25,8 +25,7 @@ try:
 except:
     print("INFO: could not load config.py")
 
-db = SQLAlchemy(engine_options={"connect_args": {"connect_timeout": 5}})
-db.init_app(app)
+db = SQLAlchemy(app)
 
 from models import (
     AnonymousName,
