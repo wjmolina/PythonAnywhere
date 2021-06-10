@@ -71,9 +71,9 @@ def ai_player():
             )
 
 
-scheduler = BackgroundScheduler()
-scheduler.add_job(ai_player, "interval", seconds=10)
-scheduler.start()
+# scheduler = BackgroundScheduler()
+# scheduler.add_job(ai_player, "interval", seconds=10)
+# scheduler.start()
 
 
 @app.route("/", methods=["GET", "POST"])
