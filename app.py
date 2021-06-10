@@ -44,16 +44,16 @@ def ai_player():
         result = []
         for pos, pce in enumerate(state):
             if pce == "0":
-                i, j = pos // 15, pos % 15
+                i, j = pos // 19, pos % 19
                 for k in range(-1, 2):
                     for l in range(-1, 2):
                         if (
                             {k, l} != {0}
-                            and 0 <= (i + k) * 15 + (j + l) < 225
-                            and state[(i + k) * 15 + (j + l)] != "0"
+                            and 0 <= (i + k) * 19 + (j + l) < 361
+                            and state[(i + k) * 19 + (j + l)] != "0"
                         ):
                             result.append(pos)
-        return choice(result or range(225))
+        return choice(result or range(361))
 
     while True:
         sleep(5)
@@ -486,6 +486,48 @@ def gomoku_board(ip):
         else:
             game.winner = "1" if game.get_turn() == "2" else "2"
         db.session.commit()
+
+    # Check whether the AI should kick in.
+    ai_player: Player = Player.query.filter_by(ip="ai_player").first()
+    if not ai_player:
+        db.session.add(Player(ip="ai_player"))
+        db.session.commit()
+        ai_player = Player.query.filter_by(ip="ai_player").first()
+
+    if datetime.utcnow() - game.updated_on >= timedelta(seconds=5) and (
+        not all([game.white, game.black]) or ai_player.id in {game.white, game.black}
+    ):
+        if (
+            len(
+                Game.query.filter(
+                    and_(
+                        or_(Game.white == ai_player.id, Game.black == ai_player.id),
+                        Game.winner == "0",
+                    )
+                ).all()
+            )
+            < 1
+        ):
+            if not game.white:
+                game.white = ai_player.id
+            elif not game.black:
+                game.black = ai_player.id
+
+        if (
+            game.get_turn() == "1"
+            and game.white == ai_player.id
+            or game.get_turn() == "2"
+            and game.black == ai_player.id
+        ):
+            print("AI thinking...")
+            response = requests.get(
+                f"https://apps.yunzhu.li/gomoku/move?s={game.state}"
+            ).json()
+            print("AI done thinking")
+            game.put_move(
+                int(response["result"]["move_r"]) * 19
+                + int(response["result"]["move_c"])
+            )
 
     # Get the opponent.
     if game.white == player.id:

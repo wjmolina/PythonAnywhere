@@ -56,7 +56,7 @@ class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     white = db.Column(db.Integer, db.ForeignKey("player.id"), nullable=True)
     black = db.Column(db.Integer, db.ForeignKey("player.id"), nullable=True)
-    state = db.Column(db.String, nullable=False, default="0" * 15 * 15)
+    state = db.Column(db.String, nullable=False, default="0" * 19 * 19)
     winner = db.Column(db.String, nullable=False, default="0")
     updated_on = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow
@@ -77,33 +77,33 @@ class Game(db.Model):
 
     def get_winner(self):
         for i in range(11):
-            for j in range(15):
-                if self.state[i * 15 + j] != "0" and all(
-                    self.state[i * 15 + j] == self.state[(i + k) * 15 + j]
+            for j in range(19):
+                if self.state[i * 19 + j] != "0" and all(
+                    self.state[i * 19 + j] == self.state[(i + k) * 19 + j]
                     for k in range(5)
                 ):
-                    return self.state[i * 15 + j]
-        for i in range(15):
+                    return self.state[i * 19 + j]
+        for i in range(19):
             for j in range(11):
-                if self.state[i * 15 + j] != "0" and all(
-                    self.state[i * 15 + j] == self.state[i * 15 + j + k]
+                if self.state[i * 19 + j] != "0" and all(
+                    self.state[i * 19 + j] == self.state[i * 19 + j + k]
                     for k in range(5)
                 ):
-                    return self.state[i * 15 + j]
+                    return self.state[i * 19 + j]
         for i in range(11):
             for j in range(11):
-                if self.state[i * 15 + j] != "0" and all(
-                    self.state[i * 15 + j] == self.state[(i + k) * 15 + j + k]
+                if self.state[i * 19 + j] != "0" and all(
+                    self.state[i * 19 + j] == self.state[(i + k) * 19 + j + k]
                     for k in range(5)
                 ):
-                    return self.state[i * 15 + j]
+                    return self.state[i * 19 + j]
         for i in range(11):
-            for j in range(4, 15):
-                if self.state[i * 15 + j] != "0" and all(
-                    self.state[i * 15 + j] == self.state[(i - k) * 15 + j + k]
+            for j in range(4, 19):
+                if self.state[i * 19 + j] != "0" and all(
+                    self.state[i * 19 + j] == self.state[(i - k) * 19 + j + k]
                     for k in range(5)
                 ):
-                    return self.state[i * 15 + j]
+                    return self.state[i * 19 + j]
         return "0" if self.state.count("0") else "d"
 
     def put_random_move(self):
@@ -111,16 +111,16 @@ class Game(db.Model):
             result = []
             for pos, pce in enumerate(self.state):
                 if pce == "0":
-                    i, j = pos // 15, pos % 15
+                    i, j = pos // 19, pos % 19
                     for k in range(-1, 2):
                         for l in range(-1, 2):
                             if (
                                 {k, l} != {0}
-                                and 0 <= (i + k) * 15 + (j + l) < 225
-                                and self.state[(i + k) * 15 + (j + l)] != "0"
+                                and 0 <= (i + k) * 19 + (j + l) < 361
+                                and self.state[(i + k) * 19 + (j + l)] != "0"
                             ):
                                 result.append(pos)
-            return result or [choice(range(225))]
+            return result or [choice(range(361))]
 
         ai_move = None
 

@@ -1,14 +1,14 @@
 <style>
-    div {
-        margin: 6px 0 6px 0;
+    img {
+        width: 42.5px;
+        height: 42.5px;
     }
-
+    
     .chess-board {
         border-spacing: 0;
         border-collapse: collapse;
         margin-left: auto;
         margin-right: auto;
-        margin-top: 75px;
         border-style: dashed;
         border-color: transparent;
     }
@@ -18,8 +18,8 @@
     }
 
     .chess-board td {
-        width: 1.5em;
-        height: 1.5em;
+        width: 42.5px;
+        height: 42.5px;
         text-align: center;
         font-size: 32px;
         line-height: 0;
@@ -86,12 +86,12 @@
             <td onclick="play(12)" class="light"><img src="../../static/{{ 'playerx' if state[12] == '1' else 'playero' if state[12] == '2' else 'playere' }}.png"></td>
             <td onclick="play(13)" class="dark"><img src="../../static/{{ 'playerx' if state[13] == '1' else 'playero' if state[13] == '2' else 'playere' }}.png"></td>
             <td onclick="play(14)" class="light"><img src="../../static/{{ 'playerx' if state[14] == '1' else 'playero' if state[14] == '2' else 'playere' }}.png"></td>
-        </tr>
-        <tr>
             <td onclick="play(15)" class="dark"><img src="../../static/{{ 'playerx' if state[15] == '1' else 'playero' if state[15] == '2' else 'playere' }}.png"></td>
             <td onclick="play(16)" class="light"><img src="../../static/{{ 'playerx' if state[16] == '1' else 'playero' if state[16] == '2' else 'playere' }}.png"></td>
             <td onclick="play(17)" class="dark"><img src="../../static/{{ 'playerx' if state[17] == '1' else 'playero' if state[17] == '2' else 'playere' }}.png"></td>
             <td onclick="play(18)" class="light"><img src="../../static/{{ 'playerx' if state[18] == '1' else 'playero' if state[18] == '2' else 'playere' }}.png"></td>
+        </tr>
+        <tr>
             <td onclick="play(19)" class="dark"><img src="../../static/{{ 'playerx' if state[19] == '1' else 'playero' if state[19] == '2' else 'playere' }}.png"></td>
             <td onclick="play(20)" class="light"><img src="../../static/{{ 'playerx' if state[20] == '1' else 'playero' if state[20] == '2' else 'playere' }}.png"></td>
             <td onclick="play(21)" class="dark"><img src="../../static/{{ 'playerx' if state[21] == '1' else 'playero' if state[21] == '2' else 'playere' }}.png"></td>
@@ -103,8 +103,6 @@
             <td onclick="play(27)" class="dark"><img src="../../static/{{ 'playerx' if state[27] == '1' else 'playero' if state[27] == '2' else 'playere' }}.png"></td>
             <td onclick="play(28)" class="light"><img src="../../static/{{ 'playerx' if state[28] == '1' else 'playero' if state[28] == '2' else 'playere' }}.png"></td>
             <td onclick="play(29)" class="dark"><img src="../../static/{{ 'playerx' if state[29] == '1' else 'playero' if state[29] == '2' else 'playere' }}.png"></td>
-        </tr>
-        <tr>
             <td onclick="play(30)" class="light"><img src="../../static/{{ 'playerx' if state[30] == '1' else 'playero' if state[30] == '2' else 'playere' }}.png"></td>
             <td onclick="play(31)" class="dark"><img src="../../static/{{ 'playerx' if state[31] == '1' else 'playero' if state[31] == '2' else 'playere' }}.png"></td>
             <td onclick="play(32)" class="light"><img src="../../static/{{ 'playerx' if state[32] == '1' else 'playero' if state[32] == '2' else 'playere' }}.png"></td>
@@ -113,6 +111,7 @@
             <td onclick="play(35)" class="dark"><img src="../../static/{{ 'playerx' if state[35] == '1' else 'playero' if state[35] == '2' else 'playere' }}.png"></td>
             <td onclick="play(36)" class="light"><img src="../../static/{{ 'playerx' if state[36] == '1' else 'playero' if state[36] == '2' else 'playere' }}.png"></td>
             <td onclick="play(37)" class="dark"><img src="../../static/{{ 'playerx' if state[37] == '1' else 'playero' if state[37] == '2' else 'playere' }}.png"></td>
+        </tr>
             <td onclick="play(38)" class="light"><img src="../../static/{{ 'playerx' if state[38] == '1' else 'playero' if state[38] == '2' else 'playere' }}.png"></td>
             <td onclick="play(39)" class="dark"><img src="../../static/{{ 'playerx' if state[39] == '1' else 'playero' if state[39] == '2' else 'playere' }}.png"></td>
             <td onclick="play(40)" class="light"><img src="../../static/{{ 'playerx' if state[40] == '1' else 'playero' if state[40] == '2' else 'playere' }}.png"></td>
@@ -120,8 +119,6 @@
             <td onclick="play(42)" class="light"><img src="../../static/{{ 'playerx' if state[42] == '1' else 'playero' if state[42] == '2' else 'playere' }}.png"></td>
             <td onclick="play(43)" class="dark"><img src="../../static/{{ 'playerx' if state[43] == '1' else 'playero' if state[43] == '2' else 'playere' }}.png"></td>
             <td onclick="play(44)" class="light"><img src="../../static/{{ 'playerx' if state[44] == '1' else 'playero' if state[44] == '2' else 'playere' }}.png"></td>
-        </tr>
-        <tr>
             <td onclick="play(45)" class="dark"><img src="../../static/{{ 'playerx' if state[45] == '1' else 'playero' if state[45] == '2' else 'playere' }}.png"></td>
             <td onclick="play(46)" class="light"><img src="../../static/{{ 'playerx' if state[46] == '1' else 'playero' if state[46] == '2' else 'playere' }}.png"></td>
             <td onclick="play(47)" class="dark"><img src="../../static/{{ 'playerx' if state[47] == '1' else 'playero' if state[47] == '2' else 'playere' }}.png"></td>
@@ -134,11 +131,11 @@
             <td onclick="play(54)" class="light"><img src="../../static/{{ 'playerx' if state[54] == '1' else 'playero' if state[54] == '2' else 'playere' }}.png"></td>
             <td onclick="play(55)" class="dark"><img src="../../static/{{ 'playerx' if state[55] == '1' else 'playero' if state[55] == '2' else 'playere' }}.png"></td>
             <td onclick="play(56)" class="light"><img src="../../static/{{ 'playerx' if state[56] == '1' else 'playero' if state[56] == '2' else 'playere' }}.png"></td>
+        </tr>
+        <tr>
             <td onclick="play(57)" class="dark"><img src="../../static/{{ 'playerx' if state[57] == '1' else 'playero' if state[57] == '2' else 'playere' }}.png"></td>
             <td onclick="play(58)" class="light"><img src="../../static/{{ 'playerx' if state[58] == '1' else 'playero' if state[58] == '2' else 'playere' }}.png"></td>
             <td onclick="play(59)" class="dark"><img src="../../static/{{ 'playerx' if state[59] == '1' else 'playero' if state[59] == '2' else 'playere' }}.png"></td>
-        </tr>
-        <tr>
             <td onclick="play(60)" class="light"><img src="../../static/{{ 'playerx' if state[60] == '1' else 'playero' if state[60] == '2' else 'playere' }}.png"></td>
             <td onclick="play(61)" class="dark"><img src="../../static/{{ 'playerx' if state[61] == '1' else 'playero' if state[61] == '2' else 'playere' }}.png"></td>
             <td onclick="play(62)" class="light"><img src="../../static/{{ 'playerx' if state[62] == '1' else 'playero' if state[62] == '2' else 'playere' }}.png"></td>
@@ -154,9 +151,8 @@
             <td onclick="play(72)" class="light"><img src="../../static/{{ 'playerx' if state[72] == '1' else 'playero' if state[72] == '2' else 'playere' }}.png"></td>
             <td onclick="play(73)" class="dark"><img src="../../static/{{ 'playerx' if state[73] == '1' else 'playero' if state[73] == '2' else 'playere' }}.png"></td>
             <td onclick="play(74)" class="light"><img src="../../static/{{ 'playerx' if state[74] == '1' else 'playero' if state[74] == '2' else 'playere' }}.png"></td>
-        </tr>
-        <tr>
             <td onclick="play(75)" class="dark"><img src="../../static/{{ 'playerx' if state[75] == '1' else 'playero' if state[75] == '2' else 'playere' }}.png"></td>
+        </tr>
             <td onclick="play(76)" class="light"><img src="../../static/{{ 'playerx' if state[76] == '1' else 'playero' if state[76] == '2' else 'playere' }}.png"></td>
             <td onclick="play(77)" class="dark"><img src="../../static/{{ 'playerx' if state[77] == '1' else 'playero' if state[77] == '2' else 'playere' }}.png"></td>
             <td onclick="play(78)" class="light"><img src="../../static/{{ 'playerx' if state[78] == '1' else 'playero' if state[78] == '2' else 'playere' }}.png"></td>
@@ -171,13 +167,13 @@
             <td onclick="play(87)" class="dark"><img src="../../static/{{ 'playerx' if state[87] == '1' else 'playero' if state[87] == '2' else 'playere' }}.png"></td>
             <td onclick="play(88)" class="light"><img src="../../static/{{ 'playerx' if state[88] == '1' else 'playero' if state[88] == '2' else 'playere' }}.png"></td>
             <td onclick="play(89)" class="dark"><img src="../../static/{{ 'playerx' if state[89] == '1' else 'playero' if state[89] == '2' else 'playere' }}.png"></td>
-        </tr>
-        <tr>
             <td onclick="play(90)" class="light"><img src="../../static/{{ 'playerx' if state[90] == '1' else 'playero' if state[90] == '2' else 'playere' }}.png"></td>
             <td onclick="play(91)" class="dark"><img src="../../static/{{ 'playerx' if state[91] == '1' else 'playero' if state[91] == '2' else 'playere' }}.png"></td>
             <td onclick="play(92)" class="light"><img src="../../static/{{ 'playerx' if state[92] == '1' else 'playero' if state[92] == '2' else 'playere' }}.png"></td>
             <td onclick="play(93)" class="dark"><img src="../../static/{{ 'playerx' if state[93] == '1' else 'playero' if state[93] == '2' else 'playere' }}.png"></td>
             <td onclick="play(94)" class="light"><img src="../../static/{{ 'playerx' if state[94] == '1' else 'playero' if state[94] == '2' else 'playere' }}.png"></td>
+        </tr>
+        <tr>
             <td onclick="play(95)" class="dark"><img src="../../static/{{ 'playerx' if state[95] == '1' else 'playero' if state[95] == '2' else 'playere' }}.png"></td>
             <td onclick="play(96)" class="light"><img src="../../static/{{ 'playerx' if state[96] == '1' else 'playero' if state[96] == '2' else 'playere' }}.png"></td>
             <td onclick="play(97)" class="dark"><img src="../../static/{{ 'playerx' if state[97] == '1' else 'playero' if state[97] == '2' else 'playere' }}.png"></td>
@@ -188,8 +184,6 @@
             <td onclick="play(102)" class="light"><img src="../../static/{{ 'playerx' if state[102] == '1' else 'playero' if state[102] == '2' else 'playere' }}.png"></td>
             <td onclick="play(103)" class="dark"><img src="../../static/{{ 'playerx' if state[103] == '1' else 'playero' if state[103] == '2' else 'playere' }}.png"></td>
             <td onclick="play(104)" class="light"><img src="../../static/{{ 'playerx' if state[104] == '1' else 'playero' if state[104] == '2' else 'playere' }}.png"></td>
-        </tr>
-        <tr>
             <td onclick="play(105)" class="dark"><img src="../../static/{{ 'playerx' if state[105] == '1' else 'playero' if state[105] == '2' else 'playere' }}.png"></td>
             <td onclick="play(106)" class="light"><img src="../../static/{{ 'playerx' if state[106] == '1' else 'playero' if state[106] == '2' else 'playere' }}.png"></td>
             <td onclick="play(107)" class="dark"><img src="../../static/{{ 'playerx' if state[107] == '1' else 'playero' if state[107] == '2' else 'playere' }}.png"></td>
@@ -199,14 +193,13 @@
             <td onclick="play(111)" class="dark"><img src="../../static/{{ 'playerx' if state[111] == '1' else 'playero' if state[111] == '2' else 'playere' }}.png"></td>
             <td onclick="play(112)" class="light"><img src="../../static/{{ 'playerx' if state[112] == '1' else 'playero' if state[112] == '2' else 'playere' }}.png"></td>
             <td onclick="play(113)" class="dark"><img src="../../static/{{ 'playerx' if state[113] == '1' else 'playero' if state[113] == '2' else 'playere' }}.png"></td>
+        </tr>
             <td onclick="play(114)" class="light"><img src="../../static/{{ 'playerx' if state[114] == '1' else 'playero' if state[114] == '2' else 'playere' }}.png"></td>
             <td onclick="play(115)" class="dark"><img src="../../static/{{ 'playerx' if state[115] == '1' else 'playero' if state[115] == '2' else 'playere' }}.png"></td>
             <td onclick="play(116)" class="light"><img src="../../static/{{ 'playerx' if state[116] == '1' else 'playero' if state[116] == '2' else 'playere' }}.png"></td>
             <td onclick="play(117)" class="dark"><img src="../../static/{{ 'playerx' if state[117] == '1' else 'playero' if state[117] == '2' else 'playere' }}.png"></td>
             <td onclick="play(118)" class="light"><img src="../../static/{{ 'playerx' if state[118] == '1' else 'playero' if state[118] == '2' else 'playere' }}.png"></td>
             <td onclick="play(119)" class="dark"><img src="../../static/{{ 'playerx' if state[119] == '1' else 'playero' if state[119] == '2' else 'playere' }}.png"></td>
-        </tr>
-        <tr>
             <td onclick="play(120)" class="light"><img src="../../static/{{ 'playerx' if state[120] == '1' else 'playero' if state[120] == '2' else 'playere' }}.png"></td>
             <td onclick="play(121)" class="dark"><img src="../../static/{{ 'playerx' if state[121] == '1' else 'playero' if state[121] == '2' else 'playere' }}.png"></td>
             <td onclick="play(122)" class="light"><img src="../../static/{{ 'playerx' if state[122] == '1' else 'playero' if state[122] == '2' else 'playere' }}.png"></td>
@@ -220,10 +213,10 @@
             <td onclick="play(130)" class="light"><img src="../../static/{{ 'playerx' if state[130] == '1' else 'playero' if state[130] == '2' else 'playere' }}.png"></td>
             <td onclick="play(131)" class="dark"><img src="../../static/{{ 'playerx' if state[131] == '1' else 'playero' if state[131] == '2' else 'playere' }}.png"></td>
             <td onclick="play(132)" class="light"><img src="../../static/{{ 'playerx' if state[132] == '1' else 'playero' if state[132] == '2' else 'playere' }}.png"></td>
-            <td onclick="play(133)" class="dark"><img src="../../static/{{ 'playerx' if state[133] == '1' else 'playero' if state[133] == '2' else 'playere' }}.png"></td>
-            <td onclick="play(134)" class="light"><img src="../../static/{{ 'playerx' if state[134] == '1' else 'playero' if state[134] == '2' else 'playere' }}.png"></td>
         </tr>
         <tr>
+            <td onclick="play(133)" class="dark"><img src="../../static/{{ 'playerx' if state[133] == '1' else 'playero' if state[133] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(134)" class="light"><img src="../../static/{{ 'playerx' if state[134] == '1' else 'playero' if state[134] == '2' else 'playere' }}.png"></td>
             <td onclick="play(135)" class="dark"><img src="../../static/{{ 'playerx' if state[135] == '1' else 'playero' if state[135] == '2' else 'playere' }}.png"></td>
             <td onclick="play(136)" class="light"><img src="../../static/{{ 'playerx' if state[136] == '1' else 'playero' if state[136] == '2' else 'playere' }}.png"></td>
             <td onclick="play(137)" class="dark"><img src="../../static/{{ 'playerx' if state[137] == '1' else 'playero' if state[137] == '2' else 'playere' }}.png"></td>
@@ -239,10 +232,9 @@
             <td onclick="play(147)" class="dark"><img src="../../static/{{ 'playerx' if state[147] == '1' else 'playero' if state[147] == '2' else 'playere' }}.png"></td>
             <td onclick="play(148)" class="light"><img src="../../static/{{ 'playerx' if state[148] == '1' else 'playero' if state[148] == '2' else 'playere' }}.png"></td>
             <td onclick="play(149)" class="dark"><img src="../../static/{{ 'playerx' if state[149] == '1' else 'playero' if state[149] == '2' else 'playere' }}.png"></td>
-        </tr>
-        <tr>
             <td onclick="play(150)" class="light"><img src="../../static/{{ 'playerx' if state[150] == '1' else 'playero' if state[150] == '2' else 'playere' }}.png"></td>
             <td onclick="play(151)" class="dark"><img src="../../static/{{ 'playerx' if state[151] == '1' else 'playero' if state[151] == '2' else 'playere' }}.png"></td>
+        </tr>
             <td onclick="play(152)" class="light"><img src="../../static/{{ 'playerx' if state[152] == '1' else 'playero' if state[152] == '2' else 'playere' }}.png"></td>
             <td onclick="play(153)" class="dark"><img src="../../static/{{ 'playerx' if state[153] == '1' else 'playero' if state[153] == '2' else 'playere' }}.png"></td>
             <td onclick="play(154)" class="light"><img src="../../static/{{ 'playerx' if state[154] == '1' else 'playero' if state[154] == '2' else 'playere' }}.png"></td>
@@ -256,14 +248,14 @@
             <td onclick="play(162)" class="light"><img src="../../static/{{ 'playerx' if state[162] == '1' else 'playero' if state[162] == '2' else 'playere' }}.png"></td>
             <td onclick="play(163)" class="dark"><img src="../../static/{{ 'playerx' if state[163] == '1' else 'playero' if state[163] == '2' else 'playere' }}.png"></td>
             <td onclick="play(164)" class="light"><img src="../../static/{{ 'playerx' if state[164] == '1' else 'playero' if state[164] == '2' else 'playere' }}.png"></td>
-        </tr>
-        <tr>
             <td onclick="play(165)" class="dark"><img src="../../static/{{ 'playerx' if state[165] == '1' else 'playero' if state[165] == '2' else 'playere' }}.png"></td>
             <td onclick="play(166)" class="light"><img src="../../static/{{ 'playerx' if state[166] == '1' else 'playero' if state[166] == '2' else 'playere' }}.png"></td>
             <td onclick="play(167)" class="dark"><img src="../../static/{{ 'playerx' if state[167] == '1' else 'playero' if state[167] == '2' else 'playere' }}.png"></td>
             <td onclick="play(168)" class="light"><img src="../../static/{{ 'playerx' if state[168] == '1' else 'playero' if state[168] == '2' else 'playere' }}.png"></td>
             <td onclick="play(169)" class="dark"><img src="../../static/{{ 'playerx' if state[169] == '1' else 'playero' if state[169] == '2' else 'playere' }}.png"></td>
             <td onclick="play(170)" class="light"><img src="../../static/{{ 'playerx' if state[170] == '1' else 'playero' if state[170] == '2' else 'playere' }}.png"></td>
+        </tr>
+        <tr>
             <td onclick="play(171)" class="dark"><img src="../../static/{{ 'playerx' if state[171] == '1' else 'playero' if state[171] == '2' else 'playere' }}.png"></td>
             <td onclick="play(172)" class="light"><img src="../../static/{{ 'playerx' if state[172] == '1' else 'playero' if state[172] == '2' else 'playere' }}.png"></td>
             <td onclick="play(173)" class="dark"><img src="../../static/{{ 'playerx' if state[173] == '1' else 'playero' if state[173] == '2' else 'playere' }}.png"></td>
@@ -273,8 +265,6 @@
             <td onclick="play(177)" class="dark"><img src="../../static/{{ 'playerx' if state[177] == '1' else 'playero' if state[177] == '2' else 'playere' }}.png"></td>
             <td onclick="play(178)" class="light"><img src="../../static/{{ 'playerx' if state[178] == '1' else 'playero' if state[178] == '2' else 'playere' }}.png"></td>
             <td onclick="play(179)" class="dark"><img src="../../static/{{ 'playerx' if state[179] == '1' else 'playero' if state[179] == '2' else 'playere' }}.png"></td>
-        </tr>
-        <tr>
             <td onclick="play(180)" class="light"><img src="../../static/{{ 'playerx' if state[180] == '1' else 'playero' if state[180] == '2' else 'playere' }}.png"></td>
             <td onclick="play(181)" class="dark"><img src="../../static/{{ 'playerx' if state[181] == '1' else 'playero' if state[181] == '2' else 'playere' }}.png"></td>
             <td onclick="play(182)" class="light"><img src="../../static/{{ 'playerx' if state[182] == '1' else 'playero' if state[182] == '2' else 'playere' }}.png"></td>
@@ -285,13 +275,12 @@
             <td onclick="play(187)" class="dark"><img src="../../static/{{ 'playerx' if state[187] == '1' else 'playero' if state[187] == '2' else 'playere' }}.png"></td>
             <td onclick="play(188)" class="light"><img src="../../static/{{ 'playerx' if state[188] == '1' else 'playero' if state[188] == '2' else 'playere' }}.png"></td>
             <td onclick="play(189)" class="dark"><img src="../../static/{{ 'playerx' if state[189] == '1' else 'playero' if state[189] == '2' else 'playere' }}.png"></td>
+        </tr>
             <td onclick="play(190)" class="light"><img src="../../static/{{ 'playerx' if state[190] == '1' else 'playero' if state[190] == '2' else 'playere' }}.png"></td>
             <td onclick="play(191)" class="dark"><img src="../../static/{{ 'playerx' if state[191] == '1' else 'playero' if state[191] == '2' else 'playere' }}.png"></td>
             <td onclick="play(192)" class="light"><img src="../../static/{{ 'playerx' if state[192] == '1' else 'playero' if state[192] == '2' else 'playere' }}.png"></td>
             <td onclick="play(193)" class="dark"><img src="../../static/{{ 'playerx' if state[193] == '1' else 'playero' if state[193] == '2' else 'playere' }}.png"></td>
             <td onclick="play(194)" class="light"><img src="../../static/{{ 'playerx' if state[194] == '1' else 'playero' if state[194] == '2' else 'playere' }}.png"></td>
-        </tr>
-        <tr>
             <td onclick="play(195)" class="dark"><img src="../../static/{{ 'playerx' if state[195] == '1' else 'playero' if state[195] == '2' else 'playere' }}.png"></td>
             <td onclick="play(196)" class="light"><img src="../../static/{{ 'playerx' if state[196] == '1' else 'playero' if state[196] == '2' else 'playere' }}.png"></td>
             <td onclick="play(197)" class="dark"><img src="../../static/{{ 'playerx' if state[197] == '1' else 'playero' if state[197] == '2' else 'playere' }}.png"></td>
@@ -306,9 +295,9 @@
             <td onclick="play(206)" class="light"><img src="../../static/{{ 'playerx' if state[206] == '1' else 'playero' if state[206] == '2' else 'playere' }}.png"></td>
             <td onclick="play(207)" class="dark"><img src="../../static/{{ 'playerx' if state[207] == '1' else 'playero' if state[207] == '2' else 'playere' }}.png"></td>
             <td onclick="play(208)" class="light"><img src="../../static/{{ 'playerx' if state[208] == '1' else 'playero' if state[208] == '2' else 'playere' }}.png"></td>
-            <td onclick="play(209)" class="dark"><img src="../../static/{{ 'playerx' if state[209] == '1' else 'playero' if state[209] == '2' else 'playere' }}.png"></td>
         </tr>
         <tr>
+            <td onclick="play(209)" class="dark"><img src="../../static/{{ 'playerx' if state[209] == '1' else 'playero' if state[209] == '2' else 'playere' }}.png"></td>
             <td onclick="play(210)" class="light"><img src="../../static/{{ 'playerx' if state[210] == '1' else 'playero' if state[210] == '2' else 'playere' }}.png"></td>
             <td onclick="play(211)" class="dark"><img src="../../static/{{ 'playerx' if state[211] == '1' else 'playero' if state[211] == '2' else 'playere' }}.png"></td>
             <td onclick="play(212)" class="light"><img src="../../static/{{ 'playerx' if state[212] == '1' else 'playero' if state[212] == '2' else 'playere' }}.png"></td>
@@ -324,6 +313,152 @@
             <td onclick="play(222)" class="light"><img src="../../static/{{ 'playerx' if state[222] == '1' else 'playero' if state[222] == '2' else 'playere' }}.png"></td>
             <td onclick="play(223)" class="dark"><img src="../../static/{{ 'playerx' if state[223] == '1' else 'playero' if state[223] == '2' else 'playere' }}.png"></td>
             <td onclick="play(224)" class="light"><img src="../../static/{{ 'playerx' if state[224] == '1' else 'playero' if state[224] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(225)" class="dark"><img src="../../static/{{ 'playerx' if state[225] == '1' else 'playero' if state[225] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(226)" class="light"><img src="../../static/{{ 'playerx' if state[226] == '1' else 'playero' if state[226] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(227)" class="dark"><img src="../../static/{{ 'playerx' if state[227] == '1' else 'playero' if state[227] == '2' else 'playere' }}.png"></td>
+        </tr>
+            <td onclick="play(228)" class="light"><img src="../../static/{{ 'playerx' if state[228] == '1' else 'playero' if state[228] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(229)" class="dark"><img src="../../static/{{ 'playerx' if state[229] == '1' else 'playero' if state[229] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(230)" class="light"><img src="../../static/{{ 'playerx' if state[230] == '1' else 'playero' if state[230] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(231)" class="dark"><img src="../../static/{{ 'playerx' if state[231] == '1' else 'playero' if state[231] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(232)" class="light"><img src="../../static/{{ 'playerx' if state[232] == '1' else 'playero' if state[232] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(233)" class="dark"><img src="../../static/{{ 'playerx' if state[233] == '1' else 'playero' if state[233] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(234)" class="light"><img src="../../static/{{ 'playerx' if state[234] == '1' else 'playero' if state[234] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(235)" class="dark"><img src="../../static/{{ 'playerx' if state[235] == '1' else 'playero' if state[235] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(236)" class="light"><img src="../../static/{{ 'playerx' if state[236] == '1' else 'playero' if state[236] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(237)" class="dark"><img src="../../static/{{ 'playerx' if state[237] == '1' else 'playero' if state[237] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(238)" class="light"><img src="../../static/{{ 'playerx' if state[238] == '1' else 'playero' if state[238] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(239)" class="dark"><img src="../../static/{{ 'playerx' if state[239] == '1' else 'playero' if state[239] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(240)" class="light"><img src="../../static/{{ 'playerx' if state[240] == '1' else 'playero' if state[240] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(241)" class="dark"><img src="../../static/{{ 'playerx' if state[241] == '1' else 'playero' if state[241] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(242)" class="light"><img src="../../static/{{ 'playerx' if state[242] == '1' else 'playero' if state[242] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(243)" class="dark"><img src="../../static/{{ 'playerx' if state[243] == '1' else 'playero' if state[243] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(244)" class="light"><img src="../../static/{{ 'playerx' if state[244] == '1' else 'playero' if state[244] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(245)" class="dark"><img src="../../static/{{ 'playerx' if state[245] == '1' else 'playero' if state[245] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(246)" class="light"><img src="../../static/{{ 'playerx' if state[246] == '1' else 'playero' if state[246] == '2' else 'playere' }}.png"></td>
+        </tr>
+        <tr>
+            <td onclick="play(247)" class="dark"><img src="../../static/{{ 'playerx' if state[247] == '1' else 'playero' if state[247] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(248)" class="light"><img src="../../static/{{ 'playerx' if state[248] == '1' else 'playero' if state[248] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(249)" class="dark"><img src="../../static/{{ 'playerx' if state[249] == '1' else 'playero' if state[249] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(250)" class="light"><img src="../../static/{{ 'playerx' if state[250] == '1' else 'playero' if state[250] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(251)" class="dark"><img src="../../static/{{ 'playerx' if state[251] == '1' else 'playero' if state[251] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(252)" class="light"><img src="../../static/{{ 'playerx' if state[252] == '1' else 'playero' if state[252] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(253)" class="dark"><img src="../../static/{{ 'playerx' if state[253] == '1' else 'playero' if state[253] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(254)" class="light"><img src="../../static/{{ 'playerx' if state[254] == '1' else 'playero' if state[254] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(255)" class="dark"><img src="../../static/{{ 'playerx' if state[255] == '1' else 'playero' if state[255] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(256)" class="light"><img src="../../static/{{ 'playerx' if state[256] == '1' else 'playero' if state[256] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(257)" class="dark"><img src="../../static/{{ 'playerx' if state[257] == '1' else 'playero' if state[257] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(258)" class="light"><img src="../../static/{{ 'playerx' if state[258] == '1' else 'playero' if state[258] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(259)" class="dark"><img src="../../static/{{ 'playerx' if state[259] == '1' else 'playero' if state[259] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(260)" class="light"><img src="../../static/{{ 'playerx' if state[260] == '1' else 'playero' if state[260] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(261)" class="dark"><img src="../../static/{{ 'playerx' if state[261] == '1' else 'playero' if state[261] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(262)" class="light"><img src="../../static/{{ 'playerx' if state[262] == '1' else 'playero' if state[262] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(263)" class="dark"><img src="../../static/{{ 'playerx' if state[263] == '1' else 'playero' if state[263] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(264)" class="light"><img src="../../static/{{ 'playerx' if state[264] == '1' else 'playero' if state[264] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(265)" class="dark"><img src="../../static/{{ 'playerx' if state[265] == '1' else 'playero' if state[265] == '2' else 'playere' }}.png"></td>
+        </tr>
+            <td onclick="play(266)" class="light"><img src="../../static/{{ 'playerx' if state[266] == '1' else 'playero' if state[266] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(267)" class="dark"><img src="../../static/{{ 'playerx' if state[267] == '1' else 'playero' if state[267] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(268)" class="light"><img src="../../static/{{ 'playerx' if state[268] == '1' else 'playero' if state[268] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(269)" class="dark"><img src="../../static/{{ 'playerx' if state[269] == '1' else 'playero' if state[269] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(270)" class="light"><img src="../../static/{{ 'playerx' if state[270] == '1' else 'playero' if state[270] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(271)" class="dark"><img src="../../static/{{ 'playerx' if state[271] == '1' else 'playero' if state[271] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(272)" class="light"><img src="../../static/{{ 'playerx' if state[272] == '1' else 'playero' if state[272] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(273)" class="dark"><img src="../../static/{{ 'playerx' if state[273] == '1' else 'playero' if state[273] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(274)" class="light"><img src="../../static/{{ 'playerx' if state[274] == '1' else 'playero' if state[274] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(275)" class="dark"><img src="../../static/{{ 'playerx' if state[275] == '1' else 'playero' if state[275] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(276)" class="light"><img src="../../static/{{ 'playerx' if state[276] == '1' else 'playero' if state[276] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(277)" class="dark"><img src="../../static/{{ 'playerx' if state[277] == '1' else 'playero' if state[277] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(278)" class="light"><img src="../../static/{{ 'playerx' if state[278] == '1' else 'playero' if state[278] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(279)" class="dark"><img src="../../static/{{ 'playerx' if state[279] == '1' else 'playero' if state[279] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(280)" class="light"><img src="../../static/{{ 'playerx' if state[280] == '1' else 'playero' if state[280] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(281)" class="dark"><img src="../../static/{{ 'playerx' if state[281] == '1' else 'playero' if state[281] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(282)" class="light"><img src="../../static/{{ 'playerx' if state[282] == '1' else 'playero' if state[282] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(283)" class="dark"><img src="../../static/{{ 'playerx' if state[283] == '1' else 'playero' if state[283] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(284)" class="light"><img src="../../static/{{ 'playerx' if state[284] == '1' else 'playero' if state[284] == '2' else 'playere' }}.png"></td>
+        </tr>
+        <tr>
+            <td onclick="play(285)" class="dark"><img src="../../static/{{ 'playerx' if state[285] == '1' else 'playero' if state[285] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(286)" class="light"><img src="../../static/{{ 'playerx' if state[286] == '1' else 'playero' if state[286] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(287)" class="dark"><img src="../../static/{{ 'playerx' if state[287] == '1' else 'playero' if state[287] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(288)" class="light"><img src="../../static/{{ 'playerx' if state[288] == '1' else 'playero' if state[288] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(289)" class="dark"><img src="../../static/{{ 'playerx' if state[289] == '1' else 'playero' if state[289] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(290)" class="light"><img src="../../static/{{ 'playerx' if state[290] == '1' else 'playero' if state[290] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(291)" class="dark"><img src="../../static/{{ 'playerx' if state[291] == '1' else 'playero' if state[291] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(292)" class="light"><img src="../../static/{{ 'playerx' if state[292] == '1' else 'playero' if state[292] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(293)" class="dark"><img src="../../static/{{ 'playerx' if state[293] == '1' else 'playero' if state[293] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(294)" class="light"><img src="../../static/{{ 'playerx' if state[294] == '1' else 'playero' if state[294] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(295)" class="dark"><img src="../../static/{{ 'playerx' if state[295] == '1' else 'playero' if state[295] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(296)" class="light"><img src="../../static/{{ 'playerx' if state[296] == '1' else 'playero' if state[296] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(297)" class="dark"><img src="../../static/{{ 'playerx' if state[297] == '1' else 'playero' if state[297] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(298)" class="light"><img src="../../static/{{ 'playerx' if state[298] == '1' else 'playero' if state[298] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(299)" class="dark"><img src="../../static/{{ 'playerx' if state[299] == '1' else 'playero' if state[299] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(300)" class="light"><img src="../../static/{{ 'playerx' if state[300] == '1' else 'playero' if state[300] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(301)" class="dark"><img src="../../static/{{ 'playerx' if state[301] == '1' else 'playero' if state[301] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(302)" class="light"><img src="../../static/{{ 'playerx' if state[302] == '1' else 'playero' if state[302] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(303)" class="dark"><img src="../../static/{{ 'playerx' if state[303] == '1' else 'playero' if state[303] == '2' else 'playere' }}.png"></td>
+        </tr>
+            <td onclick="play(304)" class="light"><img src="../../static/{{ 'playerx' if state[304] == '1' else 'playero' if state[304] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(305)" class="dark"><img src="../../static/{{ 'playerx' if state[305] == '1' else 'playero' if state[305] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(306)" class="light"><img src="../../static/{{ 'playerx' if state[306] == '1' else 'playero' if state[306] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(307)" class="dark"><img src="../../static/{{ 'playerx' if state[307] == '1' else 'playero' if state[307] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(308)" class="light"><img src="../../static/{{ 'playerx' if state[308] == '1' else 'playero' if state[308] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(309)" class="dark"><img src="../../static/{{ 'playerx' if state[309] == '1' else 'playero' if state[309] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(310)" class="light"><img src="../../static/{{ 'playerx' if state[310] == '1' else 'playero' if state[310] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(311)" class="dark"><img src="../../static/{{ 'playerx' if state[311] == '1' else 'playero' if state[311] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(312)" class="light"><img src="../../static/{{ 'playerx' if state[312] == '1' else 'playero' if state[312] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(313)" class="dark"><img src="../../static/{{ 'playerx' if state[313] == '1' else 'playero' if state[313] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(314)" class="light"><img src="../../static/{{ 'playerx' if state[314] == '1' else 'playero' if state[314] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(315)" class="dark"><img src="../../static/{{ 'playerx' if state[315] == '1' else 'playero' if state[315] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(316)" class="light"><img src="../../static/{{ 'playerx' if state[316] == '1' else 'playero' if state[316] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(317)" class="dark"><img src="../../static/{{ 'playerx' if state[317] == '1' else 'playero' if state[317] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(318)" class="light"><img src="../../static/{{ 'playerx' if state[318] == '1' else 'playero' if state[318] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(319)" class="dark"><img src="../../static/{{ 'playerx' if state[319] == '1' else 'playero' if state[319] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(320)" class="light"><img src="../../static/{{ 'playerx' if state[320] == '1' else 'playero' if state[320] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(321)" class="dark"><img src="../../static/{{ 'playerx' if state[321] == '1' else 'playero' if state[321] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(322)" class="light"><img src="../../static/{{ 'playerx' if state[322] == '1' else 'playero' if state[322] == '2' else 'playere' }}.png"></td>
+        </tr>
+        <tr>
+            <td onclick="play(323)" class="dark"><img src="../../static/{{ 'playerx' if state[323] == '1' else 'playero' if state[323] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(324)" class="light"><img src="../../static/{{ 'playerx' if state[324] == '1' else 'playero' if state[324] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(325)" class="dark"><img src="../../static/{{ 'playerx' if state[325] == '1' else 'playero' if state[325] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(326)" class="light"><img src="../../static/{{ 'playerx' if state[326] == '1' else 'playero' if state[326] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(327)" class="dark"><img src="../../static/{{ 'playerx' if state[327] == '1' else 'playero' if state[327] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(328)" class="light"><img src="../../static/{{ 'playerx' if state[328] == '1' else 'playero' if state[328] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(329)" class="dark"><img src="../../static/{{ 'playerx' if state[329] == '1' else 'playero' if state[329] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(330)" class="light"><img src="../../static/{{ 'playerx' if state[330] == '1' else 'playero' if state[330] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(331)" class="dark"><img src="../../static/{{ 'playerx' if state[331] == '1' else 'playero' if state[331] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(332)" class="light"><img src="../../static/{{ 'playerx' if state[332] == '1' else 'playero' if state[332] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(333)" class="dark"><img src="../../static/{{ 'playerx' if state[333] == '1' else 'playero' if state[333] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(334)" class="light"><img src="../../static/{{ 'playerx' if state[334] == '1' else 'playero' if state[334] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(335)" class="dark"><img src="../../static/{{ 'playerx' if state[335] == '1' else 'playero' if state[335] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(336)" class="light"><img src="../../static/{{ 'playerx' if state[336] == '1' else 'playero' if state[336] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(337)" class="dark"><img src="../../static/{{ 'playerx' if state[337] == '1' else 'playero' if state[337] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(338)" class="light"><img src="../../static/{{ 'playerx' if state[338] == '1' else 'playero' if state[338] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(339)" class="dark"><img src="../../static/{{ 'playerx' if state[339] == '1' else 'playero' if state[339] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(340)" class="light"><img src="../../static/{{ 'playerx' if state[340] == '1' else 'playero' if state[340] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(341)" class="dark"><img src="../../static/{{ 'playerx' if state[341] == '1' else 'playero' if state[341] == '2' else 'playere' }}.png"></td>
+        </tr>
+            <td onclick="play(342)" class="light"><img src="../../static/{{ 'playerx' if state[342] == '1' else 'playero' if state[342] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(343)" class="dark"><img src="../../static/{{ 'playerx' if state[343] == '1' else 'playero' if state[343] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(344)" class="light"><img src="../../static/{{ 'playerx' if state[344] == '1' else 'playero' if state[344] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(345)" class="dark"><img src="../../static/{{ 'playerx' if state[345] == '1' else 'playero' if state[345] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(346)" class="light"><img src="../../static/{{ 'playerx' if state[346] == '1' else 'playero' if state[346] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(347)" class="dark"><img src="../../static/{{ 'playerx' if state[347] == '1' else 'playero' if state[347] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(348)" class="light"><img src="../../static/{{ 'playerx' if state[348] == '1' else 'playero' if state[348] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(349)" class="dark"><img src="../../static/{{ 'playerx' if state[349] == '1' else 'playero' if state[349] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(350)" class="light"><img src="../../static/{{ 'playerx' if state[350] == '1' else 'playero' if state[350] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(351)" class="dark"><img src="../../static/{{ 'playerx' if state[351] == '1' else 'playero' if state[351] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(352)" class="light"><img src="../../static/{{ 'playerx' if state[352] == '1' else 'playero' if state[352] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(353)" class="dark"><img src="../../static/{{ 'playerx' if state[353] == '1' else 'playero' if state[353] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(354)" class="light"><img src="../../static/{{ 'playerx' if state[354] == '1' else 'playero' if state[354] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(355)" class="dark"><img src="../../static/{{ 'playerx' if state[355] == '1' else 'playero' if state[355] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(356)" class="light"><img src="../../static/{{ 'playerx' if state[356] == '1' else 'playero' if state[356] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(357)" class="dark"><img src="../../static/{{ 'playerx' if state[357] == '1' else 'playero' if state[357] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(358)" class="light"><img src="../../static/{{ 'playerx' if state[358] == '1' else 'playero' if state[358] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(359)" class="dark"><img src="../../static/{{ 'playerx' if state[359] == '1' else 'playero' if state[359] == '2' else 'playere' }}.png"></td>
+            <td onclick="play(360)" class="light"><img src="../../static/{{ 'playerx' if state[360] == '1' else 'playero' if state[360] == '2' else 'playere' }}.png"></td>
         </tr>
     </tbody>
 </table>
