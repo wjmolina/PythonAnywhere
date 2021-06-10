@@ -81,9 +81,9 @@ def ai_player():
         sleep(1)
 
 
-ai_daemon = Thread(target=ai_player)
-ai_daemon.daemon = True
-ai_daemon.start()
+# ai_daemon = Thread(target=ai_player)
+# ai_daemon.daemon = True
+# ai_daemon.start()
 
 
 @app.route("/", methods=["GET", "POST"])
