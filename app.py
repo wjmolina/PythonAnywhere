@@ -531,7 +531,7 @@ def gomoku_board(ip):
                 )
             except:
                 print("AI is making random move")
-                game.put_move(choice(i for i, x in enumerate(game.state) if x == "0"))
+                game.put_move(choice([i for i, x in enumerate(game.state) if x == "0"]))
 
     # Get the opponent.
     if game.white == player.id:
