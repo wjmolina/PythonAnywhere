@@ -4,11 +4,10 @@ from time import sleep
 import requests
 from sqlalchemy import and_, or_
 
-from app import app
 from models import Game, Player
 
 while True:
-    requests.get(app.config["HOST"] + "/wallpaper/gomoku_board/ai_task")
+    requests.get("http://wjm.pythonanywhere.com/wallpaper/gomoku_board/ai_task")
 
     player = Player.query.filter_by(ip="ai_task").first()
 
