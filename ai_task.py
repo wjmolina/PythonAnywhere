@@ -15,7 +15,7 @@ while True:
 
     try:
         text = requests.get(
-            "http://wjm.pythonanywhere.com/wallpaper/gomoku_board/ai_task"
+            "http://wjm.pythonanywhere.com/wallpaper/gomoku_board/Yunzhu Li AI"
         ).text
     except:
         print("I couldn't get the game.")
@@ -47,7 +47,7 @@ while True:
 
     try:
         requests.post(
-            f"http://wjm.pythonanywhere.com/wallpaper/gomoku/ai_task/{int(engine['move_r']) * 19 + int(engine['move_c'])}"
+            f"http://wjm.pythonanywhere.com/wallpaper/gomoku/Yunzhu Li AI/{int(engine['move_r']) * 19 + int(engine['move_c'])}"
         )
     except:
         print("I couldn't make the move.")
