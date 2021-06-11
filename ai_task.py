@@ -1,3 +1,4 @@
+import logging
 import re
 from time import sleep
 
@@ -12,7 +13,7 @@ is_spam = False
 
 while True:
     sleep(5)
-    
+
     text = ""
 
     try:
@@ -20,12 +21,12 @@ while True:
             "http://wjm.pythonanywhere.com/wallpaper/gomoku_board/Yunzhu Li AI"
         ).text
     except:
-        print("I couldn't get the game.")
+        logging.warning("I couldn't get the game.")
         continue
 
     if "your turn" not in text:
         if not is_spam:
-            print("It's not my turn.")
+            logging.info("It's not my turn.")
             is_spam = True
         continue
 
@@ -36,23 +37,32 @@ while True:
             piece_interface[piece] for piece in re.findall(r"static/(\S+)\.png", text)
         )
     except:
-        print("I couldn't understand the response.")
+        logging.error("I couldn't understand the response.")
         continue
 
-    try:
-        engine = requests.get("https://apps.yunzhu.li/gomoku/move?s=" + state).json()[
-            "result"
-        ]
-    except:
-        print("I couldn't get the move.")
-        continue
+    if state == "0" * 19 * 19:
+        try:
+            requests.post(
+                f"http://wjm.pythonanywhere.com/wallpaper/gomoku/Yunzhu Li AI/180"
+            )
+        except:
+            logging.warning("I couldn't make the move.")
+            continue
+    else:
+        try:
+            engine = requests.get("https://apps.yunzhu.li/gomoku/move?s=" + state).json()[
+                "result"
+            ]
+        except:
+            logging.error("I couldn't get the move.")
+            continue
 
-    try:
-        requests.post(
-            f"http://wjm.pythonanywhere.com/wallpaper/gomoku/Yunzhu Li AI/{int(engine['move_r']) * 19 + int(engine['move_c'])}"
-        )
-    except:
-        print("I couldn't make the move.")
-        continue
+        try:
+            requests.post(
+                f"http://wjm.pythonanywhere.com/wallpaper/gomoku/Yunzhu Li AI/{int(engine['move_r']) * 19 + int(engine['move_c'])}"
+            )
+        except:
+            logging.warning("I couldn't make the move.")
+            continue
 
-    print("I made the move.")
+    logging.info("I made the move.")
