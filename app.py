@@ -494,26 +494,15 @@ def gomoku_board(ip):
         db.session.commit()
         ai_player = Player.query.filter_by(ip="ai_player").first()
 
-    if datetime.utcnow() - game.updated_on >= timedelta(seconds=5) and (
+    if datetime.utcnow() - game.updated_on >= timedelta(seconds=10) and (
         not all([game.white, game.black]) or ai_player.id in {game.white, game.black}
     ):
-        if (
-            len(
-                Game.query.filter(
-                    and_(
-                        or_(Game.white == ai_player.id, Game.black == ai_player.id),
-                        Game.winner == "0",
-                    )
-                ).all()
-            )
-            < 1
-        ):
-            if not game.white:
-                game.white = ai_player.id
-                db.session.commit()
-            elif not game.black:
-                game.black = ai_player.id
-                db.session.commit()
+        if not game.white:
+            game.white = ai_player.id
+            db.session.commit()
+        elif not game.black:
+            game.black = ai_player.id
+            db.session.commit()
 
         if (
             game.get_turn() == "1"
