@@ -11,6 +11,8 @@ piece_interface = {
 is_spam = False
 
 while True:
+    sleep(5)
+    
     text = ""
 
     try:
@@ -54,5 +56,3 @@ while True:
         continue
 
     print("I made the move.")
-
-    sleep(5)
