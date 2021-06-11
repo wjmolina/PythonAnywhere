@@ -1,35 +1,58 @@
-from random import choice
+import re
 from time import sleep
 
 import requests
-from sqlalchemy import and_, or_
 
-from models import Game, Player
+piece_interface = {
+    "playere": "0",
+    "playerx": "1",
+    "playero": "2",
+}
+is_spam = False
 
 while True:
-    requests.get("http://wjm.pythonanywhere.com/wallpaper/gomoku_board/ai_task")
+    text = ""
 
-    player = Player.query.filter_by(ip="ai_task").first()
+    try:
+        text = requests.get(
+            "http://wjm.pythonanywhere.com/wallpaper/gomoku_board/ai_task"
+        ).text
+    except:
+        print("I couldn't get the game.")
+        continue
 
-    game: Game = Game.query.filter(
-        and_(or_(Game.white == player.id, Game.black == player.id), Game.winner == "0")
-    ).first()
+    if "your turn" not in text:
+        if not is_spam:
+            print("It's not my turn.")
+            is_spam = True
+        continue
 
-    if (
-        game.get_turn() == "1"
-        and game.white == player.id
-        or game.get_turn() == "2"
-        and game.black == player.id
-    ):
-        response = requests.get(
-            f"https://apps.yunzhu.li/gomoku/move?s={game.state}"
-        ).json()
-        try:
-            game.put_move(
-                int(response["result"]["move_r"]) * 19
-                + int(response["result"]["move_c"])
-            )
-        except:
-            game.put_move(choice([i for i, x in enumerate(game.state) if x == "0"]))
+    is_spam = False
 
-    sleep(1)
+    try:
+        state = "".join(
+            piece_interface[piece] for piece in re.findall(r"static/(\S+)\.png", text)
+        )
+    except:
+        print("I couldn't understand the response.")
+        continue
+
+    try:
+        engine = requests.get("https://apps.yunzhu.li/gomoku/move?s=" + state).json()[
+            "result"
+        ]
+    except:
+        print("I couldn't get the move.")
+        continue
+
+    try:
+        requests.post(
+            f"http://wjm.pythonanywhere.com/wallpaper/gomoku/ai_task/{int(engine['move_r']) * 19 + int(engine['move_c'])}"
+        )
+    except:
+        print("I couldn't make the move.")
+        continue
+
+    print("I made the move.")
+
+    sleep(5)
