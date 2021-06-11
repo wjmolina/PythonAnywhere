@@ -8,7 +8,7 @@ from app import app
 from models import Game, Player
 
 while True:
-    requests.get(f"{app.config['HOST']}/wallpaper/gomoku_board/ai_task")
+    requests.get(app.config["HOST"] + "/wallpaper/gomoku_board/ai_task")
 
     player = Player.query.filter_by(ip="ai_task").first()
 
@@ -22,12 +22,15 @@ while True:
         or game.get_turn() == "2"
         and game.black == player.id
     ):
-        response = requests.get(f"https://apps.yunzhu.li/gomoku/move?s={game.state}").json()
+        response = requests.get(
+            f"https://apps.yunzhu.li/gomoku/move?s={game.state}"
+        ).json()
         try:
             game.put_move(
-                int(response["result"]["move_r"]) * 19 + int(response["result"]["move_c"])
+                int(response["result"]["move_r"]) * 19
+                + int(response["result"]["move_c"])
             )
         except:
             game.put_move(choice([i for i, x in enumerate(game.state) if x == "0"]))
-    
+
     sleep(1)
