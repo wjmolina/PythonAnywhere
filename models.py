@@ -58,6 +58,7 @@ class Game(db.Model):
     black = db.Column(db.Integer, db.ForeignKey("player.id"), nullable=True)
     state = db.Column(db.String, nullable=False, default="0" * 19 * 19)
     winner = db.Column(db.String, nullable=False, default="0")
+    last_move = db.Column(db.Integer, nullable=True, default=0)
     updated_on = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow
     )
@@ -105,33 +106,6 @@ class Game(db.Model):
                 ):
                     return self.state[i * 19 + j]
         return "0" if self.state.count("0") else "d"
-
-    def put_random_move(self):
-        def next_to_opp_moves():
-            result = []
-            for pos, pce in enumerate(self.state):
-                if pce == "0":
-                    i, j = pos // 19, pos % 19
-                    for k in range(-1, 2):
-                        for l in range(-1, 2):
-                            if (
-                                {k, l} != {0}
-                                and 0 <= (i + k) * 19 + (j + l) < 361
-                                and self.state[(i + k) * 19 + (j + l)] != "0"
-                            ):
-                                result.append(pos)
-            return result or [choice(range(361))]
-
-        ai_move = None
-
-        # ai_move = alpha_beta(
-        #     self, 4, float("-inf"), float("inf"), self.get_turn() == "1"
-        # )[1]
-
-        if not ai_move:
-            ai_move = choice(next_to_opp_moves())
-
-        self.put_move(ai_move)
 
     def is_terminal(self):
         return self.get_winner() in {"1", "2", "d"}
@@ -184,6 +158,3 @@ def alpha_beta(node, depth, alpha, beta, is_max_p):
                 break
             beta = min(beta, value)
         return value, best_move
-
-
-db.create_all()

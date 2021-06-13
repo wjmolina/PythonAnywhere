@@ -389,6 +389,7 @@ def gomoku(ip=None, move=None):
 
         if game.get_turn() == ("1" if game.white == player.id else "2"):
             game.put_move(move)
+            game.last_move = int(move)
 
             # Make this prettier later.
             if (winner := game.get_winner()) == "d":
@@ -486,43 +487,6 @@ def gomoku_board(ip):
         else:
             game.winner = "1" if game.get_turn() == "2" else "2"
         db.session.commit()
-
-    # # Check whether the AI should kick in.
-    # ai_player: Player = Player.query.filter_by(ip="ai_player").first()
-    # if not ai_player:
-    #     db.session.add(Player(ip="ai_player"))
-    #     db.session.commit()
-    #     ai_player = Player.query.filter_by(ip="ai_player").first()
-
-    # if datetime.utcnow() - game.updated_on >= timedelta(seconds=10) and (
-    #     not all([game.white, game.black]) or ai_player.id in {game.white, game.black}
-    # ):
-    #     if not game.white:
-    #         game.white = ai_player.id
-    #         db.session.commit()
-    #     elif not game.black:
-    #         game.black = ai_player.id
-    #         db.session.commit()
-
-    #     if (
-    #         game.get_turn() == "1"
-    #         and game.white == ai_player.id
-    #         or game.get_turn() == "2"
-    #         and game.black == ai_player.id
-    #     ):
-    #         print("AI thinking...")
-    #         response = requests.get(
-    #             f"https://apps.yunzhu.li/gomoku/move?s={game.state}"
-    #         ).json()
-    #         print("AI done thinking")
-    #         try:
-    #             game.put_move(
-    #                 int(response["result"]["move_r"]) * 19
-    #                 + int(response["result"]["move_c"])
-    #             )
-    #         except:
-    #             print("AI is making random move")
-    #             game.put_move(choice([i for i, x in enumerate(game.state) if x == "0"]))
 
     # Get the opponent.
     if game.white == player.id:
