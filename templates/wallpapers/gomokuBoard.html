@@ -471,7 +471,10 @@ time left: {{ '%0.0f' % ([seconds, 0] | max) if seconds != '∞' else seconds }}
 </div>
 
 <script>
-    $("#{{ last_move }}").css("background-color", "yellow");
+    try {
+        document.getElementById("{{ last_move }}").style.backgroundColor = "yellow"
+    } catch {
+    }
     
     if ('{{ "your" in turn }}' == "True") {
         $("table").addClass("your-turn")
