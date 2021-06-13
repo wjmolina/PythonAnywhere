@@ -471,7 +471,7 @@ time left: {{ '%0.0f' % ([seconds, 0] | max) if seconds != '∞' else seconds }}
 </div>
 
 <script>
-    $("#{{ last_move }}").addClass("hover")
+    $("#{{ last_move }}").css("background-color: yellow");
     
     if ('{{ "your" in turn }}' == "True") {
         $("table").addClass("your-turn")
