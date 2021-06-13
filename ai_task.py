@@ -1,6 +1,5 @@
 import logging
 import re
-from time import sleep
 
 import requests
 
@@ -12,8 +11,6 @@ piece_interface = {
 is_spam = False
 
 while True:
-    sleep(5)
-
     text = ""
 
     try:
@@ -50,9 +47,9 @@ while True:
             continue
     else:
         try:
-            engine = requests.get("https://apps.yunzhu.li/gomoku/move?s=" + state).json()[
-                "result"
-            ]
+            engine = requests.get(
+                "https://apps.yunzhu.li/gomoku/move?s=" + state
+            ).json()["result"]
         except:
             logging.error("I couldn't get the move.")
             continue
