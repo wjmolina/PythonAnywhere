@@ -58,7 +58,7 @@ class Game(db.Model):
     black = db.Column(db.Integer, db.ForeignKey("player.id"), nullable=True)
     state = db.Column(db.String, nullable=False, default="0" * 19 * 19)
     winner = db.Column(db.String, nullable=False, default="0")
-    last_move = db.Column(db.Integer, nullable=True, default=0)
+    last_move = db.Column(db.Integer, nullable=True, default=None)
     updated_on = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow
     )
@@ -158,3 +158,6 @@ def alpha_beta(node, depth, alpha, beta, is_max_p):
                 break
             beta = min(beta, value)
         return value, best_move
+
+
+db.create_all()
