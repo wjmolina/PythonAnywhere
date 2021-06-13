@@ -100,7 +100,7 @@ class Game(db.Model):
         for i in range(15):
             for j in range(4, 19):
                 if self.state[i * 19 + j] != "0" and all(
-                    self.state[i * 19 + j] == self.state[(i - k) * 19 + j + k]
+                    self.state[i * 19 + j] == self.state[(i + k) * 19 + j - k]
                     for k in range(5)
                 ):
                     return self.state[i * 19 + j]
