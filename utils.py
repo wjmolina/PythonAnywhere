@@ -34,3 +34,36 @@ def get_ticker_objects(tickers):
 
 def get_random_string(length=10):
     return "".join(choices(ascii_letters + digits, k=length))
+
+
+def alpha_beta(node, depth, alpha, beta, is_max_p):
+    if not depth or node.is_terminal():
+        return node.value(), None
+    if is_max_p:
+        value, best_move = float("-inf"), None
+        for child, move in node.children():
+            value, best_move = max(
+                [
+                    (value, best_move),
+                    (alpha_beta(child, depth - 1, alpha, beta, False)[0], move),
+                ],
+                key=lambda x: x[0],
+            )
+            if value >= beta:
+                break
+            alpha = max(alpha, value)
+        return value, best_move
+    else:
+        value, best_move = float("inf"), None
+        for child, move in node.children():
+            value, best_move = min(
+                [
+                    (value, best_move),
+                    (alpha_beta(child, depth - 1, alpha, beta, True)[0], move),
+                ],
+                key=lambda x: x[0],
+            )
+            if value <= alpha:
+                break
+            beta = min(beta, value)
+        return value, best_move

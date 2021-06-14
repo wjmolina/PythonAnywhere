@@ -4,14 +4,12 @@ import ssl
 from datetime import datetime, timedelta
 from email.mime.text import MIMEText
 from random import choice, randint
-from threading import Thread
 from time import sleep
 
 import arrow
 import flask
 import git
 import requests
-from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, Response, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import and_, or_
@@ -529,5 +527,5 @@ def gomoku_board(ip):
         total_seconds=get_move_timedelta(game).total_seconds(),
         your_elo=f"{player.elo:0.0f}",
         opponent_elo=f"{opponent.elo:0.0f}" if opponent else "???",
-        last_move=game.last_move
+        last_move=game.last_move,
     )

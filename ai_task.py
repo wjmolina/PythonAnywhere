@@ -1,5 +1,6 @@
 import logging
 import re
+from time import sleep
 
 import requests
 
@@ -11,6 +12,7 @@ piece_interface = {
 is_spam = False
 
 while True:
+    sleep(0.5)
     text = ""
 
     try:
