@@ -10,7 +10,7 @@ import arrow
 import flask
 import git
 import requests
-from flask import Flask, Response, render_template, request
+from flask import Flask, Response, redirect, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import and_, or_
 
@@ -330,15 +330,16 @@ def wallpaper_image_url(wallpaper):
 
 @app.route("/wjmolina", methods=["GET", "POST"])
 def wjmolina():
-    if request.method == "POST":
-        text = request.form["text"].strip()
-        if text:
-            db.session.add(UhComments(text=text))
-            db.session.commit()
-    return render_template(
-        "uhpage.html",
-        comments=UhComments.query.order_by(UhComments.created_on.desc()).all(),
-    )
+    return redirect("esx.pythonanywhere.com/")
+    # if request.method == "POST":
+    #     text = request.form["text"].strip()
+    #     if text:
+    #         db.session.add(UhComments(text=text))
+    #         db.session.commit()
+    # return render_template(
+    #     "uhpage.html",
+    #     comments=UhComments.query.order_by(UhComments.created_on.desc()).all(),
+    # )
 
 
 @app.route("/send_email", methods=["POST"])
