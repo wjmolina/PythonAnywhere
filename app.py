@@ -330,7 +330,7 @@ def wallpaper_image_url(wallpaper):
 
 @app.route("/wjmolina", methods=["GET", "POST"])
 def wjmolina():
-    return redirect("esx.pythonanywhere.com/")
+    return redirect("http://esx.pythonanywhere.com/")
     # if request.method == "POST":
     #     text = request.form["text"].strip()
     #     if text:
