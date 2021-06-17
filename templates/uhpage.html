@@ -9,7 +9,10 @@
     <div class="toplef"><img src="static/logo.png"></div>
     <div class="topmid"><img src="static/topcenimg.jpg"></div>
     <div class="toprig"><img src="static/profimg.jpg"></div>
-    <div class="midlef"><img src="static/astrosbanner.png"></div>
+    <!-- <div class="midlef"><img src="static/astrosbanner.png"></div> -->
+    <div class="midlef">
+      <div onclick="location.href='/wallpaper/gomoku'" onselectstart="return false" class="midleft-item">Play vs My Gomoku AI</div>
+    </div>
     <div class="midmid"><form method="post"><input autocomplete="off" autofocus name="text" type="text" placeholder="Leave a comment."><input type="submit" value="Submit"></form><div class="commentsection">{% for comment in comments %}<div class="comment">{{ comment.text }}</div>{% endfor %}</div></div>
     <div class="midrig">Wilfredo J. Molina, Ph.D.<br><br>Now a Software Development Engineer at The Capital Group Companies, Inc., based in Los Angeles, California<br><br><a href="https://www.linkedin.com/in/wjmolina/" target="_blank">LinkedIn Profile</a><br><br>Advisor<br><a href="https://www.math.uh.edu/~dlabate/" target="_blank">Demetrio Labate, Ph.D.</a></div>
     <div class="botlef"><img src="static/usflag.jpg"></div>

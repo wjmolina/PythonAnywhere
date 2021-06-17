@@ -133,3 +133,21 @@ input[type=submit]:active {
 form {
     margin: 0 0 0 0;
 }
+
+.midleft-item {
+    padding: 10px 0 10px 0;
+    border-radius: 5px;
+    background-color: #c8102e;
+    color: white;
+    font-weight: bold;
+    margin: 5px 0 5px 0;
+    cursor: pointer;
+}
+
+.midleft-item:hover {
+    background-color: #b70A1d;
+}
+
+.midleft-item:active {
+    background-color: #a6090c;
+}
