@@ -134,8 +134,10 @@ form {
     margin: 0 0 0 0;
 }
 
-.midleft-item {
-    padding: 10px 0 10px 0;
+.midlef-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
     border-radius: 5px;
     background-color: #c8102e;
     color: white;
@@ -144,10 +146,17 @@ form {
     cursor: pointer;
 }
 
-.midleft-item:hover {
+.midlef-item>img {
+    width: 20px;
+    height: 20px;
+    border-radius: 0px;
+    margin-right: 5px;
+}
+
+.midlef-item:hover {
     background-color: #b70A1d;
 }
 
-.midleft-item:active {
+.midlef-item:active {
     background-color: #a6090c;
 }
