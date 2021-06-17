@@ -47,6 +47,10 @@
     grid-column: 4 / 5;
 }
 
+.midrig>p {
+    margin: 0 0 20px 0;
+}
+
 .botlef {
     align-self: stretch;
     justify-self: stretch;
@@ -142,15 +146,16 @@ form {
     background-color: #c8102e;
     color: white;
     font-weight: bold;
-    margin: 5px 0 5px 0;
+    margin: 0 0 5px 0;
     cursor: pointer;
 }
 
 .midlef-item>img {
     width: 20px;
     height: 20px;
-    border-radius: 0px;
+    border-radius: 3px;
     margin-right: 5px;
+    border: 1px solid #95080b;
 }
 
 .midlef-item:hover {

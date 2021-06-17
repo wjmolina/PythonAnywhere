@@ -4,6 +4,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata">
   <link rel="stylesheet" type="text/css" href="static/styles/uhpage.css">
 </head>
+
 <body>
   <div class="container">
     <div class="toplef"><img src="static/logo.png"></div>
@@ -12,18 +13,31 @@
     <!-- <div class="midlef"><img src="static/astrosbanner.png"></div> -->
     <div class="midlef">
       <div onclick="location.href='/wallpaper/gomoku'" onselectstart="return false" class="midlef-item">
-        <img src="/static/gomoku.ico"/><span>My Gomoku AI</span>
+        <img src="/static/gomoku.ico" />Play My Gomoku AI
       </div>
-      <div onclick="location.href='https://www.linkedin.com/in/wjmolina/'" onselectstart="return false" class="midlef-item">
-        <img src="/static/linkedin.ico"/><span>LinkedIn</span>
+      <div onclick="location.href='https://www.linkedin.com/in/wjmolina/'" onselectstart="return false"
+        class="midlef-item">
+        <img src="/static/linkedin.ico" />LinkedIn
       </div>
     </div>
-    <div class="midmid"><form method="post"><input autocomplete="off" autofocus name="text" type="text" placeholder="Leave a comment."><input type="submit" value="Submit"></form><div class="commentsection">{% for comment in comments %}<div class="comment">{{ comment.text }}</div>{% endfor %}</div></div>
-    <div class="midrig">Wilfredo J. Molina, Ph.D.<br><br>Now a Software Development Engineer at The Capital Group Companies, Inc., based in Los Angeles, California<br><br>Advisor<br><a href="https://www.math.uh.edu/~dlabate/" target="_blank">Demetrio Labate, Ph.D.</a></div>
+    <div class="midmid">
+      <form method="post">
+        <input autocomplete="off" autofocus name="text" type="text" placeholder="Leave a comment."><input type="submit"
+          value="Submit">
+      </form>
+      <div class="commentsection">{% for comment in comments %}<div class="comment">{{ comment.text }}</div>{% endfor %}
+      </div>
+    </div>
+    <div class="midrig">
+      <p>Wilfredo J. Molina, Ph.D.</p>
+      <p>Software Development Engineer</p>
+      <p>The Capital Group Companies, Inc.</p>
+      <p>Los Angeles, California</p>
+      <p><a href="https://www.math.uh.edu/~dlabate/" target="_blank">Demetrio Labate, Ph.D.</a>, (Advisor)</p>
+    </div>
     <div class="botlef"><img src="static/usflag.jpg"></div>
     <div class="botmid"><img src="static/la.jpg"></div>
     <div class="botrig"><img src="static/venflag.jpg"></div>
   </div>
-  <br>
-  Made by Yours Truly ❤️
+  <p>Made by Yours Truly ❤️</p>
 </body>
