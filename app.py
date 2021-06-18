@@ -386,26 +386,37 @@ def gomoku(ip=None, move=None):
         if not game:
             return "game does not exist", 500
 
-        if game.get_turn() == ("1" if game.white == player.id else "2"):
-            game.put_move(move)
-            game.last_move = int(move)
+        if move == "giveup" or game.get_turn() == ("1" if game.white == player.id else "2"):
+            if move != "giveup":
+                game.put_move(move)
+                game.last_move = int(move)
 
             # Make this prettier later.
-            if (winner := game.get_winner()) == "d":
+            if (
+                winner := game.get_winner()
+                if move != "giveup"
+                else ("2" if game.white == player.id else "1")
+            ) == "d":
                 a: Player = Player.query.filter_by(id=game.white).first()
                 b: Player = Player.query.filter_by(id=game.black).first()
-                a.elo = a.elo + 32 * (0.5 - 1 / (10 ** ((b.elo - a.elo) / 400) + 1))
-                b.elo = b.elo + 32 * (0.5 - 1 / (10 ** ((a.elo - b.elo) / 400) + 1))
+                if a and b:
+                    a.elo = a.elo + 32 * (0.5 - 1 / (10 ** ((b.elo - a.elo) / 400) + 1))
+                    b.elo = b.elo + 32 * (0.5 - 1 / (10 ** ((a.elo - b.elo) / 400) + 1))
             elif winner == "1":
                 w: Player = Player.query.filter_by(id=game.white).first()
                 l: Player = Player.query.filter_by(id=game.black).first()
-                w.elo = w.elo + 32 * (1 - 1 / (10 ** ((l.elo - w.elo) / 400) + 1))
-                l.elo = l.elo + 32 * (0 - 1 / (10 ** ((w.elo - l.elo) / 400) + 1))
+                if w and l:
+                    w.elo = w.elo + 32 * (1 - 1 / (10 ** ((l.elo - w.elo) / 400) + 1))
+                    l.elo = l.elo + 32 * (0 - 1 / (10 ** ((w.elo - l.elo) / 400) + 1))
             elif winner == "2":
                 w: Player = Player.query.filter_by(id=game.black).first()
                 l: Player = Player.query.filter_by(id=game.white).first()
-                w.elo = w.elo + 32 * (1 - 1 / (10 ** ((l.elo - w.elo) / 400) + 1))
-                l.elo = l.elo + 32 * (0 - 1 / (10 ** ((w.elo - l.elo) / 400) + 1))
+                if w and l:
+                    w.elo = w.elo + 32 * (1 - 1 / (10 ** ((l.elo - w.elo) / 400) + 1))
+                    l.elo = l.elo + 32 * (0 - 1 / (10 ** ((w.elo - l.elo) / 400) + 1))
+            
+            if move == "giveup":
+                game.winner = winner
 
             db.session.commit()
 

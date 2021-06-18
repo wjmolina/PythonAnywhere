@@ -14,16 +14,18 @@
             background-color: #121212;
             font-family: "Fira Code";
             color: #b3b3b3;
+            text-align: center;
         }
 
-        #board {
-            text-align: center;
+        #giveup {
+            margin: 5px 0 5px 0;
         }
     </style>
 </head>
 
 <body>
     <div id="board"></div>
+    <input id="giveup" type="button" value="give up" onclick="play('giveup')">
     <script type="text/javascript">
         let ip
         const log_url = '{{ host }}/wallpaper/{{ wallpaper }}'
