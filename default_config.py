@@ -1,6 +1,6 @@
 from itertools import cycle
 
-SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+SQLALCHEMY_DATABASE_URI = "sqlite:///db.sqlite"
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 HOST = "http://127.0.0.1:5000"

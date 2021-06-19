@@ -1,7 +1,8 @@
 from datetime import datetime
-from random import choice
 
-from app import db
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 
 class Comment(db.Model):
@@ -126,6 +127,3 @@ class Game(db.Model):
             if winner == "2"
             else 0
         )
-
-
-db.create_all()

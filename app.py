@@ -11,9 +11,17 @@ import flask
 import git
 import requests
 from flask import Flask, Response, redirect, render_template, request
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import and_, or_
 
+from models import (
+    AnonymousName,
+    Comment,
+    Game,
+    IpNotes,
+    Player,
+    WallpaperData,
+    db,
+)
 from utils import get_random_string, get_ticker_objects
 
 app = Flask(__name__)
@@ -24,17 +32,10 @@ try:
 except:
     print("INFO: could not load config.py")
 
-db = SQLAlchemy(app)
+db.init_app(app)
 
-from models import (
-    AnonymousName,
-    Comment,
-    Game,
-    IpNotes,
-    Player,
-    UhComments,
-    WallpaperData,
-)
+with app.app_context():
+    db.create_all()
 
 
 def ai_player():
