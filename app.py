@@ -509,17 +509,13 @@ def gomoku_board(ip):
     scores = defaultdict(lambda: [0, 0, 0])
     for plyr in Player.query.all():
         for finished_game in finished_games:
-            if (
-                finished_game.white == plyr.id
-                and finished_game.winner == "1"
-                or finished_game.black == plyr.id
-                and finished_game.winner == "2"
-            ):
-                scores[plyr.id][0] += 1
-            elif finished_game.winner == "d":
-                scores[plyr.id][1] += 1
-            else:
-                scores[plyr.id][2] += 1
+            if finished_game.white == plyr.id or finished_game.black == plyr.id:
+                if finished_game.winner == "1" and finished_game.white == plyr.id:
+                    scores[plyr.id][0] += 1
+                elif finished_game.winner == "d":
+                    scores[plyr.id][1] += 1
+                else:
+                    scores[plyr.id][2] += 1
 
     players = [
         {
