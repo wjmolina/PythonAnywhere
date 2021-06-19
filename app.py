@@ -386,7 +386,9 @@ def gomoku(ip=None, move=None):
         if not game:
             return "game does not exist", 500
 
-        if move == "giveup" or game.get_turn() == ("1" if game.white == player.id else "2"):
+        if move == "giveup" or game.get_turn() == (
+            "1" if game.white == player.id else "2"
+        ):
             if move != "giveup":
                 game.put_move(move)
                 game.last_move = int(move)
@@ -414,7 +416,7 @@ def gomoku(ip=None, move=None):
                 if w and l:
                     w.elo = w.elo + 32 * (1 - 1 / (10 ** ((l.elo - w.elo) / 400) + 1))
                     l.elo = l.elo + 32 * (0 - 1 / (10 ** ((w.elo - l.elo) / 400) + 1))
-            
+
             if move == "giveup":
                 game.winner = winner
 
@@ -539,5 +541,20 @@ def gomoku_board(ip):
         total_seconds=get_move_timedelta(game).total_seconds(),
         your_elo=f"{player.elo:0.0f}",
         opponent_elo=f"{opponent.elo:0.0f}" if opponent else "???",
+        your_name=(player.name or "").strip() or "nameless",
+        opponent_name=(opponent.name or "").strip() or "nameless"
+        if opponent
+        else "nameless",
         last_move=game.last_move,
+        players=Player.query.filter(
+            Player.updated_on > datetime.utcnow() - timedelta(days=1)
+        ).order_by(Player.elo.desc()),
     )
+
+
+@app.route("/wallpaper/gomoku/change_name/<ip>/<name>", methods=["POST"])
+def change_name(ip, name):
+    player = Player.query.filter_by(ip=ip).first()
+    player.name = name
+    db.session.commit()
+    return "success"

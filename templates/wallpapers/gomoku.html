@@ -17,15 +17,14 @@
             text-align: center;
         }
 
-        #giveup {
-            margin: 5px 0 5px 0;
+        input[type=button] {
+            margin: 5px 5px 0 0;
         }
     </style>
 </head>
 
 <body>
     <div id="board"></div>
-    <input id="giveup" type="button" value="give up" onclick="play('giveup')">
     <script type="text/javascript">
         let ip
         const log_url = '{{ host }}/wallpaper/{{ wallpaper }}'
@@ -58,6 +57,13 @@
                 })
                 $.post(`${log_url}/${ip}`)
             }
+        }
+
+        function changeName() {
+            $.post(`{{ host }}/wallpaper/gomoku/change_name/${ip}/${$("#nametext").val()}`, function () {
+                $("#nametext").val("")
+                refreshBoard()
+            })
         }
     </script>
 </body>

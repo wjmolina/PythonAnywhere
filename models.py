@@ -47,6 +47,7 @@ class Player(db.Model):
     city = db.Column(db.String, nullable=True)
     isp = db.Column(db.String, nullable=True)
     elo = db.Column(db.Float, nullable=False, default=1000)
+    name = db.Column(db.String)
     updated_on = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow
     )
