@@ -85,6 +85,10 @@
     .lef>table {
         width: 100%;
     }
+
+    .rig>table {
+        width: 100%;
+    }
 </style>
 
 <div class="container">
@@ -506,10 +510,17 @@
         <div class="progressbar">
             <span style="width: {{ 100 * ([seconds, 0] | max | int) / (total_seconds | int) if seconds != '∞' else 100 }}%"></span>
         </div>
-        <input type="button" value="give up" onclick="play('giveup')"><input id="nametext" type="text"><input type="button"
-    onclick="changeName()" value="change name">
     </div>
-    <div class="rig">gomoku by wjm & ejg</div>
+    <div class="rig">
+        <p>gomoku by wjm & ejg</p>
+        <table hidden>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </table>
+    </div>
 </div>
 <script>
     try {

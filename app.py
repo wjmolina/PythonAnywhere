@@ -541,7 +541,7 @@ def gomoku_board(ip):
         total_seconds=get_move_timedelta(game).total_seconds(),
         your_elo=f"{player.elo:0.0f}",
         opponent_elo=f"{opponent.elo:0.0f}" if opponent else "???",
-        your_name=(player.name or "").strip(),
+        your_name=(player.name or "").strip() or None,
         opponent_name=(opponent.name if opponent else "").strip() or None,
         last_move=game.last_move,
         players=Player.query.filter(

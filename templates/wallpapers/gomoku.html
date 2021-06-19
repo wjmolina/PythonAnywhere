@@ -25,6 +25,8 @@
 
 <body>
     <div id="board"></div>
+    <input type="button" value="give up" onclick="play('giveup')"><input id="nametext" type="text"><input type="button"
+        onclick="changeName()" value="change name">
     <script type="text/javascript">
         let ip
         const log_url = '{{ host }}/wallpaper/{{ wallpaper }}'
