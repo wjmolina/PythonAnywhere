@@ -18,15 +18,24 @@
         }
 
         input[type=button] {
-            margin: 5px 5px 0 0;
+            margin: 5px 0 0 -9px;
+        }
+
+        input {
+            border-radius: 5px;
+        }
+
+        #giveup {
+            background-color: red;
         }
     </style>
 </head>
 
 <body>
-    <div id="board"></div>
-    <input type="button" value="give up" onclick="play('giveup')"><input id="nametext" type="text"><input type="button"
-        onclick="changeName()" value="change name">
+    <div id="board">Loading...</div>
+    <input id="giveup" type="button" value="give up" onclick="play('giveup')">
+    <input id="nametext" type="text" autocomplete="off" placeholder="new name" autofocus>
+    <input type="button" onclick="changeName()" value="change name">
     <script type="text/javascript">
         let ip
         const log_url = '{{ host }}/wallpaper/{{ wallpaper }}'

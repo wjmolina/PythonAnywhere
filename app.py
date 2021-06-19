@@ -418,6 +418,7 @@ def gomoku(ip=None, move=None):
                     l.elo = l.elo + 32 * (0 - 1 / (10 ** ((w.elo - l.elo) / 400) + 1))
 
             if move == "giveup":
+                player.elo -= player.elo * 0.01
                 game.winner = winner
 
             db.session.commit()
@@ -542,7 +543,7 @@ def gomoku_board(ip):
         your_elo=f"{player.elo:0.0f}",
         opponent_elo=f"{opponent.elo:0.0f}" if opponent else "???",
         your_name=(player.name or "").strip() or None,
-        opponent_name=((opponent.name if opponent else "") or "").strip() or None,
+        opponent_name=((opponent.name if opponent else "???") or "").strip() or None,
         last_move=game.last_move,
         players=Player.query.filter(
             Player.updated_on > datetime.utcnow() - timedelta(days=1)
