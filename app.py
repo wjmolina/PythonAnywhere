@@ -1,6 +1,7 @@
 import re
 import smtplib
 import ssl
+from collections import defaultdict
 from datetime import datetime, timedelta
 from email.mime.text import MIMEText
 from random import choice, randint
@@ -13,15 +14,7 @@ import requests
 from flask import Flask, Response, redirect, render_template, request
 from sqlalchemy import and_, or_
 
-from models import (
-    AnonymousName,
-    Comment,
-    Game,
-    IpNotes,
-    Player,
-    WallpaperData,
-    db,
-)
+from models import AnonymousName, Comment, Game, IpNotes, Player, WallpaperData, db
 from utils import get_random_string, get_ticker_objects
 
 app = Flask(__name__)
@@ -470,7 +463,10 @@ def gomoku_board(ip):
     if not game:
         game: Game = Game.query.filter(
             and_(
-                or_(Game.white == None, Game.black == None),
+                or_(
+                    and_(Game.white == None, Game.black != player.id),
+                    and_(Game.black == None, Game.white != player.id),
+                ),
                 Game.winner == "0",
             )
         ).first()
@@ -509,10 +505,8 @@ def gomoku_board(ip):
         opponent = Player.query.filter_by(id=game.white).first()
 
     # Get the player's score.
-    finished_games = Game.query.filter(
-        and_(or_(Game.white == player.id, Game.black == player.id), Game.winner != "0")
-    ).all()
-    win, loss, draw = 0, 0, 0
+    finished_games = Game.query.filter(Game.winner != "0")
+    scores = defaultdict(lambda: [0, 0, 0])
     for finished_game in finished_games:
         if (
             finished_game.white == player.id
@@ -520,11 +514,24 @@ def gomoku_board(ip):
             or finished_game.black == player.id
             and finished_game.winner == "2"
         ):
-            win += 1
+            scores[player.id][0] += 1
         elif finished_game.winner == "d":
-            draw += 1
+            scores[player.id][1] += 1
         else:
-            loss += 1
+            scores[player.id][2] += 1
+
+    players = [
+        {
+            "name": player.name,
+            "elo": player.elo,
+            "w": scores[player.id][0],
+            "l": scores[player.id][2],
+            "d": scores[player.id][1],
+        }
+        for player in Player.query.filter(
+            Player.updated_on > datetime.utcnow() - timedelta(days=1)
+        ).order_by(Player.elo.desc())
+    ]
 
     return render_template(
         "wallpapers/gomokuBoard.html",
@@ -536,9 +543,9 @@ def gomoku_board(ip):
             if all([game.white, game.black])
             else "waiting for opponent"
         ),
-        win=win,
-        loss=loss,
-        draw=draw,
+        win=scores[player.id][0],
+        loss=scores[player.id][2],
+        draw=scores[player.id][1],
         seconds=get_seconds_left(game),
         total_seconds=get_move_timedelta(game).total_seconds(),
         your_elo=f"{player.elo:0.0f}",
@@ -546,9 +553,7 @@ def gomoku_board(ip):
         your_name=(player.name or "").strip() or None,
         opponent_name=((opponent.name if opponent else "???") or "").strip() or None,
         last_move=game.last_move,
-        players=Player.query.filter(
-            Player.updated_on > datetime.utcnow() - timedelta(days=1)
-        ).order_by(Player.elo.desc()),
+        players=players,
     )
 
 

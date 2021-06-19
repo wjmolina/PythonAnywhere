@@ -79,15 +79,18 @@
 
     .container {
         display: grid;
-        grid-template-areas: 'lef lef lef lef lef mid rig rig rig rig rig';
+        grid-template-areas: 'lef mid rig';
     }
 
     .lef>table {
         width: 100%;
+        border: 1px solid;
     }
 
     .rig>table {
         width: 100%;
+        border: 1px solid;
+        color: transparent;
     }
 </style>
 
@@ -98,12 +101,18 @@
                 <th>rank</th>
                 <th>player</th>
                 <th>rating</th>
+                <th>w</th>
+                <th>l</th>
+                <th>d</th>
             </tr>
             {% for player in players %}
             <tr>
                 <td>{{ loop.index }}</td>
                 <td>{{ player.name }}</td>
                 <td>{{ player.elo | int }}</td>
+                <th>{{ player.w }}</th>
+                <th>{{ player.l }}</th>
+                <th>{{ player.d }}</th>
             </tr>
             {% endfor %}
         </table>
@@ -513,12 +522,25 @@
     </div>
     <div class="rig">
         <p>gomoku by wjm & <a href="https://steamcommunity.com/id/PolarisDesu" target="_blank">ejg</a></p>
-        <table hidden>
+        <table>
             <tr>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th>rank</th>
+                <th>player</th>
+                <th>rating</th>
+                <th>w</th>
+                <th>l</th>
+                <th>d</th>
             </tr>
+            {% for player in players %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ player.name }}</td>
+                <td>{{ player.elo | int }}</td>
+                <th>{{ player.w }}</th>
+                <th>{{ player.l }}</th>
+                <th>{{ player.d }}</th>
+            </tr>
+            {% endfor %}
         </table>
     </div>
 </div>
