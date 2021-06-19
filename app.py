@@ -505,17 +505,31 @@ def gomoku_board(ip):
         opponent = Player.query.filter_by(id=game.white).first()
 
     # Get the player's score.
-    finished_games = Game.query.filter(Game.winner != "0")
     scores = defaultdict(lambda: [0, 0, 0])
-    for plyr in Player.query.all():
-        for finished_game in finished_games:
-            if finished_game.white == plyr.id or finished_game.black == plyr.id:
-                if finished_game.winner == "1" and finished_game.white == plyr.id:
-                    scores[plyr.id][0] += 1
-                elif finished_game.winner == "d":
-                    scores[plyr.id][1] += 1
-                else:
-                    scores[plyr.id][2] += 1
+    for plyr in (
+        plyrs := Player.query.filter(
+            Player.updated_on > datetime.utcnow() - timedelta(days=1)
+        ).order_by(Player.elo.desc())
+    ):
+        for finished_game in Game.query.filter(
+            and_(or_(Game.white == plyr.id, Game.black == plyr.id), Game.winner != "0")
+        ):
+            if (
+                finished_game.winner == "1"
+                and finished_game.white == plyr.id
+                or finished_game.winner == "2"
+                and finished_game.black == plyr.id
+            ):
+                scores[plyr.id][0] += 1
+            elif (
+                finished_game.winner == "1"
+                and finished_game.black == plyr.id
+                or finished_game.winner == "2"
+                and finished_game.white == plyr.id
+            ):
+                scores[plyr.id][2] += 1
+            else:
+                scores[plyr.id][1] += 1
 
     players = [
         {
@@ -525,9 +539,7 @@ def gomoku_board(ip):
             "l": scores[player.id][2],
             "d": scores[player.id][1],
         }
-        for player in Player.query.filter(
-            Player.updated_on > datetime.utcnow() - timedelta(days=1)
-        ).order_by(Player.elo.desc())
+        for player in plyrs
     ]
 
     return render_template(
