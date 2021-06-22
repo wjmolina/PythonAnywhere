@@ -330,15 +330,6 @@ def wallpaper_image_url(wallpaper):
 @app.route("/wjmolina", methods=["GET", "POST"])
 def wjmolina():
     return redirect("http://esx.pythonanywhere.com/")
-    # if request.method == "POST":
-    #     text = request.form["text"].strip()
-    #     if text:
-    #         db.session.add(UhComments(text=text))
-    #         db.session.commit()
-    # return render_template(
-    #     "uhpage.html",
-    #     comments=UhComments.query.order_by(UhComments.created_on.desc()).all(),
-    # )
 
 
 @app.route("/send_email", methods=["POST"])
