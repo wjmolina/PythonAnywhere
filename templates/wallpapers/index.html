@@ -1,64 +1,63 @@
 <!DOCTYPE html>
 
 <head>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-  <link rel="stylesheet" type="text/css" href="../../static/styles/index.css">
+    <link rel="stylesheet" type="text/css" href="../../static/styles/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
 </head>
 <html>
 
 <body>
-  <img src="">
+    <img src="">
+    <i class="fas fa-info-circle"></i>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+        const log_url = '{{ host }}/wallpaper/{{ wallpaper }}'
+        let ip
+
+        function readImage() {
+            $.get("{{ image_url }}", (response) => {
+                $("img").prop({
+                    "src": response.image_url,
+                })
+                $("i").attr("title", `${response.title}\n\n${response.explanation}`)
+            }).fail(() => {
+                $.post(`${log_url}/E${ip ?? 'RROR_READ_IMAGE'}`)
+                $("img").prop({
+                    "src": "../../static/techdiff.gif",
+                })
+            })
+        }
+
+        function createLog() {
+            if (ip) {
+                $.post(`${log_url}/${ip}`)
+            } else {
+                $.get("https://api.ipify.org/?format=json", (response) => {
+                    ip = response.ip
+                }).fail(() => {
+                    $.post(`${log_url}/ERROR_READ_IP`)
+                })
+            }
+        }
+
+        $(document).ready(() => {
+            readImage()
+            createLog()
+
+            window.setInterval(() => {
+                readImage()
+            }, +'{{ read_image_interval }}')
+
+            window.setInterval(() => {
+                createLog()
+            }, +'{{ create_log_interval }}')
+
+            window.setInterval(() => {
+                location.reload()
+            }, +'{{ refresh_interval }}')
+        })
+    </script>
 </body>
-<script>
-  const log_url = '{{ host }}/wallpaper/{{ wallpaper }}'
-  let ip
-
-  function readImage() {
-    $.get("{{ image_url }}", (response) => {
-      console.log(response.image_url)
-      $("img").prop({
-        "src": response.image_url,
-      })
-    }).fail(() => {
-      $.post(`${log_url}/E${ip ?? 'RROR_READ_IMAGE'}`)
-      $("img").prop({
-        "src": "../../static/techdiff.gif",
-      })
-    })
-  }
-
-  function createLog() {
-    if (ip) {
-      $.post(`${log_url}/${ip}`)
-    } else {
-      $.get("https://api.ipify.org/?format=json", (response) => {
-        ip = response.ip
-      }).fail(() => {
-        $.post(`${log_url}/ERROR_READ_IP`)
-      })
-    }
-  }
-
-  $(document).ready(() => {
-    readImage()
-    createLog()
-
-    window.setInterval(() => {
-      readImage()
-      console.log('readImage()')
-    }, +'{{ read_image_interval }}')
-
-    window.setInterval(() => {
-      createLog()
-      console.log('createLog()')
-    }, +'{{ create_log_interval }}')
-
-    window.setInterval(() => {
-      location.reload()
-      console.log('location.reload()')
-    }, +'{{ refresh_interval }}')
-  })
-</script>
 
 </html>

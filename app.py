@@ -306,10 +306,13 @@ def update_tickers(tickers):
 @app.route("/wallpaper/<wallpaper>/image_url")
 def wallpaper_image_url(wallpaper):
     if wallpaper == "apod":
+        res = requests.get(
+            "https://api.nasa.gov/planetary/apod?api_key=RkB6zuLJeCTiehSpZswRNqyoYwUYJRnO274U7wrB"
+        ).json()
         return {
-            "image_url": requests.get(
-                "https://api.nasa.gov/planetary/apod?api_key=RkB6zuLJeCTiehSpZswRNqyoYwUYJRnO274U7wrB"
-            ).json()["hdurl"]
+            "image_url": res["hdurl"],
+            "title": res["title"],
+            "explanation": res["explanation"],
         }
     if wallpaper == "ppow":
         return {
@@ -318,7 +321,9 @@ def wallpaper_image_url(wallpaper):
                 requests.get(
                     "https://mars.nasa.gov/mars2020/multimedia/raw-images/image-of-the-week/"
                 ).text,
-            )[0]
+            )[0],
+            "title": "Perseverance Picture of the Week",
+            "explanation": "Perseverance Picture of the Week",
         }
 
 

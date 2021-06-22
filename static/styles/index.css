@@ -14,3 +14,13 @@ img {
     right: 0;
     margin: auto;
 }
+
+i {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    color: yellow;
+    cursor: pointer;
+}
