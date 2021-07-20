@@ -4,10 +4,48 @@
     <link rel="stylesheet" type="text/css" href="../../static/styles/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer"
     />
+    <link rel="stylesheet" type="text/css" href="../../static/styles/tickerTracker.css">
+
+    <style>
+        .periodic-element {
+          position: absolute;
+          top: 20px;
+          right: 20px;
+        }
+
+        .periodic-element .title {
+          margin: 0em 0 0;
+        }
+
+        .positive {
+          background: linear-gradient(to bottom right, #0000CD 40%, #00008B 100%);
+        }
+
+        .positive .title,
+        .positive .description {
+          background: -webkit-linear-gradient(#0000CD, #00008B);
+        }
+    </style>
+
 </head>
 <html>
 
 <body>
+
+
+
+
+<div class="periodic-table">
+  <div class="periodic-element positive" data-description="Something like `${response.title}\n\n${response.explanation}`">
+    <div class="periodic-element-inner">
+      <div class="title">APOD</div>
+      <div class="description">${response.date}</div>
+    </div>
+  </div>
+
+
+
+
     <img src="">
     <i class="fas fa-info-circle"></i>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
