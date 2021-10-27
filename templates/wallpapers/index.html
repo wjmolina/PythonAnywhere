@@ -8,8 +8,17 @@
 <html>
 
 <body>
+
+    <div class="periodic-table">
+        <div id="pita" class="periodic-element positive" data-description="">
+          <div class="periodic-element-inner">
+            <div class="title">APOD</div>
+            <div class="description">{date}</div>
+          </div>
+        </div>
+    </div>
+
     <img src="">
-    <i class="fas fa-info-circle"></i>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script>
         const log_url = '{{ host }}/wallpaper/{{ wallpaper }}'
@@ -20,7 +29,7 @@
                 $("img").prop({
                     "src": response.image_url,
                 })
-                $("i").attr("title", `${response.title}\n\n${response.explanation}`)
+                $("#pita").attr("data-description", `${response.title}\n\n${response.explanation}`)
             }).fail(() => {
                 $.post(`${log_url}/E${ip ?? 'RROR_READ_IMAGE'}`)
                 $("img").prop({
