@@ -12,13 +12,15 @@ import flask
 import git
 import requests
 from flask import Flask, Response, redirect, render_template, request
+from flask_cors import CORS
 from sqlalchemy import and_, or_
-from flask_cors import cross_origin
 
-from models import AnonymousName, Comment, Game, IpNotes, Player, WallpaperData, db
+from models import (AnonymousName, Comment, Game, IpNotes, Player,
+                    WallpaperData, db)
 from utils import get_random_string, get_ticker_objects
 
 app = Flask(__name__)
+CORS(app)
 
 app.config.from_object("default_config")
 try:
@@ -305,7 +307,6 @@ def update_tickers(tickers):
 
 
 @app.route("/wallpaper/<wallpaper>/image_url")
-@cross_origin()
 def wallpaper_image_url(wallpaper):
     if wallpaper == "apod":
         res = requests.get(
