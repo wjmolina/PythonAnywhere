@@ -296,6 +296,7 @@ def wallpaper(wallpaper):
         create_log_interval=app.config["CREATE_LOG_INTERVAL"],
         refresh_interval=app.config["REFRESH_INTERVAL"],
         host=app.config["HOST"],
+        date=datetime.utcnow().strftime("%Y %B %-d"),
     )
 
 

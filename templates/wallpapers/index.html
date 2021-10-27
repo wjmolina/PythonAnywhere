@@ -27,7 +27,7 @@
                 $("img").prop({
                     "src": response.image_url,
                 })
-                $("i").attr("title", `${response.title}\n\n${response.explanation}`)
+                $("#pita").attr("data-description", `${response.title}\n\n${response.explanation}`)
             }).fail(() => {
                 $.post(`${log_url}/E${ip ?? 'RROR_READ_IMAGE'}`)
                 $("img").prop({
