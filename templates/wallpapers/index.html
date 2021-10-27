@@ -2,14 +2,21 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="../../static/styles/index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer"
-    />
 </head>
 <html>
 
 <body>
+
+    <div class="periodic-table">
+        <div id="pita" class="periodic-element positive" data-description="">
+            <div class="periodic-element-inner">
+                <div class="title">APOD</div>
+                <div class="description">{{ date }}</div>
+            </div>
+        </div>
+    </div>
+
     <img src="">
-    <i class="fas fa-info-circle"></i>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script>
         const log_url = '{{ host }}/wallpaper/{{ wallpaper }}'
