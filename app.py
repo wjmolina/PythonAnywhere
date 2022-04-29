@@ -314,7 +314,7 @@ def wallpaper_image_url(wallpaper):
             "https://api.nasa.gov/planetary/apod?api_key=RkB6zuLJeCTiehSpZswRNqyoYwUYJRnO274U7wrB"
         ).json()
         return {
-            "image_url": res["hdurl"],
+            "image_url": res["url"],
             "title": res["title"],
             "explanation": res["explanation"],
         }
